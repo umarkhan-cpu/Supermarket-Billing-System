@@ -150,7 +150,7 @@ The system follows a dual-perspective architecture:
 
 1. Clone the repository:
 ```
-git clone https://github.com/YOUR_USERNAME/Supermarket-Billing-System.git
+git clone https://github.com/umarkhan17006-cpu/Supermarket-Billing-System.git
 ```
 2. Open the project in **Visual Studio**
 3. Build and run the solution
