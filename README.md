@@ -160,14 +160,7 @@ git clone https://github.com/umarkhan17006-cpu/Supermarket-Billing-System.git
 
 ## 📌 Development Approach
 
-The project follows a **console-first** development approach:
-
-| Phase | Description | Status |
-|---|---|---|
-| Phase 1 | Foundation — file formats, base classes, main menu | 🔄 In Progress |
-| Phase 2 | Console development — all 10 features working | ⏳ Pending |
-| Phase 3 | GUI integration on top of console logic | ⏳ Pending |
-| Phase 4 | Final testing, GitHub cleanup, LinkedIn posts | ⏳ Pending |
+The project follows a console-first approach, with GUI integration planned after core logic is complete.
 
 ---
 
