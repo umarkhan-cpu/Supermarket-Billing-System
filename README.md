@@ -45,6 +45,13 @@ A C++ application for managing supermarket operations including billing, invento
 9. **Transaction History** — View records of past transactions
 10. **Search & Filter Products** — Find products by name, category, or price
 
+## 🔐 UI/UX & Security Features
+
+1. **CAPTCHA Verification** — Randomly generated verification code at login to prevent unauthorized access
+2. **Password Strength Indicator** — Live visual indicator during account creation to encourage secure passwords
+3. **Dark / Light Mode** — Toggle between dark and light interface themes for visual comfort
+4. **Session Timeout** — Automatically logs out inactive users to prevent unauthorized access
+   
 ---
 
 ## 🛠️ Technologies Used
@@ -111,7 +118,8 @@ Supermarket-Billing-System/
 │   ├── users.txt
 │   ├── transactions.txt
 │   ├── coupons.txt
-│   └── refunds.txt
+│   ├── refunds.txt
+│   └── settings.txt 
 │
 ├── GUI/
 │   └── (Mahnoor Aslam's GUI Files)
