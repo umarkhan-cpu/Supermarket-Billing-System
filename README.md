@@ -99,18 +99,18 @@ For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group1
 Supermarket-Billing-System/
 │
 ├── Admin/
-│   ├── CategoryManagement.{h,cpp}      ⏳ Muhammad Umar Khan
-│   ├── ProductManagement.{h,cpp}       ⏳ Farda Fatima
-│   ├── InventoryManagement.{h,cpp}     ⏳ Farda Fatima
-│   ├── SalesReport.{h,cpp}             ⏳ Mahnoor Aslam
-│   ├── ReturnRefund.{h,cpp}            ⏳ Muhammad Umar Khan
-│   └── UserManagement.{h,cpp}          ⏳ Areesha Khurram
+│   ├── CategoryManagement.{h,cpp}      🔄 Muhammad Umar Khan
+│   ├── ProductManagement.{h,cpp}       🔄 Farda Fatima
+│   ├── InventoryManagement.{h,cpp}     🔄 Farda Fatima
+│   ├── SalesReport.{h,cpp}             ✅ Mahnoor Aslam
+│   ├── ReturnRefund.{h,cpp}            🔄 Muhammad Umar Khan
+│   └── UserManagement.{h,cpp}          🔄 Areesha Khurram
 │
 ├── Cashier/
-│   ├── Billing.{h,cpp}                 ⏳ Areesha Khurram
-│   ├── Discount.{h,cpp}                ⏳ Muhammad Umar Khan
-│   ├── TransactionHistory.{h,cpp}      ⏳ Farda Fatima
-│   └── SearchFilter.{h,cpp}            ⏳ Areesha Khurram
+│   ├── Billing.{h,cpp}                 🔄 Areesha Khurram
+│   ├── Discount.{h,cpp}                🔄 Muhammad Umar Khan
+│   ├── TransactionHistory.{h,cpp}      🔄 Farda Fatima
+│   └── SearchFilter.{h,cpp}            🔄 Areesha Khurram
 │
 ├── Data/
 │   ├── products.txt
@@ -139,16 +139,16 @@ Supermarket-Billing-System/
 
 | # | Feature | Owner | Status |
 |---|---|---|---|
-| 1 | User Management | Areesha | ⏳ Pending |
-| 2 | Category Management | Umar | ⏳ Pending |
-| 3 | Product Management | Farda | ⏳ Pending |
-| 4 | Inventory & Stock Management | Farda | ⏳ Pending |
-| 5 | Return & Refund Management | Umar | ⏳ Pending |
-| 6 | Sales Report Generation | Mahnoor | ⏳ Pending |
-| 7 | Billing & Receipt Generation | Areesha | ⏳ Pending |
-| 8 | Discount & Coupon System | Umar | ⏳ Pending |
-| 9 | Transaction History | Farda | ⏳ Pending |
-| 10 | Search & Filter Products | Areesha | ⏳ Pending |
+| 1 | User Management | Areesha | 🔄 In Progress |
+| 2 | Category Management | Umar |  🔄 In Progress |
+| 3 | Product Management | Farda |  🔄 In Progress |
+| 4 | Inventory & Stock Management | Farda | 🔄 In Progress |
+| 5 | Return & Refund Management | Umar |  🔄 In Progress |
+| 6 | Sales Report Generation | Mahnoor | ✅ Done |
+| 7 | Billing & Receipt Generation | Areesha |  🔄 In Progress |
+| 8 | Discount & Coupon System | Umar |  🔄 In Progress |
+| 9 | Transaction History | Farda |  🔄 In Progress |
+| 10 | Search & Filter Products | Areesha |  🔄 In Progress |
 | — | GUI (WinForms) | Mahnoor | ⏳ Pending |
 | — | CAPTCHA Verification | Areesha | ⏳ Pending |
 | — | Password Strength Indicator | Areesha | ⏳ Pending |
