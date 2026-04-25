@@ -67,7 +67,7 @@ int CategoryManagement::nextAvailableID()
 void CategoryManagement::loadFromFile() 
 {
     ifstream file("Data/categories.txt");
-    if (!file.is_open()) return;   // file doesn't exist yet — empty collection is fine
+    if (!file.is_open()) return;   // file doesn't exist yet - empty collection is fine
 
     string line;
     while (getline(file, line)) 
@@ -77,9 +77,9 @@ void CategoryManagement::loadFromFile()
         Category c = Category::fromCSV(line);
         if (c.getID() == 0) continue;        // skip malformed entries (since ID = 0 indicate incorrect data)
 
-        if (count >= capacity) grow();       // grow the array if no. of categories exceeds the capacity  
-        categories[count] = c;               // add a new category
-        count++;                             // increase the count
+        if (count >= capacity) grow();       // grow the array if no. of categories exceeds the capacity and add 
+        categories[count] = c;               
+        count++;                             
     }
 
     file.close();
@@ -88,11 +88,12 @@ void CategoryManagement::loadFromFile()
 void CategoryManagement::saveToFile() 
 {
     ofstream file("Data/categories.txt");
-    if (!file.is_open()) return;               // silent fail — caller can't do much anyway
+    if (!file.is_open()) return;               
 
     for (int i = 0; i < count; i++) 
     {
-        file << categories[i].toCSV() << "\n"; // Write a category line (comma seperated) into Data/categories.txt
+        // Write a category line (comma separated) into Data/categories.txt
+        file << categories[i].toCSV() << "\n";
     }
 
     file.close();
@@ -113,13 +114,13 @@ void CategoryManagement::cleanup() // Static function replacing the destructor (
 bool CategoryManagement::addCategory(const string& name, const string& desc) 
 {
     int newID = nextAvailableID();
-    Category c(newID, "", "");
+    Category newCat(newID, "", "");
 
-    if (!c.setName(name) || !c.setDescription(desc))  // Return false if input is invalid
+    if (!newCat.setName(name) || !newCat.setDescription(desc))  // Return false if input is invalid
         return false;
 
     if (count >= capacity) grow();       
-    categories[count] = c;             
+    categories[count] = newCat;             
     count++;
 
     saveToFile(); // Append the new category at the end of Data/categories.txt
@@ -138,7 +139,7 @@ bool CategoryManagement::editCategory(int id, const string& newName, const strin
     if (!temp.setName(newName)) return false;
     if (!temp.setDescription(newDesc)) return false;
 
-    // Both edits succeeded — commit
+    // Both edits succeeded - commit
     categories[idx] = temp;
     saveToFile();
     return true;
@@ -166,7 +167,8 @@ bool CategoryManagement::deleteCategory(int id)
 
 void CategoryManagement::viewAll() 
 {
-    if (count == 0) {
+    if (count == 0) 
+    {
         cout << "\nNo categories to display.\n";
         return;
     }
@@ -175,7 +177,8 @@ void CategoryManagement::viewAll()
     cout << "| ID   | Name                   | Description                      |\n";
     cout << "+------+------------------------+----------------------------------+\n";
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) 
+    {
         cout << "| " << left << setw(5) << categories[i].getID()
             << "| " << setw(23) << categories[i].getName()
             << "| " << setw(33) << categories[i].getDescription()
@@ -188,7 +191,7 @@ void CategoryManagement::viewAll()
 Category CategoryManagement::findByID(int id) 
 {
     int idx = findIndexByID(id);
-    if (idx == -1) return Category();    // not found — returns default (id=0)
+    if (idx == -1) return Category();    // not found - returns default (id=0)
     return categories[idx];              // returns by value (copy)
 }
 
@@ -217,7 +220,7 @@ void CategoryManagement::showMenu()
         cout << "5. Back\n";
         cout << "Choice: ";
         cin >> choice;
-        cin.ignore();   // discard the newline left in the buffer after cin >> int
+        cin.ignore();
 
         switch (choice) 
         {

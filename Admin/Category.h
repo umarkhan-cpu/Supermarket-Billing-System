@@ -5,7 +5,8 @@
 using std::string;
 
 /*
- * Category — data class representing a single product category.
+ * Category - data class representing a single product category.
+ * Belongs to: Muhammad Umar Khan(lead)
  *
  * Responsibilities:
  *   - Hold the data for ONE category (id, name, description)
@@ -22,7 +23,7 @@ using std::string;
 class Category {
 
 private:
-    // ----- Attributes (encapsulated — accessed only through getters/setters) -----
+    // ----- Attributes (encapsulated - accessed only through getters/setters) -----
     int categoryID;
     string categoryName;
     string categoryDesc;
@@ -52,7 +53,7 @@ public:
     // Validation rules:
     //   - ID must be positive (> 0)
     //   - Name must not be empty and must not contain commas (CSV safety)
-    //   - Description must not contain commas (CSV safety) — may be empty
+    //   - Description must not contain commas (CSV safety) - may be empty
     bool setID(int id);
     bool setName(const string& name);
     bool setDescription(const string& desc);
@@ -64,8 +65,8 @@ public:
     string toCSV() const;
 
     // Parse a CSV line into a Category object.
-    // Static factory method — called as:  Category c = Category::fromCSV(line);
-    // If the line is malformed, returns a Category with ID = -1 as an error signal.
+    // Static factory method - called as:  Category c = Category::fromCSV(line);
+    // If the line is malformed, returns a Category with ID = 0 as an error signal.
     static Category fromCSV(const string& line);
 };
 

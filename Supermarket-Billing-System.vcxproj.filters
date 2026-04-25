@@ -16,6 +16,9 @@
     <Filter Include="Admin">
       <UniqueIdentifier>{5a7a0ea2-d3c6-435e-8f0b-acfcbef79029}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cashier">
+      <UniqueIdentifier>{a29fcf23-0fc4-42ba-8dd1-fb5802e3cac3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,6 +30,12 @@
     <ClCompile Include="Admin\CategoryManagement.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
+    <ClCompile Include="Cashier\Discount.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\DiscountManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Category.h">
@@ -34,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="Admin\CategoryManagement.h">
       <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Discount.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\DiscountManagement.h">
+      <Filter>Cashier</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

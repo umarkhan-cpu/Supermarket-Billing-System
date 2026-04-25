@@ -6,7 +6,8 @@
 using std::string;
 
 /*
- * CategoryManagement — static manager class for the Category collection.
+ * CategoryManagement - static manager class for the Category collection.
+ * Belongs to: Muhammad Umar Khan(lead)
  *
  * Responsibilities:
  *   - Owns the in-memory dynamic array of all loaded Category objects
@@ -65,7 +66,7 @@ public:
     // to release memory explicitly.
     static void cleanup();
 
-    // ----- CRUD operations (pure data — no prompts, no output) -----
+    // ----- CRUD operations (pure data - no prompts, no output) -----
 
     // Creates a new Category with the given name and description and adds
     // it to the collection. The ID is auto-assigned. Returns false if the
@@ -97,7 +98,7 @@ public:
 
     // Interactive menu: prompts for user input and dispatches to the CRUD
     // methods. Loops until the user chooses "Back". Console-only; the GUI
-    // will not call this — it will call the CRUD methods directly.
+    // will not call this - it will call the CRUD methods directly.
     static void showMenu();
 };
 
