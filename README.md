@@ -99,7 +99,7 @@ For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group1
 Supermarket-Billing-System/
 │
 ├── Admin/
-│   ├── CategoryManagement.{h,cpp}      🔄 Muhammad Umar Khan
+│   ├── CategoryManagement.{h,cpp}      ✅ Muhammad Umar Khan
 │   ├── ProductManagement.{h,cpp}       🔄 Farda Fatima
 │   ├── InventoryManagement.{h,cpp}     🔄 Farda Fatima
 │   ├── SalesReport.{h,cpp}             ✅ Mahnoor Aslam
@@ -140,7 +140,7 @@ Supermarket-Billing-System/
 | # | Feature | Owner | Status |
 |---|---|---|---|
 | 1 | User Management | Areesha | 🔄 In Progress |
-| 2 | Category Management | Umar |  🔄 In Progress |
+| 2 | Category Management | Umar |  ✅ Done |
 | 3 | Product Management | Farda |  🔄 In Progress |
 | 4 | Inventory & Stock Management | Farda | 🔄 In Progress |
 | 5 | Return & Refund Management | Umar |  🔄 In Progress |
