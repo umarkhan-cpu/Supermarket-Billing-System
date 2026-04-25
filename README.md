@@ -104,13 +104,17 @@ Supermarket-Billing-System/
 │   ├── InventoryManagement.{h,cpp}     🔄 Farda Fatima
 │   ├── SalesReport.{h,cpp}             ✅ Mahnoor Aslam
 │   ├── ReturnRefund.{h,cpp}            🔄 Muhammad Umar Khan
-│   └── UserManagement.{h,cpp}          🔄 Areesha Khurram
+│   └── UserManagement.{h,cpp}          ✅ Areesha Khurram
 │
 ├── Cashier/
 │   ├── Billing.{h,cpp}                 🔄 Areesha Khurram
-│   ├── Discount.{h,cpp}                🔄 Muhammad Umar Khan
+│   ├── Discount.{h,cpp}                ✅ Muhammad Umar Khan
 │   ├── TransactionHistory.{h,cpp}      🔄 Farda Fatima
 │   └── SearchFilter.{h,cpp}            🔄 Areesha Khurram
+|
+|── Common/
+│   ├── SessionManager.{h,cpp}          🔄 Muhammad Umar Khan
+│   └── Settings.{h,cpp}                ⏳ Farda Fatima
 │
 ├── Data/
 │   ├── products.txt
@@ -139,19 +143,19 @@ Supermarket-Billing-System/
 
 | # | Feature | Owner | Status |
 |---|---|---|---|
-| 1 | User Management | Areesha | 🔄 In Progress |
+| 1 | User Management | Areesha | ✅ Done |
 | 2 | Category Management | Umar |  ✅ Done |
 | 3 | Product Management | Farda |  🔄 In Progress |
 | 4 | Inventory & Stock Management | Farda | 🔄 In Progress |
 | 5 | Return & Refund Management | Umar |  🔄 In Progress |
 | 6 | Sales Report Generation | Mahnoor | ✅ Done |
 | 7 | Billing & Receipt Generation | Areesha |  🔄 In Progress |
-| 8 | Discount & Coupon System | Umar |  🔄 In Progress |
+| 8 | Discount & Coupon System | Umar |  ✅ Done |
 | 9 | Transaction History | Farda |  🔄 In Progress |
 | 10 | Search & Filter Products | Areesha |  🔄 In Progress |
 | — | GUI (WinForms) | Mahnoor | ⏳ Pending |
 | — | CAPTCHA Verification | Areesha | ⏳ Pending |
-| — | Password Strength Indicator | Areesha | ⏳ Pending |
+| — | Password Strength Indicator | Areesha | ✅ Done |
 | — | Dark / Light Mode | Farda | ⏳ Pending |
 | — | Session Timeout | Umar | ⏳ Pending |
 
@@ -220,8 +224,8 @@ The project follows a **console-first** approach, with GUI integration planned a
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 | Foundation — file formats, base classes, main menu | 🔄 In Progress |
-| Phase 2 | Console development — all 10 features working | ⏳ Pending |
-| Phase 3 | GUI integration on top of console logic | ⏳ Pending |
+| Phase 2 | Test all 10 features working | ⏳ Pending |
+| Phase 3 | GUI integration | ⏳ Pending |
 | Phase 4 | Final testing, GitHub cleanup, LinkedIn posts | ⏳ Pending |
 
 ---
