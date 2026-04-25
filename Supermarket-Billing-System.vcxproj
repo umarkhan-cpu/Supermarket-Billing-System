@@ -124,10 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Admin\Category.cpp" />
+    <ClCompile Include="Admin\CategoryManagement.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Category.h" />
+    <ClInclude Include="Admin\CategoryManagement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
