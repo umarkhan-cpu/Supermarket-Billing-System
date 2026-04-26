@@ -131,6 +131,7 @@
     <ClCompile Include="Cashier\DiscountManagement.cpp" />
     <ClCompile Include="Cashier\Refund.cpp" />
     <ClCompile Include="Cashier\RefundManagement.cpp" />
+    <ClCompile Include="Common\SessionManager.cpp" />
     <ClCompile Include="Common\User.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="Cashier\DiscountManagement.h" />
     <ClInclude Include="Cashier\Refund.h" />
     <ClInclude Include="Cashier\RefundManagement.h" />
+    <ClInclude Include="Common\SessionManager.h" />
     <ClInclude Include="Common\User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
