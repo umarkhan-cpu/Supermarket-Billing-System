@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FIlterAndSearch.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UserManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FIlterAndSearch.h" />
     <ClInclude Include="UserManagement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
