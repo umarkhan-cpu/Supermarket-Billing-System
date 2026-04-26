@@ -4,9 +4,18 @@
 #include <string>
 using namespace std;
 
-Record::Record() {
+Record::Record(int maxP, int maxC) {
+    maxProducts = maxP;
+    maxCategories = maxC;
+    products = new Product[maxProducts];
+    categories = new Category[maxCategories];
     productCount = 0;
     categoryCount = 0;
+}
+
+Record::~Record() {
+    delete[] products;
+    delete[] categories;
 }
 
 void Record::loadCategories() {
@@ -26,7 +35,7 @@ void Record::loadCategories() {
         if (line == "") {
             continue;
         }
-        if (categoryCount >= CATEGORIES) {
+        if (categoryCount >= maxCategories) {
             break;
         }
 
@@ -63,7 +72,7 @@ void Record::loadProducts() {
         if (line == "") {
             continue;
         }
-        if (productCount >= PRODUCTS) {
+        if (productCount >= maxProducts) {
             break;
         }
 
@@ -101,7 +110,6 @@ int Record::getProductCount() {
 Product Record::getProduct(int index) {
     return products[index];
 }
-//
 
 SearchFilter::SearchFilter(Record* r) {
     record = r;
@@ -151,3 +159,4 @@ void SearchFilter::inStock() {
         }
     }
 }
+
