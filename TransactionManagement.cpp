@@ -88,15 +88,19 @@ void TransactionManagement::saveToFile() {
 
 // load  from file
 void TransactionManagement::loadFromFile() {
-
     ifstream in("transactions.txt");
 
     if (!in) return;
 
     Transaction t;
 
-    while (in >> ws, in.peek() != EOF) {
+    while (true) {
+
         t.load(in);
+
+        if (!in) 
+            break;   // stop if file ends or read fails
+        
         addTransaction(t);
     }
 
