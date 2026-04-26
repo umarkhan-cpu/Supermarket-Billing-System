@@ -1,8 +1,9 @@
 #include "Product.h"
+#include<iostream>
 #include<string>
 
 // Product setup
-void Product::setProduct(int PID, string n, int CID, float p, int s) {
+void Product::setProduct(int PID,std::string n, int CID, float p, int s) {
 	ProductID = PID;
 	name = n;
 	CategoryID = CID;
@@ -10,27 +11,17 @@ void Product::setProduct(int PID, string n, int CID, float p, int s) {
 	stock = s;
 }
 
-int Product::getPID() { return ProductID; }
-int Product::getstock() { return stock; }
+int Product::getPID() const { return ProductID; }
+int Product::getstock() const { return stock; }
 
 // Add and remove stocks 
 void Product::addstock(int quantity) { stock += quantity; }
 void Product::removestock(int quantity) { stock -= quantity; }
 
-// Edit stock
-void Product::edit() {
-	cout << "New Name:\n";
-	cin >> name;
-	cout << "New Category ID: \n";
-	cin >> CategoryID;
-	cout << "New Price:\n";
-	cin >> price;
-	cout << "New stock:\n";
-	cin >> stock;
-}
+
 
 // Save
-void Product::save(ofstream& out) {
+void Product::save(std::ofstream& out) {
 	out << ProductID << " "
 		<< name << " "
 		<< CategoryID << " "
@@ -39,13 +30,21 @@ void Product::save(ofstream& out) {
 }
 
 // Load
-void Product::load(ifstream& in) {
+void Product::load(std::ifstream& in) {
 	in >> ProductID >> name >> CategoryID >> price >> stock;
 }
 
 // Show
 void Product::show() {
-	cout << ProductID << "|" << name << "|"
+	std::cout << ProductID << "|" << name << "|"
 		<< CategoryID << "|" << price << "|"
-		<< "|" << stock << endl;
+		<< "|" << stock << std::endl;
 }
+
+//new setters
+
+void Product::setName(std::string n) { name = n; }
+void Product::setCID(int c) { CategoryID = c; }
+void Product::setPrice(float p) { price = p; }
+void Product::setStock(int s) { stock = s; }
+

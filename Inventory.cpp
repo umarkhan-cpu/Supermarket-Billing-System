@@ -1,8 +1,7 @@
 #include "Inventory.h"
-#include<iostream>
+#include <iostream>
 #include<fstream>
 #include<string>
-using namespace std;
 
 Inventory::Inventory() {
 	products = NULL;
@@ -11,7 +10,7 @@ Inventory::Inventory() {
 }
 
 // Add product
-void Inventory::addproduct(int id, string name, int CID, float price, int stock) {
+void Inventory::addproduct(int id,std::string name, int CID, float price, int stock) {
 	Product* temp = new Product[totalItems + 1];
 	for (int i = 0; i < totalItems; i++) {
 		temp[i] = products[i];
@@ -48,7 +47,7 @@ void Inventory::deleteProduct(int id) {
 
 // View all
 void Inventory::viewAll() {
-	cout << "\n-------INVENTORY---------\n";
+	std::cout << "\n-------INVENTORY---------\n";
 	for (int i = 0; i < totalItems; i++) {
 		products[i].show();
 	}
@@ -72,7 +71,7 @@ void Inventory::removestock(int id, int quantity) {
 }
 
 void Inventory::checklowstock() {
-	cout << "\n----Low Stock Itmes-----\n";
+	std::cout << "\n----Low Stock Itmes-----\n";
 	for (int i = 0; i < totalItems; i++) {
 		if (products[i].getstock() <= lowStocklimit) {
 			products[i].show();
@@ -82,7 +81,7 @@ void Inventory::checklowstock() {
 
 // Save to file
 void Inventory::savetoFile() {
-	ofstream out("products.txt");
+	std::ofstream out("products.txt");
 
 	for (int i = 0; i < totalItems; i++) {
 		products[i].save(out);
@@ -92,10 +91,16 @@ void Inventory::savetoFile() {
 
 // Load from file
 void Inventory::loadfromfile() {
-	ifstream in("products.txt");
+	std::ifstream in("products.txt");
+
+	// clear old data first
+	delete[] products;
+	products = NULL;
+	totalItems = 0;
+
 	int id, CID, stock;
 	float price;
-	string name;
+	std::string name;
 
 	while (in >> id >> name >> CID >> price >> stock) {
 		addproduct(id, name, CID, price, stock);
@@ -103,7 +108,21 @@ void Inventory::loadfromfile() {
 	in.close();
 }
 
+bool Inventory::editProduct(int id, std::string newName, int newCID, float newPrice, int newStock) {
+	for (int i = 0; i < totalItems; i++) {
+		if (products[i].getPID() == id) {
+			products[i].setName(newName);
+			products[i].setCID(newCID);
+			products[i].setPrice(newPrice);
+			products[i].setStock(newStock);
+			return true;
+		}
+	}
+	return false;
+}
+
 // Destructor
 Inventory::~Inventory() {
 	delete[] products;
+	products = NULL;
 }

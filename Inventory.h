@@ -3,7 +3,7 @@
 
 #include "Product.h"
 #include<string>
-using namespace std;
+
 
 class Inventory {
 private:
@@ -14,7 +14,7 @@ private:
 public:
 	Inventory();
 
-	void addproduct(int id, string name, int CID, float price, int stock);
+	void addproduct(int id,std:: string name, int CID, float price, int stock);
 	void deleteProduct(int id);
 	void viewAll();
 
@@ -24,6 +24,8 @@ public:
 
 	void savetoFile();
 	void loadfromfile();
+
+	bool editProduct(int id, std::string newName, int newCID, float newPrice, int newStock);
 
 	~Inventory();
 };

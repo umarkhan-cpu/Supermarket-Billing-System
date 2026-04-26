@@ -5,29 +5,33 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-using namespace std;
+
 
 class Product {
 private:
 	int ProductID;
-	string name;
+	std::string name;
 	int CategoryID;
 	float price;
 	int stock;
 
 public:
-	void setProduct(int PID, string n, int CID, float p, int s);
-	int getPID();
-	int getstock();
+	void setProduct(int PID, std::string n, int CID, float p, int s);
+	int getPID() const;
+	int getstock() const;
 
 	void addstock(int quantity);
 	void removestock(int quantity);
 
-	void edit();
 
-	void save(ofstream& out);
-	void load(ifstream& in);
+	void save(std::ofstream& out);
+	void load(std::ifstream& in);
 	void show();
+
+	void setName(std::string n);
+	void setCID(int c);
+	void setPrice(float p);
+	void setStock(int s);
 };
 
 #endif
