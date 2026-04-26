@@ -7,7 +7,7 @@ using std::string;
 
 /*
  * DiscountManagement - static manager class for the Discount collection.
- * Belongs to: Muhammad Umar Khan(lead)
+ * Belongs to: Muhammad Umar Khan (lead)
  *
  * Responsibilities:
  *   - Owns the in-memory dynamic array of all loaded Discount objects

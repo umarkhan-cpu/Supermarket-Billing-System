@@ -6,7 +6,7 @@ using std::string;
 
 /*
  * Discount - data class representing a single coupon/discount.
- * Belongs to: Muhammad Umar Khan(lead)
+ * Belongs to: Muhammad Umar Khan (lead)
  *
  * Responsibilities:
  *   - Hold the data for ONE discount (id, code, type, value, isActive)

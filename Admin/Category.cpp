@@ -84,7 +84,8 @@ bool Category::setDescription(const string& desc)
 
 string Category::toCSV() const
 {
-    return to_string(categoryID) + "," + categoryName + "," + categoryDesc;
+    string line = to_string(categoryID) + "," + categoryName + "," + categoryDesc;
+    return line;
 }
 
 // If the line is malformed, returns a default Category (ID = 0) instead of

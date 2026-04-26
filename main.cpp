@@ -1,98 +1,82 @@
 #include <iostream>
-#include "Cashier/Discount.h"
-#include "Cashier/DiscountManagement.h"
+#include "Cashier/Refund.h"
+#include "Cashier/RefundManagement.h"
 using namespace std;
 
 int main() {
-    cout << "===== DiscountManagement Test =====\n\n";
+    cout << "===== RefundManagement Test =====\n\n";
 
     // --- Test 1: Load from file ---
     cout << "Loading from file...\n";
-    DiscountManagement::loadFromFile();
-    cout << "Loaded " << DiscountManagement::getCount() << " coupons.\n\n";
+    RefundManagement::loadFromFile();
+    cout << "Loaded " << RefundManagement::getCount() << " refunds.\n\n";
 
-    // --- Test 2: Add valid coupons ---
-    cout << "Adding coupons:\n";
-    cout << "  SAVE20 (20% off):     "
-        << (DiscountManagement::addCoupon("SAVE20", "PERCENTAGE", 20) ? "OK" : "FAILED") << "\n";
-    cout << "  FLAT50 (Rs. 50 off):  "
-        << (DiscountManagement::addCoupon("FLAT50", "FIXED", 50) ? "OK" : "FAILED") << "\n";
-    cout << "  HALFOFF (50% off):    "
-        << (DiscountManagement::addCoupon("HALFOFF", "PERCENTAGE", 50) ? "OK" : "FAILED") << "\n\n";
+    // --- Test 2: Create valid refunds ---
+    cout << "Creating refunds:\n";
+    cout << "  Txn 42, 'Damaged item', Rs. 250:        "
+        << (RefundManagement::createRefund(42, "Damaged item", 250) ? "OK" : "FAILED") << "\n";
+    cout << "  Txn 17, 'Wrong size', Rs. 1500:         "
+        << (RefundManagement::createRefund(17, "Wrong size", 1500) ? "OK" : "FAILED") << "\n";
+    cout << "  Txn 42, 'Defective again', Rs. 100:     "
+        << (RefundManagement::createRefund(42, "Defective again", 100) ? "OK" : "FAILED") << "\n\n";
 
-    // --- Test 3: Add invalid coupons (should all fail) ---
-    cout << "Adding invalid coupons (all should FAIL):\n";
-    cout << "  Duplicate code SAVE20:        "
-        << (DiscountManagement::addCoupon("SAVE20", "FIXED", 30) ? "OK" : "FAILED (expected)") << "\n";
-    cout << "  Invalid type FOOBAR:          "
-        << (DiscountManagement::addCoupon("BAD1", "FOOBAR", 10) ? "OK" : "FAILED (expected)") << "\n";
-    cout << "  Negative value:               "
-        << (DiscountManagement::addCoupon("BAD2", "FIXED", -5) ? "OK" : "FAILED (expected)") << "\n";
-    cout << "  Percentage > 100:             "
-        << (DiscountManagement::addCoupon("BAD3", "PERCENTAGE", 150) ? "OK" : "FAILED (expected)") << "\n";
-    cout << "  Code with space:              "
-        << (DiscountManagement::addCoupon("BAD CODE", "FIXED", 10) ? "OK" : "FAILED (expected)") << "\n";
-    cout << "  Empty code:                   "
-        << (DiscountManagement::addCoupon("", "FIXED", 10) ? "OK" : "FAILED (expected)") << "\n\n";
+    // --- Test 3: Invalid refunds (all should fail) ---
+    cout << "Creating invalid refunds (all should FAIL):\n";
+    cout << "  Negative txnID:                  "
+        << (RefundManagement::createRefund(-5, "Test", 100) ? "OK" : "FAILED (expected)") << "\n";
+    cout << "  Zero txnID:                      "
+        << (RefundManagement::createRefund(0, "Test", 100) ? "OK" : "FAILED (expected)") << "\n";
+    cout << "  Empty reason:                    "
+        << (RefundManagement::createRefund(50, "", 100) ? "OK" : "FAILED (expected)") << "\n";
+    cout << "  Reason with comma:               "
+        << (RefundManagement::createRefund(51, "Bad,Reason", 100) ? "OK" : "FAILED (expected)") << "\n";
+    cout << "  Negative amount:                 "
+        << (RefundManagement::createRefund(52, "Test", -50) ? "OK" : "FAILED (expected)") << "\n";
+    cout << "  Zero amount:                     "
+        << (RefundManagement::createRefund(53, "Test", 0) ? "OK" : "FAILED (expected)") << "\n\n";
 
     // --- Test 4: View all ---
-    DiscountManagement::viewAll();
+    cout << "After valid creates, count = " << RefundManagement::getCount()
+        << " (expected 3)\n";
+    RefundManagement::viewAll();
 
-    // --- Test 5: applyCoupon — the integration contract ---
-    cout << "\nApplying coupons to a Rs. 1000 subtotal:\n";
-    cout << "  SAVE20 (20%):    discount = Rs. " << DiscountManagement::applyCoupon("SAVE20", 1000)
-        << " (expected 200)\n";
-    cout << "  FLAT50 (Rs. 50): discount = Rs. " << DiscountManagement::applyCoupon("FLAT50", 1000)
-        << " (expected 50)\n";
-    cout << "  HALFOFF (50%):   discount = Rs. " << DiscountManagement::applyCoupon("HALFOFF", 1000)
-        << " (expected 500)\n";
+    // --- Test 5: viewByTransactionID ---
+    cout << "\nRefunds for transaction 42 (expected 2 rows):";
+    RefundManagement::viewByTransactionID(42);
 
-    cout << "\nApplying coupons to a Rs. 30 subtotal:\n";
-    cout << "  FLAT50 on Rs. 30 bill: discount = Rs. " << DiscountManagement::applyCoupon("FLAT50", 30)
-        << " (expected 30 — capped, not 50)\n";
+    cout << "\nRefunds for transaction 17 (expected 1 row):";
+    RefundManagement::viewByTransactionID(17);
 
-    cout << "\nApplying invalid codes:\n";
-    cout << "  Nonexistent code:        " << DiscountManagement::applyCoupon("NOPE", 1000)
-        << " (expected 0)\n";
+    cout << "\nRefunds for transaction 999 (expected: none):\n";
+    RefundManagement::viewByTransactionID(999);
 
-    // --- Test 6: setActive — deactivate then reapply ---
-    cout << "\nDeactivating SAVE20 (ID 1):\n";
-    cout << "  Result: " << (DiscountManagement::setActive(1, false) ? "OK" : "FAILED") << "\n";
-    cout << "  Apply SAVE20 after deactivation: " << DiscountManagement::applyCoupon("SAVE20", 1000)
-        << " (expected 0)\n";
+    // --- Test 6: findByID ---
+    cout << "\nfindByID tests:\n";
+    Refund r1 = RefundManagement::findByID(1);
+    cout << "  ID 1: txnID=" << r1.getTransactionID()
+        << ", reason='" << r1.getReason()
+        << "', amount=" << r1.getAmount()
+        << ", date=" << r1.getDate() << "\n";
 
-    cout << "\nReactivating SAVE20:\n";
-    cout << "  Result: " << (DiscountManagement::setActive(1, true) ? "OK" : "FAILED") << "\n";
-    cout << "  Apply SAVE20 after reactivation: " << DiscountManagement::applyCoupon("SAVE20", 1000)
-        << " (expected 200)\n";
+    Refund r999 = RefundManagement::findByID(999);
+    cout << "  ID 999: getID() = " << r999.getID() << " (expected 0 — not found)\n";
 
-    // --- Test 7: Edit coupon ---
-    cout << "\nEditing SAVE20 (ID 1) -> 25% off:\n";
-    cout << "  Result: " << (DiscountManagement::editCoupon(1, "PERCENTAGE", 25) ? "OK" : "FAILED") << "\n";
-    cout << "  Apply SAVE20 after edit: " << DiscountManagement::applyCoupon("SAVE20", 1000)
-        << " (expected 250)\n";
-    cout << "  Edit nonexistent ID 999 (should fail): "
-        << (DiscountManagement::editCoupon(999, "FIXED", 100) ? "OK" : "FAILED (expected)") << "\n";
+    // --- Test 7: ID continuity (no reuse, even after the file persists) ---
+    cout << "\nAdding another refund - should get next sequential ID:\n";
+    RefundManagement::createRefund(100, "Test continuity", 50);
+    cout << "  Latest refund's ID: " << RefundManagement::findByID(4).getID()
+        << " (expected 4)\n";
 
-    DiscountManagement::viewAll();
+    // --- Test 8: Today's date stamping ---
+    cout << "\nDate on most recent refund: "
+        << RefundManagement::findByID(4).getDate()
+        << " (should be today's actual date)\n";
 
-    // --- Test 8: Delete ---
-    cout << "\nDeleting ID 2 (FLAT50):\n";
-    cout << "  Result: " << (DiscountManagement::deleteCoupon(2) ? "OK" : "FAILED") << "\n";
-    cout << "  Apply FLAT50 after delete: " << DiscountManagement::applyCoupon("FLAT50", 1000)
-        << " (expected 0)\n";
-
-    DiscountManagement::viewAll();
-
-    // --- Test 9: ID continuity after delete ---
-    cout << "\nAdding new coupon NEWCODE after delete (should get fresh ID, not reuse 2):\n";
-    DiscountManagement::addCoupon("NEWCODE", "FIXED", 75);
-    DiscountManagement::viewAll();
-
-    // --- Test 10: cleanup ---
+    // --- Test 9: Cleanup ---
     cout << "\nCleaning up...\n";
-    DiscountManagement::cleanup();
-    cout << "Count after cleanup: " << DiscountManagement::getCount() << " (expected 0)\n";
+    RefundManagement::cleanup();
+    cout << "Count after cleanup: " << RefundManagement::getCount()
+        << " (expected 0)\n";
 
     cout << "\n===== All tests complete =====\n";
     return 0;

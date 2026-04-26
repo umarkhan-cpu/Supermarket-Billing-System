@@ -6,7 +6,7 @@ using std::string;
 
 /*
  * Category - data class representing a single product category.
- * Belongs to: Muhammad Umar Khan(lead)
+ * Belongs to: Muhammad Umar Khan (lead)
  *
  * Responsibilities:
  *   - Hold the data for ONE category (id, name, description)
@@ -31,16 +31,8 @@ private:
 public:
     // ----- Constructors -----
 
-    // Default constructor: used when we need an "empty" Category
-    // (e.g., when loading from file one by one)
     Category();
-
-    // Parameterized constructor: used when we have all the data ready
     Category(int id, const string& name, const string& desc);
-
-    // Copy constructor: used when we copy one Category to another
-    // (e.g., when resizing the dynamic array in CategoryManagement).
-    // Required because we'll be managing Category objects in a dynamic array.
     Category(const Category& other);
 
     // ----- Getters (read access) -----

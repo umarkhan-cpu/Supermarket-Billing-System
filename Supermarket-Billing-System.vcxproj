@@ -127,6 +127,8 @@
     <ClCompile Include="Admin\CategoryManagement.cpp" />
     <ClCompile Include="Cashier\Discount.cpp" />
     <ClCompile Include="Cashier\DiscountManagement.cpp" />
+    <ClCompile Include="Cashier\Refund.cpp" />
+    <ClCompile Include="Cashier\RefundManagement.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +136,8 @@
     <ClInclude Include="Admin\CategoryManagement.h" />
     <ClInclude Include="Cashier\Discount.h" />
     <ClInclude Include="Cashier\DiscountManagement.h" />
+    <ClInclude Include="Cashier\Refund.h" />
+    <ClInclude Include="Cashier\RefundManagement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

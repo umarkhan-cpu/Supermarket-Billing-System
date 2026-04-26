@@ -192,7 +192,7 @@ Category CategoryManagement::findByID(int id)
 {
     int idx = findIndexByID(id);
     if (idx == -1) return Category();    // not found - returns default (id=0)
-    return categories[idx];              // returns by value (copy)
+    return categories[idx];             
 }
 
 int CategoryManagement::getCount() 

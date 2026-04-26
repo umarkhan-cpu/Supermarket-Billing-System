@@ -7,7 +7,7 @@ using std::string;
 
 /*
  * CategoryManagement - static manager class for the Category collection.
- * Belongs to: Muhammad Umar Khan(lead)
+ * Belongs to: Muhammad Umar Khan (lead)
  *
  * Responsibilities:
  *   - Owns the in-memory dynamic array of all loaded Category objects

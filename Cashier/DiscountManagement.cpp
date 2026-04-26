@@ -88,8 +88,7 @@ void DiscountManagement::loadFromFile()
         if (d.getID() == 0)
             continue; // skip malformed entries (since ID = 0 indicate incorrect data)
 
-        if (count >= capacity)
-            grow(); // grow the array if no. of discounts exceeds the capacity and add
+        if (count >= capacity) grow(); // grow the array if no. of discounts exceeds the capacity and add
         discounts[count] = d;
         count++;
     }
@@ -243,9 +242,8 @@ void DiscountManagement::viewAll()
 Discount DiscountManagement::findByID(int id)
 {
     int idx = findIndexByID(id);
-    if (idx == -1)
-        return Discount(); // not found — returns default (id=0)
-    return discounts[idx]; // returns by value (copy)
+    if (idx == -1) return Discount(); // not found — returns default (id=0)
+    return discounts[idx]; 
 }
 
 int DiscountManagement::getCount()

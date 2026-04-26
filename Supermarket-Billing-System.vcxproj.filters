@@ -36,6 +36,12 @@
     <ClCompile Include="Cashier\DiscountManagement.cpp">
       <Filter>Cashier</Filter>
     </ClCompile>
+    <ClCompile Include="Cashier\Refund.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\RefundManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Category.h">
@@ -48,6 +54,12 @@
       <Filter>Cashier</Filter>
     </ClInclude>
     <ClInclude Include="Cashier\DiscountManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Refund.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\RefundManagement.h">
       <Filter>Cashier</Filter>
     </ClInclude>
   </ItemGroup>
