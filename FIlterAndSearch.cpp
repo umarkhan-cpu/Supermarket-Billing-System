@@ -39,18 +39,18 @@ void Record::loadCategories() {
             break;
         }
 
-        while (i < line.length() && line[i] != ',') {
+        while (i < line.length() && line[i] != ',') { //gets the id from category file 
             id += line[i];
             i++;
         }
         i++;
 
-        while (i < line.length()) {
+        while (i < line.length()) { //gets the name from categoryfile
             name += line[i];
             i++;
         }
 
-        categories[categoryCount].setData(stoi(id), name);
+        categories[categoryCount].setData(stoi(id), name); //categories array added an object of category in it
         categoryCount++;
     }
     file.close();
@@ -61,7 +61,7 @@ void Record::loadProducts() {
     ifstream file("products.txt");
 
     if (!file) {
-        cout << "Error opening products file\n";
+        cout << "Error opening products file" << endl;
         return;
     }
 
@@ -79,7 +79,7 @@ void Record::loadProducts() {
         string parts[5] = { "", "", "", "", "" };
         int p = 0;
 
-        for (int i = 0; i < line.length(); i++) {
+        for (int i = 0; i < line.length(); i++) { //stores all manually
             if (line[i] == ',') {
                 p++;
             }
@@ -87,8 +87,8 @@ void Record::loadProducts() {
                 parts[p] += line[i];
             }
         }
-
-        products[productCount].setProduct(stoi(parts[0]), parts[1], stoi(parts[2]), stof(parts[3]), stoi(parts[4]));
+        //stoi converts string to an integer
+        products[productCount].setProduct(stoi(parts[0]), parts[1], stoi(parts[2]), stof(parts[3]), stoi(parts[4])); //adds an of products in the arra
         productCount++;
     }
     file.close();
@@ -96,8 +96,8 @@ void Record::loadProducts() {
 
 string Record::getCategoryName(int id) {
     for (int i = 0; i < categoryCount; i++) {
-        if (categories[i].getID() == id) {
-            return categories[i].getName();
+        if (categories[i].getID() == id) { 
+            return categories[i].getName(); //returns name of category that matches id
         }
     }
     return "Unknown";
@@ -117,8 +117,8 @@ SearchFilter::SearchFilter(Record* r) {
 
 void SearchFilter::showAll() {
     for (int i = 0; i < record->getProductCount(); i++) {
-        Product p = record->getProduct(i);
-        p.display(record->getCategoryName(p.getCategoryId()));
+        Product p = record->getProduct(i); //loads the product
+        p.display(record->getCategoryName(p.getCategoryId())); //calls category name and them displays the product 
     }
 }
 
@@ -127,7 +127,7 @@ void SearchFilter::searchByName(string name) {
 
     for (int i = 0; i < record->getProductCount(); i++) {
         Product p = record->getProduct(i);
-        if (p.getName().find(name) != string::npos) {
+        if (p.getName().find(name) != string::npos) { //.find will either return true or npos if name is not found
             p.display(record->getCategoryName(p.getCategoryId()));
         }
     }
