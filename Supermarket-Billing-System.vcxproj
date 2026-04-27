@@ -124,12 +124,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FIlterAndSearch.cpp" />
+    <ClCompile Include="Admin\Category.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UserManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FIlterAndSearch.h" />
     <ClInclude Include="UserManagement.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Admin\Category.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
