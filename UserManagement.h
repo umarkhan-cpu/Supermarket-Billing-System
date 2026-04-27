@@ -27,6 +27,7 @@ public:
     void signup(string role);
     bool login();
     void deleteAccount();
+    void menu();
 };
 
 #endif

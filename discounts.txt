@@ -1,0 +1,2 @@
+1 SAVE10 percent 10 1
+2 FLAT100 flat 100 1

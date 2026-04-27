@@ -155,7 +155,7 @@ void UserManagement::deleteAccount() {
 
     ifstream inFile(dataFile);
     ofstream tempFile(tempFileName);
-    
+
     while (getline(inFile, fuser, ',')) {
         getline(inFile, fpass, ',');
         getline(inFile, frole);
@@ -173,8 +173,74 @@ void UserManagement::deleteAccount() {
     remove(dataFile.c_str()); //deletes the old file
     rename(tempFileName.c_str(), dataFile.c_str()); //renames the temp file with the new one
 
-    if (found)
+    if (found) {
         cout << "Account deleted successfully!" << endl;
-    else
+    }
+    else {
         cout << "User not found!" << endl;
+    }
 }
+
+void UserManagement::menu() {
+    int choice;
+
+    do {
+        cout << "~~USER MANAGEMENT MENU~~";
+        cout << "1. Sign Up" << endl;
+        cout << "2. Login" << endl;
+        cout << "3. Delete Account" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter choice: " << endl;
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            string role;
+            cout << "Enter role (Admin/Cashier): ";
+            cin >> role;
+            signup(role);
+            break;
+        }
+
+        case 2: {
+            if (login()) {
+                int innerChoice;
+
+                do {
+                    cout << "~~Log in Page~~" << endl;
+                    cout << "1. Delete Account" << endl;
+                    cout << "2. Logout" << endl;
+                    cout << "Enter choice: ";
+                    cin >> innerChoice;
+
+                    if (innerChoice == 1) {
+                        deleteAccount();
+                        break; 
+                    }
+
+                } while (innerChoice != 2);
+            }
+            break;
+        }
+
+        case 3: {
+            cout << "Enter username: ";
+            cin >> username;
+            cout << "Enter password: ";
+            cin >> password;
+
+            deleteAccount();
+            break;
+        }
+
+        case 4:
+            cout << "Exiting..." << endl;;
+            break;
+
+        default:
+            cout << "Invalid choice!" << endl;;
+        }
+
+    } while (choice != 4);
+}
+
