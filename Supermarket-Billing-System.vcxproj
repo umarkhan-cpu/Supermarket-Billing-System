@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Admin\Category.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SalesReport.cpp" />
   </ItemGroup>
@@ -131,6 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SalesReport.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Admin\Category.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
