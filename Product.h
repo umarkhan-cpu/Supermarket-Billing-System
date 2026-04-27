@@ -1,37 +1,46 @@
-
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include<iostream>
-#include<fstream>
-#include<string>
-
+#include <string>
+#include <fstream>
 
 class Product {
 private:
-	int ProductID;
-	std::string name;
-	int CategoryID;
-	float price;
-	int stock;
+    int id;
+    std::string name;
+    int categoryID;
+    float price;
+    int stock;
 
 public:
-	void setProduct(int PID, std::string n, int CID, float p, int s);
-	int getPID() const;
-	int getstock() const;
+    // Default constructor 
 
-	void addstock(int quantity);
-	void removestock(int quantity);
+    Product();
 
+    // constructor for product 
+    Product(int id, const std::string& name, int categoryID, float price, int stock);
 
-	void save(std::ofstream& out);
-	void load(std::ifstream& in);
-	void show();
+    //           Getters 
+    int         getID()         const;
+    std::string getName()       const;
+    int         getCategoryID() const;
+    float       getPrice()      const;
+    int         getStock()      const;
 
-	void setName(std::string n);
-	void setCID(int c);
-	void setPrice(float p);
-	void setStock(int s);
+    //                  Setters
+    bool setName(const std::string& name);   // rejects empty strings and names with commas
+    bool setCategoryID(int categoryID);      // rejects non-positive values
+    bool setPrice(float price);             // rejects negative prices
+    bool setStock(int stock);               // rejects negative stock counts
+
+    //             save to stream
+    void saveToStream(std::ofstream& out) const;
+
+    //           load from stream
+    bool loadFromStream(std::ifstream& in);
+
+    //                       display
+    void display() const;
 };
 
-#endif
+#endif // PRODUCT_H

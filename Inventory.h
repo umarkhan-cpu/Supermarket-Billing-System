@@ -1,33 +1,30 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include "Product.h"
-#include<string>
+#include <fstream>
 
-
-class Inventory {
+class Inventory { //       Inventory 
 private:
-	Product* products;
-	int totalItems;
-	int lowStocklimit;
+    int productID;
+    int quantity;
 
 public:
-	Inventory();
+    Inventory();
+    Inventory(int productID, int quantity);
 
-	void addproduct(int id,std:: string name, int CID, float price, int stock);
-	void deleteProduct(int id);
-	void viewAll();
+    //                   Getters 
+    int getProductID() const;
+    int getQuantity()  const;
 
-	void addstock(int id, int quantity);
-	void removestock(int id, int quantity);
-	void checklowstock();
+    //                      Setters 
+    bool setProductID(int productID);  // rejects non-positive values
+    bool setQuantity(int quantity);    // rejects negative values
 
-	void savetoFile();
-	void loadfromfile();
+    // save and load 
+    void saveToStream(std::ofstream& out) const;
+    bool loadFromStream(std::ifstream& in);
 
-	bool editProduct(int id, std::string newName, int newCID, float newPrice, int newStock);
-
-	~Inventory();
+    void display() const;
 };
 
-#endif
+#endif // INVENTORY_H

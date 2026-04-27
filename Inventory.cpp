@@ -1,128 +1,76 @@
 #include "Inventory.h"
 #include <iostream>
-#include<fstream>
-#include<string>
+#include <sstream>
 
-Inventory::Inventory() {
-	products = NULL;
-	totalItems = 0;
-	lowStocklimit = 5;
+
+//                    Constructors
+
+Inventory::Inventory() : productID(0), quantity(0) {}
+
+Inventory::Inventory(int productID, int quantity)
+    : productID(productID), quantity(quantity) {
 }
 
-// Add product
-void Inventory::addproduct(int id,std::string name, int CID, float price, int stock) {
-	Product* temp = new Product[totalItems + 1];
-	for (int i = 0; i < totalItems; i++) {
-		temp[i] = products[i];
-	}
-	temp[totalItems].setProduct(id, name, CID, price, stock);
-	delete[] products;
-	products = temp;
-	totalItems++;
+//                        Getters 
+int Inventory::getProductID() const { return productID; }
+int Inventory::getQuantity()  const { return quantity; }
+
+
+//                       Setters
+
+bool Inventory::setProductID(int newProductID) {
+    if (newProductID <= 0) {
+        std::cout << "Error: product ID must be a positive number.\n";
+        return false;
+    }
+    productID = newProductID;
+    return true;
 }
 
-// Delete product
-void Inventory::deleteProduct(int id) {
-	int index = -1;
-	for (int i = 0; i < totalItems; i++) {
-		if (products[i].getPID() == id) {
-			index = i;
-			break;
-		}
-	}
-	if (index == -1) return;
-
-	Product* temp = new Product[totalItems - 1];
-
-	for (int i = 0, j = 0; i < totalItems; i++) {
-		if (i != index) {
-			temp[j++] = products[i];
-		}
-	}
-
-	delete[] products;
-	products = temp;
-	totalItems--;
+bool Inventory::setQuantity(int newQuantity) {
+    if (newQuantity < 0) {
+        std::cout << "Error: quantity cannot be negative.\n";
+        return false;
+    }
+    quantity = newQuantity;
+    return true;
 }
 
-// View all
-void Inventory::viewAll() {
-	std::cout << "\n-------INVENTORY---------\n";
-	for (int i = 0; i < totalItems; i++) {
-		products[i].show();
-	}
+
+//                        Save 
+void Inventory::saveToStream(std::ofstream& out) const {
+   
+    // Format: productID,quantity
+    out << productID << "," << quantity << "\n";
 }
 
-// Stock operations
-void Inventory::addstock(int id, int quantity) {
-	for (int i = 0; i < totalItems; i++) {
-		if (products[i].getPID() == id) {
-			products[i].addstock(quantity);
-		}
-	}
+//                       Load
+bool Inventory::loadFromStream(std::ifstream& in) {
+    std::string line;
+    if (!std::getline(in, line) || line.empty())
+        return false;
+
+    std::istringstream row(line);
+    std::string field;
+
+    try {
+        if (!std::getline(row, field, ',')) return false;
+        productID = std::stoi(field);
+
+        if (!std::getline(row, field, ',')) return false;
+        quantity = std::stoi(field);
+    }
+    catch (...) {
+        return false;
+    }
+
+    return true;
 }
 
-void Inventory::removestock(int id, int quantity) {
-	for (int i = 0; i < totalItems; i++) {
-		if (products[i].getPID() == id) {
-			products[i].removestock(quantity);
-		}
-	}
-}
 
-void Inventory::checklowstock() {
-	std::cout << "\n----Low Stock Itmes-----\n";
-	for (int i = 0; i < totalItems; i++) {
-		if (products[i].getstock() <= lowStocklimit) {
-			products[i].show();
-		}
-	}
-}
+//                  Display
 
-// Save to file
-void Inventory::savetoFile() {
-	std::ofstream out("products.txt");
-
-	for (int i = 0; i < totalItems; i++) {
-		products[i].save(out);
-	}
-	out.close();
-}
-
-// Load from file
-void Inventory::loadfromfile() {
-	std::ifstream in("products.txt");
-
-	// clear old data first
-	delete[] products;
-	products = NULL;
-	totalItems = 0;
-
-	int id, CID, stock;
-	float price;
-	std::string name;
-
-	while (in >> id >> name >> CID >> price >> stock) {
-		addproduct(id, name, CID, price, stock);
-	}
-	in.close();
-}
-
-bool Inventory::editProduct(int id, std::string newName, int newCID, float newPrice, int newStock) {
-	for (int i = 0; i < totalItems; i++) {
-		if (products[i].getPID() == id) {
-			products[i].setName(newName);
-			products[i].setCID(newCID);
-			products[i].setPrice(newPrice);
-			products[i].setStock(newStock);
-			return true;
-		}
-	}
-	return false;
-}
-
-// Destructor
-Inventory::~Inventory() {
-	delete[] products;
-	products = NULL;
+void Inventory::display() const {
+    std::cout << "ProductID: " << productID
+        << " | Quantity: " << quantity << "\n";
 }
