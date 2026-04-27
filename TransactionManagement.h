@@ -5,33 +5,34 @@
 #include <string>
 
 
-//class for transaction management 
 class TransactionManagement {
 private:
-
-    // dynamic array for transactions
     static Transaction* transactions;
     static int count;
     static int capacity;
 
-    // resize function for ease  
+    // doubles array size when full
     static void resize();
 
 public:
-
-    // add transaction
     static void addTransaction(const Transaction& t);
 
-    // view 
     static void viewHistory();
 
-    // search 
     static Transaction searchByID(int id);
     static void searchByDate(const std::string& date);
 
-    // save and load 
+    // needed for Refund system
+    static bool markAsRefunded(int id);
+
+    // needed for Sales Report
+    static int getCount();
+    static Transaction getByIndex(int i);
+
     static void saveToFile();
     static void loadFromFile();
+
+    static void cleanup();
 };
 
 #endif

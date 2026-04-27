@@ -1,18 +1,19 @@
 #include "Transaction.h"
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
-// constructor
+// Constructor 
 Transaction::Transaction() {
     TransactionID = 0;
-    date = "Unknown";
+    date = "";
     CashierID = 0;
     TotalAmount = 0.0;
-    status = "Unknown";
+    status = "";
 }
 
-// set data
+// Set all values at once
 void Transaction::setData(int TID, string D, int CID, float amount, string st) {
     TransactionID = TID;
     date = D;
@@ -21,51 +22,55 @@ void Transaction::setData(int TID, string D, int CID, float amount, string st) {
     status = st;
 }
 
-// getters
-int Transaction::getID() const {
-    return TransactionID;
+// Allow updating status 
+void Transaction::setStatus(const string& st) {
+    status = st;
 }
 
-string Transaction::getDate() const {
-    return date;
-}
+// Getters
+int Transaction::getID() const { return TransactionID; }
+string Transaction::getDate() const { return date; }
+int Transaction::getCashierID() const { return CashierID; }
+float Transaction::getTotalAmount() const { return TotalAmount; }
+string Transaction::getStatus() const { return status; }
 
-int Transaction::getCashierID() const {
-    return CashierID;
-}
-
-float Transaction::getTotalAmount() const {
-    return TotalAmount;
-}
-
-string Transaction::getStatus() const {
-    return status;
-}
-
-// display
+// Display transaction
 void Transaction::show() const {
-    cout << "Transaction ID: " << TransactionID << "\n"
-        << "Date: " << date << "\n"
-        << "Cashier ID: " << CashierID << "\n"
-        << "Total Amount: " << TotalAmount << "\n"
-        << "Status: " << status << "\n"
-        << "---------------------------\n";
+    cout << "ID: " << TransactionID
+        << " | Date: " << date
+        << " | Cashier: " << CashierID
+        << " | Total: " << TotalAmount
+        << " | Status: " << status << "\n";
 }
 
-// save file
+// Save
 void Transaction::save(ofstream& out) {
-    out << TransactionID << " "
-        << date << " "
-        << CashierID << " "
-        << TotalAmount << " "
-        << status << endl;
+    out << TransactionID << ","
+        << date << ","
+        << CashierID << ","
+        << TotalAmount << ","
+        << status << "\n";
 }
 
-// load file
-void Transaction::load(ifstream& in) {
-    in >> TransactionID
-        >> date
-        >> CashierID
-        >> TotalAmount
-        >> status;
+// Load 
+bool Transaction::load(ifstream& in) {
+    string line;
+    if (!getline(in, line)) return false;
+
+    stringstream ss(line);
+    string id, d, cid, amt, st;
+
+    getline(ss, id, ',');
+    getline(ss, d, ',');
+    getline(ss, cid, ',');
+    getline(ss, amt, ',');
+    getline(ss, st);
+
+    TransactionID = stoi(id);
+    date = d;
+    CashierID = stoi(cid);
+    TotalAmount = stof(amt);
+    status = st;
+
+    return true;
 }
