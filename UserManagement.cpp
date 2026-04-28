@@ -20,11 +20,14 @@ string UserManagement::passtrength(string password) {
     return result;
 }
 bool UserManagement::userverify(string fuser, string fpass) {
+    int id;
     string user, pass, role;
 
-    ifstream file("managementdata.txt"); 
-    while (getline(file, user, ',')) { 
-        getline(file, pass, ','); 
+    ifstream file("Data/users.txt");
+
+    while (getline(file, user, ',')) {
+        getline(file, pass, ',');
+        getline(file, role);
 
         if (user == fuser && pass == fpass) {
             return true;
@@ -33,10 +36,15 @@ bool UserManagement::userverify(string fuser, string fpass) {
     return false;
 }
 bool UserManagement::userexists(string fuser) {
+    int id;
     string user, pass, role;
-    ifstream file("managementdata.txt");
+
+    ifstream file("Data/users.txt");
 
     while (getline(file, user, ',')) {
+        getline(file, pass, ',');
+        getline(file, role);
+
         if (user == fuser) {
             return true;
         }
@@ -83,6 +91,24 @@ bool UserManagement::validatecaptcha() {
     }
 }
 
+int UserManagement::nextAvailableID() {
+    int id, maxID = 0;
+    string user, pass, role;
+
+    ifstream file("Data/users.txt");
+
+    while (getline(file, user, ',')) {
+        getline(file, pass, ',');
+        getline(file, role);
+
+        id = stoi(user); // assuming first column is ID
+        if (id > maxID) {
+            maxID = id;
+        }
+    }
+
+    return maxID + 1;
+}
 UserManagement::UserManagement() {
     username = "Unknown";
     password = "Unknown";
@@ -119,18 +145,21 @@ void UserManagement::signup(string role) {
 
     } while (strength != targetStrength);
 
-
+    bool flag;
     do {
         generatecaptcha();
-        if (!validatecaptcha()) {
+        flag = validatecaptcha();
+        if (!flag) {
             cout << "Try Again!" << endl;
         }
-    } while (!validatecaptcha());
+    } while (!flag);
 
     string hpass = hashedpass(password);
-    ofstream file("managementdata.txt", ios::app);
-    file << username << "," << hpass << "," << role << endl;
 
+    int id = nextAvailableID();
+
+    ofstream file("Data/users.txt", ios::app);
+    file << id << "," << username << "," << hpass << "," << role << endl;
     cout << "Signup successful!" << endl;
 }
 bool UserManagement::login() {
@@ -150,8 +179,8 @@ bool UserManagement::login() {
 void UserManagement::deleteAccount() {
     string fuser, fpass, frole;
     bool found = false;
-    string dataFile = "managementdata.txt";
-    string tempFileName = "temp.txt";
+    string dataFile = "Data/users.txt";
+    string tempFileName = "Data/temp.txt";
 
     ifstream inFile(dataFile);
     ofstream tempFile(tempFileName);
@@ -207,7 +236,7 @@ void UserManagement::menu() {
                 int innerChoice;
 
                 do {
-                    cout << "~~Log in Page~~" << endl;
+                    cout << "~~LOGIN PAGE~~" << endl;
                     cout << "1. Delete Account" << endl;
                     cout << "2. Logout" << endl;
                     cout << "Enter choice: ";

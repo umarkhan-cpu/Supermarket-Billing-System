@@ -22,6 +22,7 @@ private:
     bool validatecaptcha();
 
 public:
+    int nextAvailableID();
     UserManagement();
     static string hashedpass(string pass);
     void signup(string role);

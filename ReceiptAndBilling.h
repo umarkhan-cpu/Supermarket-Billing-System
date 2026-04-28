@@ -1,21 +1,15 @@
-#ifndef RECEIPTANDBILLING_H
-#define RECEIPTANDBILLING_H
-
-#include "ProductManagement.h"
-#include "CategoryManagement.h"
-
+#pragma once
+#include <string>
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <iomanip>
-#include <cstdlib>
-#include <ctime>
 #include <sstream>
+#include "Product.h"
+#include "ProductManagement.h"
+#include "CategoryManagement.h"
+#include "DiscountManagement.h"
+#include "TransactionManagement.h"
 using namespace std;
-
 const int MAX_CART_ITEMS = 100;
-const int MAX_RECEIPT_LINES = 200;
-const int MAX_PRODUCTS = 100;
 
 class CartItem {
 public:
@@ -24,8 +18,7 @@ public:
 
     CartItem();
     CartItem(Product p, int q);
-
-    double getprice();
+    double getPrice() const;  
 };
 
 class Cart {
@@ -34,66 +27,59 @@ public:
     int totalcount;
 
     Cart();
+    void   addItem(Product p, int qty);
+    void   removeItem(int productID);
+    void   updateQuantity(int productID, int newQty);
+    double getTotal() const;
+    void   displayCart() const;
 
-    int itemindex(int productID);
-    void addItem(Product p, int qty);
-    void removeItem(int productID);
-    void updateQuantity(int productID, int newQty);
-    double getTotal();
-    void displayCart();
+private:
+    int itemIndex(int productID) const;   
 };
 
 class CartStorage {
 public:
-    string productsFile;
+    CartStorage(string cartFile = "Data/cart.txt");
+    void saveCart(const Cart& cart) const;
+    void loadCart(Cart& cart) const;
+
+private:
     string cartFile;
-
-    CartStorage(string pFile = "products.txt", string cFile = "cart.txt");
-
-    int loadProducts(Product products[]);
-    void saveCart(Cart& cart);
-    bool findProductById(int targetId, Product& result);
-    void loadCart(Cart& cart);
 };
 
-class Receipt;
+
+class Receipt;// forward declaration
 
 class Bill {
 public:
-    string billID;
     string customerName;
-    string billDate;
+    string billID;
     double subtotal;
     double taxRate;
     double discountAmount;
     double totalAmount;
     Cart& cartReference;
 
-    Bill(string n, Cart& cart, double tax = 0.17, double discount = 0.0);
-
+    Bill(const string& customerName,Cart& cart,double taxRate = 0.05, const string& couponCode = "");
     void calculate();
     void display() const;
     void generateReceipt(Receipt& r);
-    void menu();
+    static void menu();
 };
+
+const int MAX_RECEIPT_LINES = 50;
 
 class Receipt {
 public:
-    string billID;
-    string customerName;
-    string receiptDate;
+    Receipt();
+    explicit Receipt(Bill& bill);
+    void receipt(Bill& bill);
+    void printToConsole() const;
+    void saveToFile(const string& filename) const;
+
+private:
     string receiptLines[MAX_RECEIPT_LINES];
     int totalLines;
 
-    Receipt();
-    Receipt(Bill& bill);
-
-    void addline(string line);
-    void receipt(Bill& bill);
-    void printToConsole() const;
-    void saveToFile(string filename) const;
+    void addLine(const string& line); 
 };
-
-void userInputCart(Cart& cart, Product products[], int productCount);
-
-#endif
