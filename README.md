@@ -99,37 +99,46 @@ For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group1
 Supermarket-Billing-System/
 │
 ├── Admin/
+│   ├── Admin.{h,cpp}                   ✅ Muhammad Umar Khan
+│   ├── Category.{h,cpp}                ✅ Muhammad Umar Khan
 │   ├── CategoryManagement.{h,cpp}      ✅ Muhammad Umar Khan
-│   ├── ProductManagement.{h,cpp}       🔄 Farda Fatima
-│   ├── InventoryManagement.{h,cpp}     🔄 Farda Fatima
-│   ├── SalesReport.{h,cpp}             ✅ Mahnoor Aslam
-│   ├── ReturnRefund.{h,cpp}            🔄 Muhammad Umar Khan
-│   └── UserManagement.{h,cpp}          ✅ Areesha Khurram
+│   ├── Product.{h,cpp}                 ✅ Farda Fatima
+│   ├── ProductManagement.{h,cpp}       ✅ Farda Fatima
+│   ├── Inventory.{h,cpp}               ✅ Farda Fatima
+│   ├── InventoryManagement.{h,cpp}     ✅ Farda Fatima
+│   ├── SalesReport.{h,cpp}             🔄 Mahnoor Aslam
+│   └── UserManagement.{h,cpp}          🔄 Areesha Khurram
 │
 ├── Cashier/
 │   ├── Billing.{h,cpp}                 🔄 Areesha Khurram
+│   ├── Cashier.{h,cpp}                 ✅ Muhammad Umar Khan
 │   ├── Discount.{h,cpp}                ✅ Muhammad Umar Khan
-│   ├── TransactionHistory.{h,cpp}      🔄 Farda Fatima
-│   └── SearchFilter.{h,cpp}            🔄 Areesha Khurram
-|
-|── Common/
-│   ├── SessionManager.{h,cpp}          🔄 Muhammad Umar Khan
-│   └── Settings.{h,cpp}                ⏳ Farda Fatima
+│   ├── DiscountManagement.{h,cpp}      ✅ Muhammad Umar Khan
+│   ├── Refund.{h,cpp}                  ✅ Muhammad Umar Khan
+│   ├── RefundManagement.{h,cpp}        ✅ Muhammad Umar Khan
+│   ├── SearchFilter.{h,cpp}            🔄 Areesha Khurram
+│   ├── Transaction.{h,cpp}             ✅ Farda Fatima
+│   └── TransactionManagement.{h,cpp}   ✅ Farda Fatima
+│
+├── Common/
+│   ├── SessionManager.{h,cpp}          ✅ Muhammad Umar Khan
+│   ├── Settings.{h,cpp}                ✅ Farda Fatima
+│   └── User.{h,cpp}                    ✅ Muhammad Umar Khan
 │
 ├── Data/
-│   ├── products.txt
 │   ├── categories.txt
-│   ├── users.txt
-│   ├── transactions.txt
 │   ├── coupons.txt
+│   ├── products.txt
 │   ├── refunds.txt
-│   └── settings.txt
+│   ├── settings.txt
+│   ├── transactions.txt
+│   └── users.txt
 │
-├── GUI/                                ⏳ Mahnoor Aslam (WinForms files)
+├── GUI/                                🔄 Mahnoor Aslam (WinForms files)
 │
 ├── docs/
 │   ├── ClassDiagram_Group10.png
-│   └── ClassDiagram_Group10.html
+│   ├── ClassDiagram_Group10.html
 │
 ├── main.cpp
 └── README.md
@@ -143,21 +152,21 @@ Supermarket-Billing-System/
 
 | # | Feature | Owner | Status |
 |---|---|---|---|
-| 1 | User Management | Areesha | ✅ Done |
+| 1 | User Management | Areesha | 🔄 In Progress |
 | 2 | Category Management | Umar |  ✅ Done |
-| 3 | Product Management | Farda |  🔄 In Progress |
-| 4 | Inventory & Stock Management | Farda | 🔄 In Progress |
-| 5 | Return & Refund Management | Umar |  🔄 In Progress |
-| 6 | Sales Report Generation | Mahnoor | ✅ Done |
+| 3 | Product Management | Farda |  ✅ Done |
+| 4 | Inventory & Stock Management | Farda | ✅ Done |
+| 5 | Return & Refund Management | Umar |  ✅ Done |
+| 6 | Sales Report Generation | Mahnoor | 🔄 In Progress |
 | 7 | Billing & Receipt Generation | Areesha |  🔄 In Progress |
 | 8 | Discount & Coupon System | Umar |  ✅ Done |
-| 9 | Transaction History | Farda |  🔄 In Progress |
+| 9 | Transaction History | Farda |  ✅ Done |
 | 10 | Search & Filter Products | Areesha |  🔄 In Progress |
-| — | GUI (WinForms) | Mahnoor | ⏳ Pending |
-| — | CAPTCHA Verification | Areesha | ⏳ Pending |
+| — | GUI (WinForms) | Mahnoor | 🔄 In Progress |
+| — | CAPTCHA Verification | Areesha | ✅ Done |
 | — | Password Strength Indicator | Areesha | ✅ Done |
-| — | Dark / Light Mode | Farda | ⏳ Pending |
-| — | Session Timeout | Umar | ⏳ Pending |
+| — | Dark / Light Mode | Farda | ✅ Done |
+| — | Session Timeout | Umar | ✅ Done |
 
 ---
 
