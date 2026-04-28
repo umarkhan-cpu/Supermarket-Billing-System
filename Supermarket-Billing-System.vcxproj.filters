@@ -16,6 +16,12 @@
     <Filter Include="Admin">
       <UniqueIdentifier>{5a7a0ea2-d3c6-435e-8f0b-acfcbef79029}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cashier">
+      <UniqueIdentifier>{a29fcf23-0fc4-42ba-8dd1-fb5802e3cac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{c7e4c460-5ca8-449d-ac60-ed707cd5dd49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,13 +57,67 @@
     <ClCompile Include="Admin\Category.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
+    <ClCompile Include="Admin\CategoryManagement.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Discount.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\DiscountManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Refund.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\RefundManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\User.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\Admin.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Cashier.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SessionManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Category.h">
       <Filter>Admin</Filter>
     </ClInclude>
+    <ClInclude Include="Admin\CategoryManagement.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Discount.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\DiscountManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Refund.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\RefundManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\User.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\Admin.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
     <ClInclude Include="ReceiptAndBilling.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Cashier.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SessionManager.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

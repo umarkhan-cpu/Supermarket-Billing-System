@@ -124,7 +124,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FIlterAndSearch.cpp" />
+    <ClCompile Include="Admin\Admin.cpp" />
     <ClCompile Include="Admin\Category.cpp" />
+    <ClCompile Include="Admin\CategoryManagement.cpp" />
+    <ClCompile Include="Admin\Inventory.cpp" />
+    <ClCompile Include="Admin\InventoryManagement.cpp" />
+    <ClCompile Include="Admin\Product.cpp" />
+    <ClCompile Include="Admin\ProductManagement.cpp" />
+    <ClCompile Include="Cashier\Cashier.cpp" />
+    <ClCompile Include="Cashier\Discount.cpp" />
+    <ClCompile Include="Cashier\DiscountManagement.cpp" />
+    <ClCompile Include="Cashier\Refund.cpp" />
+    <ClCompile Include="Cashier\RefundManagement.cpp" />
+    <ClCompile Include="Cashier\Transaction.cpp" />
+    <ClCompile Include="Cashier\TransactionManagement.cpp" />
+    <ClCompile Include="Common\SessionManager.cpp" />
+    <ClCompile Include="Common\settings.cpp" />
+    <ClCompile Include="Common\User.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SalesReport.cpp" />
     <ClCompile Include="Transaction.cpp" />
@@ -146,7 +162,23 @@
     <ClInclude Include="UserManagement.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Admin\Admin.h" />
     <ClInclude Include="Admin\Category.h" />
+    <ClInclude Include="Admin\CategoryManagement.h" />
+    <ClInclude Include="Admin\Inventory.h" />
+    <ClInclude Include="Admin\InventoryManagement.h" />
+    <ClInclude Include="Admin\Product.h" />
+    <ClInclude Include="Admin\ProductManagement.h" />
+    <ClInclude Include="Cashier\Cashier.h" />
+    <ClInclude Include="Cashier\Discount.h" />
+    <ClInclude Include="Cashier\DiscountManagement.h" />
+    <ClInclude Include="Cashier\Refund.h" />
+    <ClInclude Include="Cashier\RefundManagement.h" />
+    <ClInclude Include="Cashier\Transaction.h" />
+    <ClInclude Include="Cashier\TransactionManagement.h" />
+    <ClInclude Include="Common\SessionManager.h" />
+    <ClInclude Include="Common\settings.h" />
+    <ClInclude Include="Common\User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
