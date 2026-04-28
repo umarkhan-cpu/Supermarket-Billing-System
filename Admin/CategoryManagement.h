@@ -5,30 +5,6 @@
 #include <string>
 using std::string;
 
-/*
- * CategoryManagement - static manager class for the Category collection.
- * Belongs to: Muhammad Umar Khan (lead)
- *
- * Responsibilities:
- *   - Owns the in-memory dynamic array of all loaded Category objects
- *   - Handles persistence (load/save) against Data/categories.txt
- *   - Exposes CRUD methods that operate on the collection by value
- *   - Provides a console menu (showMenu) for interactive use
- *
- * Design notes:
- *   - All members are static. There is only one conceptual "category
- *     management system" in the application, so no instances are created.
- *   - CRUD methods (addCategory, editCategory, deleteCategory) take plain
- *     data and return a bool for success/failure. They never prompt the
- *     user. This keeps them usable from both console and future GUI code.
- *   - showMenu() is the console-only driver that prompts for input and
- *     dispatches to the CRUD methods. When the GUI is introduced, it can
- *     reuse the CRUD methods directly and ignore showMenu().
- *   - Every data-modifying method calls saveToFile() automatically, so
- *     the file on disk is always consistent with the in-memory state.
- *
- * File path: Data/categories.txt (relative to the project root)
- */
 class CategoryManagement {
 
 private:

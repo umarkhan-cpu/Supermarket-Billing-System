@@ -4,22 +4,6 @@
 #include <string>
 using std::string;
 
-/*
- * Category - data class representing a single product category.
- * Belongs to: Muhammad Umar Khan (lead)
- *
- * Responsibilities:
- *   - Hold the data for ONE category (id, name, description)
- *   - Know how to serialize itself to/from a CSV line
- *
- * Non-responsibilities:
- *   - Does NOT manage a collection of categories (that's CategoryManagement's job)
- *   - Does NOT talk to files directly (only produces/consumes CSV strings)
- *
- * File format (one category per line in categories.txt):
- *   categoryID,categoryName,description
- *   e.g.  1,Dairy,Milk and cheese products
- */
 class Category {
 
 private:

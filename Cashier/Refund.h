@@ -4,36 +4,6 @@
 #include <string>
 using std::string;
 
-/*
- * Refund - data class representing a single refund record.
- * Belongs to: Muhammad Umar Khan (lead)
- *
- * Responsibilities:
- *   - Hold the data for ONE refund (id, transactionID, reason, amount, date)
- *   - Know how to serialize itself to/from a CSV line
- *
- * Non-responsibilities:
- *   - Does NOT manage a collection of refunds (that's RefundManagement's job)
- *   - Does NOT validate against the original transaction (that happens in
- *     RefundManagement::createRefund - eventually wires into TransactionManagement)
- *   - Does NOT talk to files directly (only produces/consumes CSV strings)
- *
- * Workflow note:
- *   Refunds are only created when the cashier approves them at the counter.
- *   Rejected attempts are not stored - there's no "REJECTED" status because
- *   the system records what happened, not what didn't.
- *
- * File format (one refund per line in refunds.txt):
- *   refundID,transactionID,reason,amount,date
- *   e.g.  1,42,Damaged item,250,2026-04-25
- *         2,17,Wrong size,1500,2026-04-26
- *
- * Notes:
- *   - reason is the customer's stated reason for the return (free text)
- *   - amount is the refunded amount in rupees (must be > 0)
- *   - date is when the refund was processed (YYYY-MM-DD format)
- *   - reason must not contain commas (CSV safety)
- */
 class Refund {
 
 private:

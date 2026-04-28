@@ -1,10 +1,28 @@
 ﻿#include "RefundManagement.h"
+#include "Transaction.h"
+#include "TransactionManagement.h"
+#include "../Admin/Product.h"
+#include "../Admin/ProductManagement.h"
+#include "../Admin/InventoryManagement.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <ctime>
 #include <sstream>
 using namespace std;
+
+static struct tm parseDate(const string& dateStr) 
+{
+    struct tm date = {};
+    char dash;
+    stringstream ss(dateStr);
+    int year, month, day;
+    ss >> year >> dash >> month >> dash >> day;
+    date.tm_year = year - 1900;
+    date.tm_mon = month - 1;
+    date.tm_mday = day;
+    return date;
+}
 
 // ============================================================================
 // Static member definitions
@@ -73,6 +91,15 @@ string RefundManagement::todayAsString()
     return ss.str();
 }
 
+int RefundManagement::daysBetween(const string& tr_Date, const string& today)
+{
+    struct tm trDate = parseDate(tr_Date);
+    struct tm todayDate = parseDate(today);
+    time_t trTime = mktime(&trDate);
+    time_t todayTime = mktime(&todayDate);
+    return (int)(difftime(todayTime, trTime) / 86400);
+}
+
 // ============================================================================
 // File lifecycle
 // ============================================================================
@@ -127,44 +154,48 @@ void RefundManagement::cleanup()
 // ============================================================================
 // The main creation method
 // ============================================================================
-
-bool RefundManagement::createRefund(int transactionID, const string& reason, float amount)
+bool RefundManagement::createRefund(int transactionID, const string& reason, float amount,
+    int productID, int quantity)
 {
-    int newID = nextAvailableID();
+    // Input validation
+    if (transactionID <= 0) return false;
+    if (reason == "")       return false;
+    if (amount <= 0)        return false;
+    if (productID <= 0)     return false;
+    if (quantity <= 0)      return false;
+
+    // Validate transaction exists
+    Transaction t = TransactionManagement::searchByID(transactionID);
+    if (t.getID() == 0) return false;
+
+    // 30-day refund window check
     string today = todayAsString();
+    int daysDiff = daysBetween(t.getDate(), today);
+    if (daysDiff > 30) return false;     // too old
+    if (daysDiff < 0)  return false;     // corrupt data
 
+    // Refund amount cannot exceed original transaction total
+    if (amount > t.getTotalAmount()) return false;
+
+    // Validate that the product being returned actually exists
+    Product p = ProductManagement::findByID(productID);
+    if (p.getID() == 0) return false;    // product doesn't exist
+
+    // All validations passed — create and store the refund
+    int newID = nextAvailableID();
     Refund newRef(newID, transactionID, reason, amount, today);
-
-    if (newRef.getTransactionID() <= 0) return false;
-    if (newRef.getReason() == "") return false;
-    if (newRef.getAmount() <= 0) return false;
-
-    // ─── Integration TODOs (when Farda's classes are pushed) ────────────────────
-    // 
-    // 1. Validate that transactionID exists in TransactionManagement.
-    //    If not found, return false (cashier rejects: "invalid receipt").
-    //
-    //        Transaction t = TransactionManagement::findByID(transactionID);
-    //        if (t.getID() == 0) return false;
-    //
-    // 2. Check that the transaction is within the 30-day return window.
-    //    Use a daysBetween(transactionDate, todayAsString()) helper.
-    //
-    //        if (daysBetween(t.getDate(), today) > 30) return false;
-    //
-    // 3. After the refund is stored, restore inventory by adding back each
-    //    refunded product's quantity to its stock level.
-    //
-    //        for each item in t.getItems():
-    //            InventoryManagement::addStock(item.productID, item.quantity);
-    //
-    // ────────────────────────────────────────────────────────────────────────────
 
     if (count >= capacity) grow();
     refunds[count] = newRef;
     count++;
 
-    saveToFile(); // Update refund record
+    saveToFile();
+
+    // Restock the returned product back into inventory
+    InventoryManagement::addStock(productID, quantity);
+
+    // Mark the original transaction as refunded
+    TransactionManagement::markAsRefunded(transactionID);
 
     return true;
 }
@@ -265,7 +296,7 @@ void RefundManagement::showMenu()
         {
         case 1:
         {
-            int txnID;
+            int txnID, productID, quantity;
             string reason;
             float amount;
 
@@ -276,13 +307,18 @@ void RefundManagement::showMenu()
             getline(cin, reason);
             cout << "Enter refund amount (Rs.): ";
             cin >> amount;
+            cout << "Enter product ID being returned: ";
+            cin >> productID;
+            cout << "Enter quantity returned: ";
+            cin >> quantity;
             cin.ignore();
 
-            if (createRefund(txnID, reason, amount))
-                cout << "Refund processed successfully.\n";
+            if (createRefund(txnID, reason, amount, productID, quantity))
+                cout << "Refund processed successfully. Inventory restocked.\n";
             else
                 cout << "Failed to process refund. Check inputs.\n";
         }
+        break;
         break;
         case 2:
             viewAll();

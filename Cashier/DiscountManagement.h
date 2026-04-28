@@ -5,31 +5,6 @@
 #include <string>
 using std::string;
 
-/*
- * DiscountManagement - static manager class for the Discount collection.
- * Belongs to: Muhammad Umar Khan (lead)
- *
- * Responsibilities:
- *   - Owns the in-memory dynamic array of all loaded Discount objects
- *   - Handles persistence (load/save) against Data/coupons.txt
- *   - Exposes CRUD methods that operate on the collection by value
- *   - Exposes applyCoupon() - the one method other features (Billing) call
- *   - Provides a console menu (showMenu) for interactive use
- *
- * Design notes:
- *   - All members are static. There is only one conceptual "discount system"
- *     in the application, so no instances are created.
- *   - CRUD methods take plain data and return a bool for success/failure.
- *     They never prompt the user, keeping them GUI-compatible.
- *   - applyCoupon is the integration contract used by the Billing feature:
- *         float discount = DiscountManagement::applyCoupon(code, subtotal);
- *         float final    = subtotal - discount;
- *   - showMenu() is the console-only driver, kept as a debug/fallback tool.
- *   - Every data-modifying method calls saveToFile() automatically, so the
- *     file on disk is always consistent with the in-memory state.
- *
- * File path: Data/coupons.txt (relative to the project root)
- */
 class DiscountManagement {
 
 private:

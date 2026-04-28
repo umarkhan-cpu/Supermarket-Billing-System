@@ -4,30 +4,6 @@
 #include <string>
 using std::string;
 
-/*
- * Discount - data class representing a single coupon/discount.
- * Belongs to: Muhammad Umar Khan (lead)
- *
- * Responsibilities:
- *   - Hold the data for ONE discount (id, code, type, value, isActive)
- *   - Know how to serialize itself to/from a CSV line
- *   - Calculate the discount amount given a bill subtotal
- *
- * Non-responsibilities:
- *   - Does NOT manage a collection of discounts (that's DiscountManagement's job)
- *   - Does NOT talk to files directly (only produces/consumes CSV strings)
- *
- * File format (one discount per line in coupons.txt):
- *   couponID,code,type,value,isActive
- *   e.g.  1,SAVE20,PERCENTAGE,20,Active
- *         2,FLAT50,FIXED,50,Inactive
- *
- * Notes:
- *   - type is either "PERCENTAGE" or "FIXED"
- *   - For PERCENTAGE, value is the percent (e.g., 20.0 means 20% off)
- *   - For FIXED, value is the rupee amount (e.g., 50.0 means Rs. 50 off)
- *   - isActive is stored as Active/Inactive in the CSV (true/false)
- */
 class Discount 
 {
 

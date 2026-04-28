@@ -4,31 +4,6 @@
 #include "User.h"
 #include <ctime>
 
-/*
- * SessionManager - manages the currently logged-in user's session.
- * Belongs to: Muhammad Umar Khan (lead) - infrastructure
- *
- * Responsibilities:
- *   - Track who is currently logged in
- *   - Track when they logged in and when they last did something
- *   - Auto-detect inactivity timeout (10 minutes by default)
- *   - Provide clean session start/end primitives
- *
- * Non-responsibilities:
- *   - Does NOT authenticate (Areesha's UserManagement does that)
- *   - Does NOT own the User object - UserManagement does. SessionManager
- *     just holds a non-owning pointer.
- *   - Does NOT automatically log out the user. checkTimeout() is a pure
- *     query - the caller (GUI or console loop) decides what to do with
- *     the result.
- *
- * Design notes:
- *   - All-static class. No instances. Like CategoryManagement.
- *   - Uses <ctime> for time math (consistent with Refund::todayAsString).
- *   - Defensive: every method is safe to call even when no session exists.
- *   - Timeout is hardcoded at 600 seconds (10 minutes). Easy to change
- *     in the .cpp if needed for testing.
- */
 class SessionManager {
 private:
     // ----- Static state (defined in .cpp) -----
