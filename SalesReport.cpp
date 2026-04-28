@@ -1,19 +1,30 @@
 #include "SalesReport.h"
+#include "TransactionManagement.h"
 #include <iostream>
-#include <fstream>
-using namespace std; 
-SalesReport::SalesReport(string f) {
-    filename = f;
-}
+using namespace std;
+SalesReport::SalesReport(string f) : filename(f) {}
 void SalesReport::generatetotalsalesreport() {
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cout << "No sales data found. (File doesn't exist)" << endl;
+
+    TransactionManagement::loadFromFile();
+    int totalTransactions = TransactionManagement::getCount();
+
+    if (totalTransactions == 0) {
+        cout << "No sales data found." << endl;
         return;
     }
-
-    //transaction class wil be used here 
-
-    cout << "Reading sales data" << endl;
-    file.close();
+    double totalRevenue = 0.0;
+    int validSales = 0;
+    cout << endl;
+    cout << "          TOTAL SALES REPORT           " << endl;
+    cout <<  endl;
+    for (int i = 0; i < totalTransactions; i++) {
+        Transaction temp = TransactionManagement::getByIndex(i);
+        if (temp.getStatus() != "Refunded") {
+            totalRevenue += temp.getTotalAmount();
+            validSales++;
+        }
+    }
+    cout << "Total Valid Sales: " << validSales << endl;
+    cout << "Total Revenue:     " << totalRevenue << endl;
+    cout << "=======================================\n" << endl;
 }
