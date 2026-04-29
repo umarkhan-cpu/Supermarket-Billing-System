@@ -143,16 +143,12 @@
     <ClCompile Include="Common\User.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SalesReport.cpp" />
-    <ClCompile Include="Transaction.cpp" />
-    <ClCompile Include="TransactionManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="transactions.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SalesReport.h" />
-    <ClInclude Include="Transaction.h" />
-    <ClInclude Include="TransactionManagement.h" />
     <ClCompile Include="ReceiptAndBilling.cpp" />
     <ClCompile Include="UserManagement.cpp" />
   </ItemGroup>

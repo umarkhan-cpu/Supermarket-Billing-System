@@ -33,12 +33,13 @@ void TransactionManagement::addTransaction(const Transaction& t) {
 }
 
 // Show all transactions
-void TransactionManagement::viewHistory() {
+/*void TransactionManagement::viewHistory() {
     cout << "\n--- TRANSACTION HISTORY ---\n";
 
     for (int i = 0; i < count; i++)
         transactions[i].show();
 }
+*/
 
 // Search by ID
 Transaction TransactionManagement::searchByID(int id) {
@@ -50,7 +51,7 @@ Transaction TransactionManagement::searchByID(int id) {
 }
 
 // Search by date
-void TransactionManagement::searchByDate(const string& date) {
+/*void TransactionManagement::searchByDate(const string& date) {
     cout << "\n--- SEARCH RESULTS ---\n";
 
     for (int i = 0; i < count; i++) {
@@ -58,6 +59,7 @@ void TransactionManagement::searchByDate(const string& date) {
             transactions[i].show();
     }
 }
+*/
 
 // Refund support (marks transaction as refunded)
 bool TransactionManagement::markAsRefunded(int id) {
@@ -84,7 +86,7 @@ Transaction TransactionManagement::getByIndex(int i) {
 
 // Save to Data folder (IMPORTANT FIX)
 void TransactionManagement::saveToFile() {
-    ofstream out("Data/transactions.txt");
+    ofstream out(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\transactions.txt)");
 
     for (int i = 0; i < count; i++)
         transactions[i].save(out);
@@ -94,7 +96,7 @@ void TransactionManagement::saveToFile() {
 
 // Load from Data folder
 void TransactionManagement::loadFromFile() {
-    ifstream in("Data/transactions.txt");
+    ifstream in(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\transactions.txt)");
 
     if (!in) return;
 

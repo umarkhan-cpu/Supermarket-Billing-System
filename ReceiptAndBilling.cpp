@@ -1,6 +1,15 @@
 #include "ReceiptAndBilling.h"
 #include <sstream>
 #include <iomanip>
+#include <ctime>
+std::string getCurrentDate() {
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
+    localtime_s(&tstruct, &now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
+    return std::string(buf);
+}
 using namespace std;
 
 static string fmt(double v) { //converts a double value into a string
@@ -58,7 +67,7 @@ void Cart::removeItem(int productID) {
 void Cart::updateQuantity(int productID, int newQuan) {
     int index = itemIndex(productID);
     if (index != -1)
-        cartItems[idx].quantity = newQuan;
+        cartItems[index].quantity = newQuan;
 }
 
 double Cart::getTotal() const {
@@ -215,7 +224,7 @@ void Receipt::saveToFile(const string& filename) const {
     }
 }
 
-void Bill::menu() {
+/*void Bill::menu() {
     Cart cart;
     int choice;
 
@@ -302,9 +311,9 @@ void Bill::menu() {
             r.printToConsole();
 
             Transaction t;
-            t.setData(0,getCurrentDate(),0,bill.totalAmount,"Completed")
+            t.setData(0, getCurrentDate(), 0, bill.totalAmount, "Completed");
             TransactionManagement::addTransaction(t)
-            cout << "Transaction recorded." << endl;
+            //cout << "Transaction recorded." << endl;
             break;
         }
 
@@ -318,3 +327,4 @@ void Bill::menu() {
 
     } while (choice != 6);
 }
+*/

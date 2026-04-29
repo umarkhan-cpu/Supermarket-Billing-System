@@ -8,3 +8,5 @@
 8,100,Test continuity,50,2026-04-26
 9,1,Defective,500,2026-04-29
 10,1,Defective,100,2026-04-29
+11,1,Wrong Item,2.63,2026-04-30
+12,1,Wrong Item,2.63,2026-04-30

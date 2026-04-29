@@ -74,7 +74,7 @@ int DiscountManagement::nextAvailableID()
 
 void DiscountManagement::loadFromFile()
 {
-    ifstream file("Data/coupons.txt");
+    ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\coupons.txt)");
     if (!file.is_open())
         return; // file doesn't exist yet — empty collection is fine
 
@@ -98,7 +98,7 @@ void DiscountManagement::loadFromFile()
 
 void DiscountManagement::saveToFile()
 {
-    ofstream file("Data/coupons.txt");
+    ofstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\coupons.txt)");
     if (!file.is_open())
         return;
 
@@ -214,7 +214,7 @@ float DiscountManagement::applyCoupon(const string &code, float subtotal)
 // Read operations
 // ============================================================================
 
-void DiscountManagement::viewAll()
+/*void DiscountManagement::viewAll()
 {
     if (count == 0)
     {
@@ -238,6 +238,7 @@ void DiscountManagement::viewAll()
 
     cout << "+------+--------------+-------------+---------+----------+\n";
 }
+*/
 
 Discount DiscountManagement::findByID(int id)
 {
@@ -255,7 +256,7 @@ int DiscountManagement::getCount()
 // Console driver (kept as a backup in case GUI fails)
 // ============================================================================
 
-void DiscountManagement::showMenu()
+/*void DiscountManagement::showMenu()
 {
     int choice;
 
@@ -367,3 +368,4 @@ void DiscountManagement::showMenu()
         }
     } while (choice < 1 || choice > 7);
 }
+*/

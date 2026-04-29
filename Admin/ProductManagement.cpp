@@ -8,7 +8,7 @@ int      ProductManagement::count = 0;
 int      ProductManagement::capacity = 0;
 
 // File location where product data is stored
-static const char* FILE_PATH = "Data/products.txt";
+static const char* FILE_PATH = R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\products.txt)";
 
 
 // This function finds the next ID by checking highest existing ID
@@ -59,7 +59,7 @@ bool ProductManagement::addProduct(const std::string& name, int categoryID, floa
 
     saveToFile();
 
-    std::cout << "Product added successfully with ID " << newID << "\n";
+    //std::cout << "Product added successfully with ID " << newID << "\n";
     return true;
 }
 
@@ -85,7 +85,7 @@ bool ProductManagement::editProduct(int id, const std::string& name, int categor
 
     saveToFile();
 
-    std::cout << "Product updated successfully\n";
+    //std::cout << "Product updated successfully\n";
     return true;
 }
 
@@ -96,7 +96,7 @@ bool ProductManagement::deleteProduct(int id) {
     int index = findIndexByID(id);
 
     if (index == -1) {
-        std::cout << "No product found with given ID\n";
+       // std::cout << "No product found with given ID\n";
         return false;
     }
 
@@ -107,7 +107,7 @@ bool ProductManagement::deleteProduct(int id) {
 
     saveToFile();
 
-    std::cout << "Product deleted successfully\n";
+    //std::cout << "Product deleted successfully\n";
     return true;
 }
 
@@ -137,7 +137,7 @@ Product ProductManagement::findByID(int id) {
 
 
 // Shows all products
-void ProductManagement::viewAll() {
+/*void ProductManagement::viewAll() {
 
     if (count == 0) {
         std::cout << "No products available\n";
@@ -147,6 +147,7 @@ void ProductManagement::viewAll() {
     for (int i = 0; i < count; i++)
         products[i].display();
 }
+*/
 
 
 // Loads data from file into memory
