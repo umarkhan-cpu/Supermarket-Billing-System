@@ -4,4 +4,4 @@
 5,Dairy,Milk and cheese
 6,Bakery,Bread products
 7,Beverages,Drinks
-8,Snacks,Chips and biscuits
+8,Snacks,Chips
