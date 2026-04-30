@@ -1,96 +1,103 @@
 #include "ReceiptAndBilling.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
-static string fmt(double v) { //converts a double value into a string
-    ostringstream out; //stores output in a string 
-
-    out << fixed << setprecision(2) << v;// setprecision keeps only 2 digits after decimal while fixed forces decimal format
+static string fmt(double v) { 
+    ostringstream out; //stores output in a string
+    out << fixed << setprecision(2) << v;// setprecision keeps only 2 digits after decimal 
     return out.str();
 }
 
-
 CartItem::CartItem() : quantity(0) {
 }
-
 CartItem::CartItem(Product p, int q) : product(p), quantity(q) {
 }
-
 double CartItem::getPrice() const {
-    return product.getPrice() * quantity;  
+    return product.getPrice() * quantity;
 }
 
-Cart::Cart() : totalcount(0) {
+Cart::Cart() : totalcount(0), capacity(10) {
+    cartItems = new CartItem[capacity]; 
 }
-
+Cart::~Cart() {
+    delete[] cartItems; 
+}
+void Cart::resize() {
+    capacity *= 2; 
+    CartItem* newItems = new CartItem[capacity]; 
+    for (int i = 0; i < totalcount; i++) {
+        *(newItems + i) = *(cartItems + i); 
+    }
+    delete[] cartItems; 
+    cartItems = newItems; 
+}
 int Cart::itemIndex(int productID) const {
     for (int i = 0; i < totalcount; i++) {
-        if (cartItems[i].product.getID() == productID) {
-            return i;  
+        if ((cartItems + i)->product.getID() == productID) { 
+            return i;
         }
     }
-    return -1; 
+    return -1;
 }
-
 void Cart::addItem(Product p, int quant) {
     int index = itemIndex(p.getID());
 
-    if (index != -1) { // if product already exists in cart
-        cartItems[index].quantity += quant;// increase quantity
+    if (index != -1) { 
+        (cartItems + index)->quantity += quant;// increase quantity
 
-    } else {
-        cartItems[totalcount++] = CartItem(p, quant); // Add new item in next free position
+    }
+    else {
+        if (totalcount == capacity) { // check if resize is needed
+            resize();
+        }
+        *(cartItems + totalcount++) = CartItem(p, quant); 
     }
 }
-
 void Cart::removeItem(int productID) {
     int index = itemIndex(productID);
     if (index == -1) {
         return;
     }
     for (int i = index; i < totalcount - 1; i++) { //shift to left
-        cartItems[i] = cartItems[i + 1];
+        *(cartItems + i) = *(cartItems + i + 1); 
     }
     totalcount--;
 }
-
 void Cart::updateQuantity(int productID, int newQuan) {
     int index = itemIndex(productID);
     if (index != -1)
-        cartItems[idx].quantity = newQuan;
+        (cartItems + index)->quantity = newQuan; 
 }
-
 double Cart::getTotal() const {
     double total = 0;
     for (int i = 0; i < totalcount; i++) {
-        total += cartItems[i].getPrice(); //adds all prices
+        total += (cartItems + i)->getPrice(); //adds all prices
     }
     return total;
 }
-
 void Cart::displayCart() const {
 
-    cout << left << setw(4)  << "ID" << setw(20) << "Name" << setw(6)  << "Qty" << setw(10) << "Price" << endl;
+    cout << left << setw(4) << "ID" << setw(20) << "Name" << setw(6) << "Qty" << setw(10) << "Price" << endl;
     cout << string(40, '-') << endl;
     for (int i = 0; i < totalcount; i++) {
-        const CartItem& item = cartItems[i];
-        cout << left << setw(4)  << item.product.getID() << setw(20) << item.product.getName() << setw(6)  << item.quantity << setw(10) << fmt(item.getPrice()) << endl;
+        const CartItem* item = cartItems + i; 
+        cout << left << setw(4) << item->product.getID() << setw(20) << item->product.getName() << setw(6) << item->quantity << setw(10) << fmt(item->getPrice()) << endl;
     }
     cout << string(40, '-') << endl;
 
     cout << "TOTAL: " << fmt(getTotal()) << endl;
 }
-
-CartStorage::CartStorage(string file) : cartFile(file) {}
-
+CartStorage::CartStorage(string file) : cartFile(file) {
+}
 void CartStorage::saveCart(const Cart& cart) const {
     ofstream out(cartFile);
-    for (int i = 0; i < cart.totalcount; i++) {// Save each cart item as CSV line
-        out << cart.cartItems[i].product.getID() << "," << cart.cartItems[i].quantity << endl;
+    for (int i = 0; i < cart.totalcount; i++) {
+        out << (cart.cartItems + i)->product.getID() << "," << (cart.cartItems + i)->quantity << endl;
     }
 }
-
 void CartStorage::loadCart(Cart& cart) const {
     string line;
     ifstream in(cartFile);
@@ -114,7 +121,6 @@ void CartStorage::loadCart(Cart& cart) const {
         getline(ss, token, ','); //quantity
         quantity = stoi(token);
 
-        // Find product in ProductManagement
         for (int i = 0; i < ProductManagement::getCount(); i++) {
             if (ProductManagement::getAt(i).getID() == id) { //gives product at index i
                 cart.addItem(ProductManagement::getAt(i), quantity);
@@ -135,7 +141,6 @@ Bill::Bill(const string& name, Cart& cart, double tax, const string& couponCode)
     }
     calculate();
 }
-
 void Bill::calculate() {
     subtotal = cartReference.getTotal();
     totalAmount = subtotal + (subtotal * taxRate) - discountAmount; //subtotal + tax - discount
@@ -143,37 +148,45 @@ void Bill::calculate() {
         totalAmount = 0;
     }
 }
-
 void Bill::display() const {
     cout << "~~BILL~~" << endl;
     cout << "Customer : " << customerName << endl;
     cout << "Bill ID  : " << billID << endl;
 
-    cartReference.displayCart(); // shows cart details
+    cartReference.displayCart(); 
 
-    cout << "Subtotal : " << fmt(subtotal) << endl; //shows calculations
+    cout << "Subtotal : " << fmt(subtotal) << endl; 
     cout << "Tax (" << (taxRate * 100) << "%): " << fmt(subtotal * taxRate) << endl;
     cout << "Discount : " << fmt(discountAmount) << endl;
     cout << "TOTAL    : " << fmt(totalAmount) << endl;
 }
-
-void Bill::generateReceipt(Receipt& r) { // Sends bill data to receipt generator
+void Bill::generateReceipt(Receipt& r) { 
     r.receipt(*this);
 }
 
-Receipt::Receipt() : totalLines(0) {
+Receipt::Receipt() : totalLines(0), capacity(20) {
+    receiptLines = new string[capacity]; 
 }
-
-Receipt::Receipt(Bill& bill) : totalLines(0) {
-    receipt(bill); //builds receipt directly from bill
+Receipt::Receipt(Bill& bill) : totalLines(0), capacity(20) {
+    receiptLines = new string[capacity];
+    receipt(bill); 
 }
-
+Receipt::~Receipt() {
+    delete[] receiptLines; 
+}
 void Receipt::addLine(const string& line) {
-    if (totalLines < MAX_RECEIPT_LINES) {
-        receiptLines[totalLines++] = line;
+    if (totalLines == capacity) { 
+        capacity *= 2; 
+        string* newLines = new string[capacity]; 
+        for (int i = 0; i < totalLines; i++) {
+            *(newLines + i) = *(receiptLines + i); 
+        }
+        delete[] receiptLines;    
+        receiptLines = newLines;   
     }
-}
 
+    *(receiptLines + totalLines++) = line; 
+}
 void Receipt::receipt(Bill& bill) {
 
     addLine("================================");
@@ -183,11 +196,10 @@ void Receipt::receipt(Bill& bill) {
     addLine("Customer : " + bill.customerName);
     addLine("--------------------------------");
 
-    // Each cart item line
+    
     for (int i = 0; i < bill.cartReference.totalcount; i++) {
-        const CartItem& item = bill.cartReference.cartItems[i];
-
-        string itemLine = item.product.getName() + " x " + to_string(item.quantity) +"  =  " + fmt(item.getPrice());
+        const CartItem* item = bill.cartReference.cartItems + i; 
+        string itemLine = item->product.getName() + " x " + to_string(item->quantity) + "  =  " + fmt(item->getPrice());
         addLine(itemLine);
     }
 
@@ -200,18 +212,16 @@ void Receipt::receipt(Bill& bill) {
     addLine("     Thank you for shopping :) !    ");
     addLine("================================");
 }
-
 void Receipt::printToConsole() const {
     for (int i = 0; i < totalLines; i++) {
-        cout << receiptLines[i] << endl;
+        cout << *(receiptLines + i) << endl; 
     }
 }
-
 void Receipt::saveToFile(const string& filename) const {
     ofstream out(filename);
 
     for (int i = 0; i < totalLines; i++) {
-        out << receiptLines[i] << "\n";
+        out << *(receiptLines + i) << "\n";
     }
 }
 
@@ -266,7 +276,6 @@ void Bill::menu() {
             break;
         }
 
-        // Update quantity
         case 3: {
             int id, qty;
             cout << "Enter Product ID: ";
@@ -277,12 +286,10 @@ void Bill::menu() {
             break;
         }
 
-        // Show cart
         case 4:
             cart.displayCart();
             break;
 
-        // Generate bill + receipt
         case 5: {
             string name, coupon;
             cout << "Enter Customer Name: ";
@@ -292,19 +299,24 @@ void Bill::menu() {
             cin.ignore();
             getline(cin, coupon);
 
-            Bill bill(name, cart, 0.05, coupon);
-            bill.display();
+            Bill* bill = new Bill(name, cart, 0.05, coupon); 
+            bill->display(); 
 
-            Receipt r;
-            bill.generateReceipt(r);
+            Receipt* r = new Receipt(); 
+            bill->generateReceipt(*r); 
 
-            cout << "\n--- RECEIPT ---" << endl;
-            r.printToConsole();
+            cout << endl;
+            cout << "--- RECEIPT ---" << endl;
+            r->printToConsole(); 
 
-            Transaction t;
-            t.setData(0,getCurrentDate(),0,bill.totalAmount,"Completed")
-            TransactionManagement::addTransaction(t)
+            Transaction* t = new Transaction(); 
+            t->setData(0, getCurrentDate(), 0, bill->totalAmount, "Completed"); 
+            TransactionManagement::addTransaction(*t);
             cout << "Transaction recorded." << endl;
+
+            delete bill; 
+            delete r; 
+            delete t; 
             break;
         }
 
