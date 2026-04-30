@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Admin\Admin.cpp" />
+    <ClCompile Include="FIlterAndSearch.cpp" />
     <ClCompile Include="Admin\Category.cpp" />
     <ClCompile Include="Admin\CategoryManagement.cpp" />
     <ClCompile Include="Admin\Inventory.cpp" />
@@ -141,6 +142,13 @@
     <ClCompile Include="Common\settings.cpp" />
     <ClCompile Include="Common\User.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ReceiptAndBilling.cpp" />
+    <ClCompile Include="UserManagement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FIlterAndSearch.h" />
+    <ClInclude Include="ReceiptAndBilling.h" />
+    <ClInclude Include="UserManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Admin.h" />

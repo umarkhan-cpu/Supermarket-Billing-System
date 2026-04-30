@@ -1,4 +1,4 @@
-﻿#include "Cashier/Transaction.h"
+#include "Cashier/Transaction.h"
 #include "Cashier/TransactionManagement.h"
 #include "Cashier/RefundManagement.h"
 #include "Admin/Product.h"
