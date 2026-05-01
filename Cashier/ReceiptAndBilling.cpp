@@ -311,9 +311,9 @@ void Receipt::saveToFile(const string& filename) const {
             r.printToConsole();
 
             Transaction t;
-            t.setData(0, getCurrentDate(), 0, bill.totalAmount, "Completed");
+            t.setData(0,getCurrentDate(),0,bill.totalAmount,"Completed")
             TransactionManagement::addTransaction(t)
-            //cout << "Transaction recorded." << endl;
+            cout << "Transaction recorded." << endl;
             break;
         }
 

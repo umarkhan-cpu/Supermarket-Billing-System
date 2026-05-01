@@ -124,18 +124,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Admin\Admin.cpp" />
-    <ClCompile Include="FIlterAndSearch.cpp" />
-    <ClCompile Include="FIlterAndSearch.cpp" />
-    <ClCompile Include="Admin\Admin.cpp" />
     <ClCompile Include="Admin\Category.cpp" />
     <ClCompile Include="Admin\CategoryManagement.cpp" />
     <ClCompile Include="Admin\Inventory.cpp" />
     <ClCompile Include="Admin\InventoryManagement.cpp" />
     <ClCompile Include="Admin\Product.cpp" />
     <ClCompile Include="Admin\ProductManagement.cpp" />
+    <ClCompile Include="Admin\UserManagement.cpp" />
     <ClCompile Include="Cashier\Cashier.cpp" />
     <ClCompile Include="Cashier\Discount.cpp" />
     <ClCompile Include="Cashier\DiscountManagement.cpp" />
+    <ClCompile Include="Cashier\FIlterAndSearch.cpp" />
+    <ClCompile Include="Cashier\ReceiptAndBilling.cpp" />
     <ClCompile Include="Cashier\Refund.cpp" />
     <ClCompile Include="Cashier\RefundManagement.cpp" />
     <ClCompile Include="Cashier\Transaction.cpp" />
@@ -144,20 +144,6 @@
     <ClCompile Include="Common\settings.cpp" />
     <ClCompile Include="Common\User.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SalesReport.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="transactions.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SalesReport.h" />
-    <ClCompile Include="ReceiptAndBilling.cpp" />
-    <ClCompile Include="UserManagement.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FIlterAndSearch.h" />
-    <ClInclude Include="ReceiptAndBilling.h" />
-    <ClInclude Include="UserManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin\Admin.h" />
@@ -167,9 +153,12 @@
     <ClInclude Include="Admin\InventoryManagement.h" />
     <ClInclude Include="Admin\Product.h" />
     <ClInclude Include="Admin\ProductManagement.h" />
+    <ClInclude Include="Admin\UserManagement.h" />
     <ClInclude Include="Cashier\Cashier.h" />
     <ClInclude Include="Cashier\Discount.h" />
     <ClInclude Include="Cashier\DiscountManagement.h" />
+    <ClInclude Include="Cashier\FIlterAndSearch.h" />
+    <ClInclude Include="Cashier\ReceiptAndBilling.h" />
     <ClInclude Include="Cashier\Refund.h" />
     <ClInclude Include="Cashier\RefundManagement.h" />
     <ClInclude Include="Cashier\Transaction.h" />

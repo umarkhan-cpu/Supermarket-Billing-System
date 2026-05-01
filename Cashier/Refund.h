@@ -8,7 +8,7 @@ class Refund {
 
 private:
     int    refundID;
-    int    transactionID;   // ties to the original sale (Farda's Transaction class)
+    int    transactionID;   // ties to the original sale (Transaction class)
     string reason;
     float  amount;
     string date;            // "YYYY-MM-DD"

@@ -1,6 +1,4 @@
 #include "FilterAndSearch.h"
-#include "ProductManagement.h"
-#include "CategoryManagement.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -8,7 +6,7 @@ using namespace std;
 // Prints a single product row using the category name resolved from CategoryManagement.  
 static void printProduct(const Product& p) {
     string cName = CategoryManagement::findByID(p.getCategoryID()).getName();// Get cname using cID of the product
-    p.display(cName);  
+    p.display(/*cName*/);
 }
 
 

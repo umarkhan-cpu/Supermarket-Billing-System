@@ -19,11 +19,11 @@ private:
     static int nextAvailableID();
     static int daysBetween(const string& t_Date, const string& today);
 
+public:
     // Returns today's date as "YYYY-MM-DD" using <ctime>.
     // Used as the date stamp when a refund is created.
     static string todayAsString();
 
-public:
     // ----- File lifecycle -----
 
     static void loadFromFile();

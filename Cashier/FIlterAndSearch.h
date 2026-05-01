@@ -1,8 +1,8 @@
 #ifndef FILTERANDSEARCH_H
 #define FILTERANDSEARCH_H
 
- #include "ProductManagement.h"
-#include "CategoryManagement.h"
+#include "..\Admin\ProductManagement.h"
+#include "..\Admin\CategoryManagement.h"
 
 #include <iostream>
 #include <fstream>
