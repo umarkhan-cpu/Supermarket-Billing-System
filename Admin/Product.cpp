@@ -29,12 +29,12 @@ int Product::getStock() const { return stock; }
 
 bool Product::setName(const std::string& newName) {
     if (newName.empty()) {
-        std::cout << "Error: product name cannot be empty.\n";
+        //std::cout << "Error: product name cannot be empty.\n";
         return false;
     }
 
     if (newName.find(',') != std::string::npos) {
-        std::cout << "Error: product name cannot contain commas.\n";
+        //std::cout << "Error: product name cannot contain commas.\n";
         return false;
     }
 
@@ -44,7 +44,7 @@ bool Product::setName(const std::string& newName) {
 
 bool Product::setCategoryID(int newCategoryID) {
     if (newCategoryID <= 0) {
-        std::cout << "Error: category ID must be positive.\n";
+        //std::cout << "Error: category ID must be positive.\n";
         return false;
     }
 
@@ -54,7 +54,7 @@ bool Product::setCategoryID(int newCategoryID) {
 
 bool Product::setPrice(float newPrice) {
     if (newPrice < 0) {
-        std::cout << "Error: price cannot be negative.\n";
+        //std::cout << "Error: price cannot be negative.\n";
         return false;
     }
 
@@ -64,7 +64,7 @@ bool Product::setPrice(float newPrice) {
 
 bool Product::setStock(int newStock) {
     if (newStock < 0) {
-        std::cout << "Error: stock cannot be negative.\n";
+        //std::cout << "Error: stock cannot be negative.\n";
         return false;
     }
 
@@ -136,10 +136,11 @@ bool Product::loadFromStream(std::ifstream& in) {
 
 //         Display 
 
-void Product::display() const {
+/*void Product::display() const {
     std::cout << "ID: " << id
         << " | Name: " << name
         << " | Category: " << categoryID
         << " | Price: " << price
         << " | Stock: " << stock << "\n";
 }
+*/

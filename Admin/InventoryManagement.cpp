@@ -9,7 +9,7 @@ int        InventoryManagement::count = 0;
 int        InventoryManagement::capacity = 0;
 
 // file path for inventory data
-static const char* INV_FILE_PATH = "Data/inventory.txt";
+static const char* INV_FILE_PATH = R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\inventory.txt)";
 
 
 //  Resize array when it gets full 
@@ -49,14 +49,14 @@ bool InventoryManagement::addStock(int productID, int amount) {
 
     
     if (amount <= 0) {
-        std::cout << "Error: amount to add must be greater than zero.\n";
+        //std::cout << "Error: amount to add must be greater than zero.\n";
         return false;
     }
 
     // check if product actually exists
     Product p = ProductManagement::findByID(productID);
     if (p.getID() == 0) {
-        std::cout << "Error: product with ID " << productID << " does not exist.\n";
+        //std::cout << "Error: product with ID " << productID << " does not exist.\n";
         return false;
     }
 
@@ -99,21 +99,21 @@ bool InventoryManagement::addStock(int productID, int amount) {
 bool InventoryManagement::removeStock(int productID, int amount) {
 
     if (amount <= 0) {
-        std::cout << "Error: amount to remove must be greater than zero.\n";
+        //std::cout << "Error: amount to remove must be greater than zero.\n";
         return false;
     }
 
     // check product exists
     Product p = ProductManagement::findByID(productID);
     if (p.getID() == 0) {
-        std::cout << "Error: product with ID " << productID << " does not exist.\n";
+        //std::cout << "Error: product with ID " << productID << " does not exist.\n";
         return false;
     }
 
     // make sure enough stock is available
     if (p.getStock() < amount) {
-        std::cout << "Error: not enough stock. Available: "
-            << p.getStock() << ", requested: " << amount << ".\n";
+        //std::cout << "Error: not enough stock. Available: "
+            //<< p.getStock() << ", requested: " << amount << ".\n";
         return false;
     }
 
@@ -121,8 +121,8 @@ bool InventoryManagement::removeStock(int productID, int amount) {
 
     if (index == -1) {
         // safety check (shouldn't normally happen)
-        std::cout << "Error: no inventory record found for product "
-            << productID << ".\n";
+        //std::cout << "Error: no inventory record found for product "
+            //<< productID << ".\n";
         return false;
     }
 
@@ -152,7 +152,7 @@ bool InventoryManagement::removeStock(int productID, int amount) {
 
 
 //           Show low stock products
-void InventoryManagement::checkLowStock(int threshold) {
+/*void InventoryManagement::checkLowStock(int threshold) {
 
     std::cout << "\n--- Low Stock Report (threshold: "
         << threshold << ") ---\n";
@@ -183,10 +183,11 @@ void InventoryManagement::checkLowStock(int threshold) {
 
     std::cout << "---------------------------------------------------\n";
 }
+*/
 
 
 //          View all inventory records 
-void InventoryManagement::viewAll() {
+/*void InventoryManagement::viewAll() {
 
     if (count == 0) {
         std::cout << "No inventory records found.\n";
@@ -200,6 +201,7 @@ void InventoryManagement::viewAll() {
 
     std::cout << "-------------------------\n";
 }
+*/
 
 
 //             Load from file 
@@ -233,7 +235,7 @@ void InventoryManagement::saveToFile() {
     std::ofstream out(INV_FILE_PATH);
 
     if (!out.is_open()) {
-        std::cout << "Warning: could not open file for writing.\n";
+        //std::cout << "Warning: could not open file for writing.\n";
         return;
     }
 

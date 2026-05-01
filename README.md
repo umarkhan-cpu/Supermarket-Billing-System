@@ -110,6 +110,8 @@ Supermarket-Billing-System/
 │   └── UserManagement.{h,cpp}          ✅ Areesha Khurram
 │
 ├── Cashier/
+│   ├── Billing.{h,cpp}                 🔄 Areesha Khurram
+│   ├── Cashier.{h,cpp}                 ✅ Muhammad Umar Khan
 │   ├── Billing.{h,cpp}                 ✅ Areesha Khurram
 │   ├── Cashier.{h,cpp}                 ✅ Muhammad Umar Khan
 │   ├── Discount.{h,cpp}                ✅ Muhammad Umar Khan
@@ -160,6 +162,9 @@ Supermarket-Billing-System/
 | 6 | Sales Report Generation | Mahnoor | ✅ Done |
 | 7 | Billing & Receipt Generation | Areesha |  ✅ Done |
 | 8 | Discount & Coupon System | Umar |  ✅ Done |
+| 9 | Transaction History | Farda |  ✅ Done |
+| 10 | Search & Filter Products | Areesha |  🔄 In Progress |
+| — | GUI (WinForms) | Mahnoor | 🔄 In Progress |
 | 9 | Transaction History | Farda |  ✅ Done |
 | 10 | Search & Filter Products | Areesha |  ✅ Done |
 | — | GUI (WinForms) | Mahnoor | 🔄 In Progress |

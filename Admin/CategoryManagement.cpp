@@ -66,7 +66,7 @@ int CategoryManagement::nextAvailableID()
 
 void CategoryManagement::loadFromFile() 
 {
-    ifstream file("Data/categories.txt");
+    ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\categories.txt)");
     if (!file.is_open()) return;   // file doesn't exist yet - empty collection is fine
 
     string line;
@@ -87,7 +87,7 @@ void CategoryManagement::loadFromFile()
 
 void CategoryManagement::saveToFile() 
 {
-    ofstream file("Data/categories.txt");
+    ofstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\categories.txt)");
     if (!file.is_open()) return;               
 
     for (int i = 0; i < count; i++) 
@@ -165,7 +165,7 @@ bool CategoryManagement::deleteCategory(int id)
 // Read operations
 // ============================================================================
 
-void CategoryManagement::viewAll() 
+/*void CategoryManagement::viewAll()
 {
     if (count == 0) 
     {
@@ -187,6 +187,7 @@ void CategoryManagement::viewAll()
 
     cout << "+------+------------------------+----------------------------------+\n";
 }
+*/
 
 Category CategoryManagement::findByID(int id) 
 {
@@ -204,7 +205,7 @@ int CategoryManagement::getCount()
 // Console driver (kept as a backup in case GUI fails)
 // ============================================================================
 
-void CategoryManagement::showMenu() 
+/*void CategoryManagement::showMenu()
 {
     int choice;
     string name, desc;
@@ -272,3 +273,4 @@ void CategoryManagement::showMenu()
         }
     } while (choice != 5);
 }
+*/

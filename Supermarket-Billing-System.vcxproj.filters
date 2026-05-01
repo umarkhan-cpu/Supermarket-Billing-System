@@ -27,6 +27,17 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SalesReport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="transactions.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SalesReport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="UserManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Admin\Admin.h">
       <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="ReceiptAndBilling.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cashier\Cashier.h">
       <Filter>Cashier</Filter>

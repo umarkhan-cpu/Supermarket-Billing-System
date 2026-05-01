@@ -106,7 +106,7 @@ int RefundManagement::daysBetween(const string& tr_Date, const string& today)
 
 void RefundManagement::loadFromFile()
 {
-    ifstream file("Data/refunds.txt");
+    ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\refunds.txt)");
     if (!file.is_open())
         return; // file doesn't exist yet — empty collection is fine
 
@@ -130,7 +130,7 @@ void RefundManagement::loadFromFile()
 
 void RefundManagement::saveToFile()
 {
-    ofstream file("Data/refunds.txt");
+    ofstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\refunds.txt)");
     if (!file.is_open())
         return;
 
@@ -204,7 +204,7 @@ bool RefundManagement::createRefund(int transactionID, const string& reason, flo
 // Read operations
 // ============================================================================
 
-void RefundManagement::viewAll()
+/*void RefundManagement::viewAll()
 {
     if (count == 0) 
     {
@@ -228,6 +228,7 @@ void RefundManagement::viewAll()
 
     cout << "+------+----------+--------------------------+----------+------------+\n";
 }
+*/
 
 void RefundManagement::viewByTransactionID(int txnID)
 {
@@ -276,7 +277,7 @@ int RefundManagement::getCount()
 // Console driver (kept as a backup in case GUI fails)
 // ============================================================================
 
-void RefundManagement::showMenu()
+/*void RefundManagement::showMenu()
 {
     int choice;
 
@@ -363,3 +364,4 @@ void RefundManagement::showMenu()
         }
     } while (choice != 5);
 }
+*/
