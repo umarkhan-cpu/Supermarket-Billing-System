@@ -50,6 +50,8 @@ A C++ application that automates a supermarket's day-to-day operations — billi
    - Press `Ctrl+F5`
    - Log in using one of the demo credentials below
 
+   💡 If login fails with a "can't open Data/users.txt" error: right-click supermarketui project → Properties → Configuration Properties → Debugging → set Working Directory to $(SolutionDir) → Apply.
+
 ### 🔑 Demo Credentials
 
 After running the bootstrap utility (Option 1 or 4), the following accounts exist:
