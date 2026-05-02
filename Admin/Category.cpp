@@ -2,79 +2,112 @@
 #include <sstream>
 using namespace std;
 
+// ============================================================================
+// Constructors
+// ============================================================================
+
 Category::Category() : categoryID(0), categoryName(""), categoryDesc("") {}
 
-Category::Category(int id, const string& name, const string& desc) : categoryID(0), categoryName(""), categoryDesc("")
+Category::Category(int id, const string& name, const string& desc)
+    : categoryID(0), categoryName(""), categoryDesc("")
 {
-	setID(id);
-	setName(name);
-	setDescription(desc);
+    // Route through setters so validation rules are enforced during construction.
+    setID(id);
+    setName(name);
+    setDescription(desc);
 }
 
-Category::Category(const Category& other) : categoryID(other.categoryID), 
-											categoryName(other.categoryName),
-											categoryDesc(other.categoryDesc) {}
+Category::Category(const Category& other)
+    : categoryID(other.categoryID),
+    categoryName(other.categoryName),
+    categoryDesc(other.categoryDesc) {
+}
+
+// ============================================================================
+// Getters
+// ============================================================================
 
 int Category::getID() const
 {
-	return categoryID;
+    return categoryID;
 }
 
 string Category::getName() const
 {
-	return categoryName;
+    return categoryName;
 }
 
 string Category::getDescription() const
 {
-	return categoryDesc;
+    return categoryDesc;
 }
+
+// ============================================================================
+// Setters
+// ============================================================================
 
 bool Category::setID(int id)
 {
-	if (id > 0)
-	{
-		categoryID = id;
-		return true;
-	}
-	return false;
+    if (id > 0)
+    {
+        categoryID = id;
+        return true;
+    }
+    return false;
 }
 
+// Names must be non-empty and must not contain commas (CSV safety).
 bool Category::setName(const string& name)
 {
-	if (name != "" && name.find(',') == name.npos)
-	{
-		categoryName = name;
-		return true;
-	}
-	return false;
+    if (name != "" && name.find(',') == name.npos)
+    {
+        categoryName = name;
+        return true;
+    }
+    return false;
 }
 
+// Descriptions are optional but must not contain commas (CSV safety).
 bool Category::setDescription(const string& desc)
 {
-	if (desc.find(',') == desc.npos)
-	{
-		categoryDesc = desc;
-		return true;
-	}
-	return false;
+    if (desc.find(',') == desc.npos)
+    {
+        categoryDesc = desc;
+        return true;
+    }
+    return false;
 }
 
-// Returns a default Category (id = 0) if the line is malformed,
-// so callers can skip invalid entries without crashing.
-Category Category::fromCSV(const string& line) {
-	stringstream ss(line);
-	string idStr, name, desc;
+// ============================================================================
+// CSV Serialization (to be used when writing int Data/categories.txt
+// ============================================================================
 
-	getline(ss, idStr, ',');
-	getline(ss, name, ',');
-	getline(ss, desc);
+string Category::toCSV() const
+{
+    string line = to_string(categoryID) + "," + categoryName + "," + categoryDesc;
+    return line;
+}
 
-	if (idStr.empty() || name.empty()) return Category();
+// If the line is malformed, returns a default Category (ID = 0) instead of
+// throwing. This lets callers skip bad lines in the file and keep reading,
+// without wrapping every call in try/catch.
+Category Category::fromCSV(const string& line)
+{
+    stringstream ss(line);
+    string idStr, name, desc;
 
-	try {
-		return Category(stoi(idStr), name, desc);
-	}
-	catch (const invalid_argument&) { return Category(); }
-	catch (const out_of_range&) { return Category(); }
+    getline(ss, idStr, ',');
+    getline(ss, name, ',');
+    getline(ss, desc);
+
+    if (idStr.empty() || name.empty()) return Category();
+
+    // stoi throws if the string is not a number, or if the number is too
+    // large to fit in an int. Both are treated as parse failures.
+    try
+    {
+        return Category(stoi(idStr), name, desc);
+    }
+    catch (const invalid_argument&) { return Category(); }
+    catch (const out_of_range&) { return Category(); }
 }

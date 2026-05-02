@@ -1,0 +1,4 @@
+1,Pepsi,1,80,58
+2,CocaCola,1,90,40
+3,LaysChips,2,50,31
+4,Milk,3,120,25

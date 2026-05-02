@@ -1,0 +1,3 @@
+1,Beverages,Drinks and juices
+2,Junk Food,Updated
+3,Dairy,Milk and yogurt

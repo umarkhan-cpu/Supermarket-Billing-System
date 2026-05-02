@@ -1,33 +1,156 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Admin">
-      <UniqueIdentifier>{5a7a0ea2-d3c6-435e-8f0b-acfcbef79029}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Admin\Admin.cpp">
+      <Filter>Admin</Filter>
     </ClCompile>
     <ClCompile Include="Admin\Category.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
+    <ClCompile Include="Admin\SalesReport.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\ReceiptStore.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Admin\CategoryManagement.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\Inventory.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\InventoryManagement.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\Product.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\ProductManagement.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\UserManagement.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Cashier.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Discount.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\DiscountManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\FIlterAndSearch.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\ReceiptAndBilling.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Refund.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\RefundManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\Transaction.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\TransactionManagement.cpp">
+      <Filter>Cashier</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SessionManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\settings.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\User.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Admin">
+      <UniqueIdentifier>{23ef7b41-8ea5-4aee-b969-4f596bb22043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cashier">
+      <UniqueIdentifier>{92f6d893-a9b4-4c30-9685-7e54c14cb339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1da9affc-d824-443e-b535-2c384e375b50}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Admin\Admin.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
     <ClInclude Include="Admin\Category.h">
       <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\CategoryManagement.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\Inventory.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\InventoryManagement.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\Product.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\ProductManagement.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\UserManagement.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Cashier.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Discount.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\DiscountManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\FIlterAndSearch.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\ReceiptAndBilling.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Refund.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\RefundManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Transaction.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\Cashier.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SessionManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\settings.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\User.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\TransactionManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\SalesReport.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\ReceiptStore.h">
+      <Filter>Cashier</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
