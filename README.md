@@ -64,6 +64,7 @@ After running the bootstrap utility (Option 1 or 4), the following accounts exis
 | `Farda` | `farda123` | Cashier |
 | `Areesha` | `areesha123` | Cashier |
 
+> 💡 Use Admin / admin123 for admin controls, others for the cashier role.
 ---
 
 ## 🚀 Features
@@ -257,6 +258,14 @@ We documented these honestly rather than hiding them:
 2. **No signup on the login screen.** This is intentional. Account creation is restricted to Admin via the User Management form, which mirrors how real retail POS systems handle staff accounts.
 3. **Child forms use a fixed light theme.** The dashboard's dark/light toggle applies to the dashboard itself; child windows (Inventory, Categories, Refunds, etc.) were left light-themed for legibility consistency.
 4. **Settings: English / PKR / Light-Dark only.** Multi-language and multi-currency support are not part of this scope.
+5. **Product creation does not auto-seed inventory.** When an Admin adds a 
+   product via the Inventory form's "Add" button, a Product record is created 
+   with the specified initial stock, but no corresponding Inventory record. 
+   This creates an asymmetry where the first stock-removal (via sale) silently 
+   fails, but a subsequent refund correctly creates the Inventory record — 
+   resulting in the product's stock count being off by the amount sold + refunded. 
+   Workaround: after adding a product, use the "Restock" button to explicitly 
+   seed inventory matching the initial stock count.
 
 ---
 
