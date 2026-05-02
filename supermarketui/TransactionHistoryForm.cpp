@@ -1,5 +1,6 @@
 #include "TransactionHistoryForm.h"
 #include "TransactionManagement.h"
+#include "ReceiptForm.h"
 #include <msclr\marshal_cppstd.h>
 
 using namespace System;
@@ -78,4 +79,29 @@ System::Void TransactionHistoryForm::btnRefresh_Click(System::Object^ sender, Sy
     // Reset the search box and show everything again
     txtSearchID->Text = "";
     PopulateGrid();
+}
+
+System::Void TransactionHistoryForm::btnViewReceipt_Click(System::Object^ sender, System::EventArgs^ e) {
+    // Get the currently selected row
+    if (gridHistory->SelectedRows->Count == 0) {
+        MessageBox::Show("Please click on a transaction row first.",
+            "No Selection", MessageBoxButtons::OK, MessageBoxIcon::Information);
+        return;
+    }
+
+    try {
+        DataGridViewRow^ row = gridHistory->SelectedRows[0];
+        int txnID = Convert::ToInt32(row->Cells[0]->Value);
+
+        // Open the receipt form for this transaction.
+        // ReceiptForm internally calls ReceiptStore::findByTransactionID
+        // and shows a friendly "not found" if no receipt was saved
+        // (e.g., for transactions created before receipt-saving was added).
+        ReceiptForm^ receiptScreen = gcnew ReceiptForm(txnID);
+        receiptScreen->ShowDialog();
+    }
+    catch (Exception^ ex) {
+        MessageBox::Show("Error opening receipt: " + ex->Message,
+            "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+    }
 }

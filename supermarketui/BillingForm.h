@@ -32,6 +32,7 @@ namespace supermarketui {
     private: System::Windows::Forms::TextBox^ txtProductID;
     private: System::Windows::Forms::TextBox^ txtQuantity;
     private: System::Windows::Forms::Button^ btnAdd;
+    private: System::Windows::Forms::Button^ btnClearCart;
     private: System::Windows::Forms::TextBox^ txtCoupon;
     private: System::Windows::Forms::Button^ btnApplyCoupon;
     private: System::Windows::Forms::Label^ lblSubtotal;
@@ -58,6 +59,7 @@ namespace supermarketui {
                this->lblTax = (gcnew System::Windows::Forms::Label());
                this->lblTotal = (gcnew System::Windows::Forms::Label());
                this->btnCheckout = (gcnew System::Windows::Forms::Button());
+               this->btnClearCart = (gcnew System::Windows::Forms::Button());
                this->label1 = (gcnew System::Windows::Forms::Label());
                this->label2 = (gcnew System::Windows::Forms::Label());
                this->label3 = (gcnew System::Windows::Forms::Label());
@@ -103,7 +105,7 @@ namespace supermarketui {
                this->btnAdd->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnAdd->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
                this->btnAdd->ForeColor = System::Drawing::Color::White;
-               this->btnAdd->Location = System::Drawing::Point(960, 138);
+               this->btnAdd->Location = System::Drawing::Point(960, 130);
                this->btnAdd->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
                this->btnAdd->Name = L"btnAdd";
                this->btnAdd->Size = System::Drawing::Size(345, 62);
@@ -115,7 +117,7 @@ namespace supermarketui {
                // txtCoupon
                // 
                this->txtCoupon->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
-               this->txtCoupon->Location = System::Drawing::Point(960, 285);
+               this->txtCoupon->Location = System::Drawing::Point(960, 235);
                this->txtCoupon->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
                this->txtCoupon->Name = L"txtCoupon";
                this->txtCoupon->Size = System::Drawing::Size(343, 39);
@@ -127,7 +129,7 @@ namespace supermarketui {
                this->btnApplyCoupon->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnApplyCoupon->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
                this->btnApplyCoupon->ForeColor = System::Drawing::Color::White;
-               this->btnApplyCoupon->Location = System::Drawing::Point(960, 354);
+               this->btnApplyCoupon->Location = System::Drawing::Point(960, 295);
                this->btnApplyCoupon->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
                this->btnApplyCoupon->Name = L"btnApplyCoupon";
                this->btnApplyCoupon->Size = System::Drawing::Size(345, 62);
@@ -139,7 +141,7 @@ namespace supermarketui {
                // lblSubtotal
                // 
                this->lblSubtotal->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
-               this->lblSubtotal->Location = System::Drawing::Point(960, 477);
+               this->lblSubtotal->Location = System::Drawing::Point(960, 380);
                this->lblSubtotal->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
                this->lblSubtotal->Name = L"lblSubtotal";
                this->lblSubtotal->Size = System::Drawing::Size(345, 38);
@@ -150,7 +152,7 @@ namespace supermarketui {
                // 
                this->lblDiscount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
                this->lblDiscount->ForeColor = System::Drawing::Color::Green;
-               this->lblDiscount->Location = System::Drawing::Point(960, 523);
+               this->lblDiscount->Location = System::Drawing::Point(960, 420);
                this->lblDiscount->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
                this->lblDiscount->Name = L"lblDiscount";
                this->lblDiscount->Size = System::Drawing::Size(345, 38);
@@ -160,18 +162,18 @@ namespace supermarketui {
                // lblTax
                // 
                this->lblTax->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
-               this->lblTax->Location = System::Drawing::Point(960, 569);
+               this->lblTax->Location = System::Drawing::Point(960, 460);
                this->lblTax->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
                this->lblTax->Name = L"lblTax";
                this->lblTax->Size = System::Drawing::Size(345, 38);
                this->lblTax->TabIndex = 2;
-               this->lblTax->Text = L"Tax (5%): Rs. 0.00";
+               this->lblTax->Text = L"Tax (17%): Rs. 0.00";
                // 
                // lblTotal
                // 
                this->lblTotal->Font = (gcnew System::Drawing::Font(L"Segoe UI", 16, System::Drawing::FontStyle::Bold));
                this->lblTotal->ForeColor = System::Drawing::Color::DarkRed;
-               this->lblTotal->Location = System::Drawing::Point(960, 615);
+               this->lblTotal->Location = System::Drawing::Point(960, 510);
                this->lblTotal->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
                this->lblTotal->Name = L"lblTotal";
                this->lblTotal->Size = System::Drawing::Size(345, 54);
@@ -185,14 +187,29 @@ namespace supermarketui {
                this->btnCheckout->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnCheckout->Font = (gcnew System::Drawing::Font(L"Segoe UI", 14, System::Drawing::FontStyle::Bold));
                this->btnCheckout->ForeColor = System::Drawing::Color::White;
-               this->btnCheckout->Location = System::Drawing::Point(960, 692);
+               this->btnCheckout->Location = System::Drawing::Point(960, 580);
                this->btnCheckout->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
                this->btnCheckout->Name = L"btnCheckout";
-               this->btnCheckout->Size = System::Drawing::Size(345, 92);
+               this->btnCheckout->Size = System::Drawing::Size(345, 70);
                this->btnCheckout->TabIndex = 0;
                this->btnCheckout->Text = L"Checkout";
                this->btnCheckout->UseVisualStyleBackColor = false;
                this->btnCheckout->Click += gcnew System::EventHandler(this, &BillingForm::btnCheckout_Click);
+               // 
+               // btnClearCart - lets the cashier abandon the current cart
+               // without checking out. Confirms before wiping to avoid accidents.
+               // 
+               this->btnClearCart->BackColor = System::Drawing::Color::FromArgb(120, 120, 120);
+               this->btnClearCart->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+               this->btnClearCart->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
+               this->btnClearCart->ForeColor = System::Drawing::Color::White;
+               this->btnClearCart->Location = System::Drawing::Point(960, 660);
+               this->btnClearCart->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+               this->btnClearCart->Name = L"btnClearCart";
+               this->btnClearCart->Size = System::Drawing::Size(345, 55);
+               this->btnClearCart->Text = L"Clear Cart";
+               this->btnClearCart->UseVisualStyleBackColor = false;
+               this->btnClearCart->Click += gcnew System::EventHandler(this, &BillingForm::btnClearCart_Click);
                // 
                // label1
                // 
@@ -220,7 +237,7 @@ namespace supermarketui {
                // 
                this->label3->AutoSize = true;
                this->label3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
-               this->label3->Location = System::Drawing::Point(960, 246);
+               this->label3->Location = System::Drawing::Point(960, 200);
                this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
                this->label3->Name = L"label3";
                this->label3->Size = System::Drawing::Size(137, 28);
@@ -234,6 +251,7 @@ namespace supermarketui {
                this->BackColor = System::Drawing::Color::WhiteSmoke;
                this->ClientSize = System::Drawing::Size(1350, 831);
                this->Controls->Add(this->btnCheckout);
+               this->Controls->Add(this->btnClearCart);
                this->Controls->Add(this->lblTotal);
                this->Controls->Add(this->lblTax);
                this->Controls->Add(this->lblDiscount);
@@ -247,7 +265,8 @@ namespace supermarketui {
                this->Controls->Add(this->txtProductID);
                this->Controls->Add(this->label1);
                this->Controls->Add(this->gridCart);
-               this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
+               this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Sizable;
+               this->AutoScroll = true;
                this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
                this->MaximizeBox = false;
                this->Name = L"BillingForm";
@@ -264,7 +283,7 @@ namespace supermarketui {
     private:
         double subtotal = 0.0;
         double discount = 0.0;
-        double taxRate = 0.05; // 5% tax
+        double taxRate = 0.17; // 17% FBR sales tax (Pakistan standard)
 
         void SetupGrid() {
             this->gridCart->ColumnCount = 5;
@@ -283,7 +302,7 @@ namespace supermarketui {
 
             this->lblSubtotal->Text = "Subtotal: Rs. " + subtotal.ToString("F2");
             this->lblDiscount->Text = "Discount: -Rs. " + discount.ToString("F2");
-            this->lblTax->Text = "Tax (5%): Rs. " + tax.ToString("F2");
+            this->lblTax->Text = "Tax (17%): Rs. " + tax.ToString("F2");
             this->lblTotal->Text = "Total: Rs. " + grandTotal.ToString("F2");
         }
 
@@ -291,7 +310,8 @@ namespace supermarketui {
     private: System::Void btnAdd_Click(System::Object^ sender, System::EventArgs^ e);
     private: System::Void btnApplyCoupon_Click(System::Object^ sender, System::EventArgs^ e);
     private: System::Void btnCheckout_Click(System::Object^ sender, System::EventArgs^ e);
+    private: System::Void btnClearCart_Click(System::Object^ sender, System::EventArgs^ e);
     private: System::Void lblTotal_Click(System::Object^ sender, System::EventArgs^ e) {
     }
-};
+    };
 }

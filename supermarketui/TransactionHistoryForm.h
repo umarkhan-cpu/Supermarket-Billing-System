@@ -33,6 +33,7 @@ namespace supermarketui {
     private: System::Windows::Forms::TextBox^ txtSearchID;
     private: System::Windows::Forms::Button^ btnSearch;
     private: System::Windows::Forms::Button^ btnRefresh;
+    private: System::Windows::Forms::Button^ btnViewReceipt;
     private: System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
@@ -44,6 +45,7 @@ namespace supermarketui {
                this->txtSearchID = (gcnew System::Windows::Forms::TextBox());
                this->btnSearch = (gcnew System::Windows::Forms::Button());
                this->btnRefresh = (gcnew System::Windows::Forms::Button());
+               this->btnViewReceipt = (gcnew System::Windows::Forms::Button());
 
                (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->gridHistory))->BeginInit();
                this->SuspendLayout();
@@ -51,7 +53,7 @@ namespace supermarketui {
                // lblTitle
                this->lblTitle->AutoSize = true;
                this->lblTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 20, System::Drawing::FontStyle::Bold));
-               this->lblTitle->Location = System::Drawing::Point(20, 20);
+               this->lblTitle->Location = System::Drawing::Point(15, 20);
                this->lblTitle->Name = L"lblTitle";
                this->lblTitle->Size = System::Drawing::Size(270, 37);
                this->lblTitle->Text = L"Transaction History";
@@ -59,7 +61,7 @@ namespace supermarketui {
                // lblSearch
                this->lblSearch->AutoSize = true;
                this->lblSearch->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
-               this->lblSearch->Location = System::Drawing::Point(400, 30);
+               this->lblSearch->Location = System::Drawing::Point(412, 32);
                this->lblSearch->Name = L"lblSearch";
                this->lblSearch->Size = System::Drawing::Size(100, 21);
                this->lblSearch->Text = L"Search by ID:";
@@ -94,6 +96,18 @@ namespace supermarketui {
                this->btnRefresh->UseVisualStyleBackColor = false;
                this->btnRefresh->Click += gcnew System::EventHandler(this, &TransactionHistoryForm::btnRefresh_Click);
 
+               // btnViewReceipt - opens ReceiptForm for the currently-selected row
+               this->btnViewReceipt->BackColor = System::Drawing::Color::SeaGreen;
+               this->btnViewReceipt->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+               this->btnViewReceipt->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
+               this->btnViewReceipt->ForeColor = System::Drawing::Color::White;
+               this->btnViewReceipt->Location = System::Drawing::Point(279, 29);
+               this->btnViewReceipt->Name = L"btnViewReceipt";
+               this->btnViewReceipt->Size = System::Drawing::Size(110, 30);
+               this->btnViewReceipt->Text = L"View Receipt";
+               this->btnViewReceipt->UseVisualStyleBackColor = false;
+               this->btnViewReceipt->Click += gcnew System::EventHandler(this, &TransactionHistoryForm::btnViewReceipt_Click);
+
                // gridHistory
                this->gridHistory->AllowUserToAddRows = false;
                this->gridHistory->AllowUserToDeleteRows = false;
@@ -114,6 +128,7 @@ namespace supermarketui {
                this->ClientSize = System::Drawing::Size(820, 500);
                this->Controls->Add(this->btnRefresh);
                this->Controls->Add(this->btnSearch);
+               this->Controls->Add(this->btnViewReceipt);
                this->Controls->Add(this->txtSearchID);
                this->Controls->Add(this->lblSearch);
                this->Controls->Add(this->gridHistory);
@@ -134,6 +149,7 @@ namespace supermarketui {
     private: System::Void TransactionHistoryForm_Load(System::Object^ sender, System::EventArgs^ e);
     private: System::Void btnSearch_Click(System::Object^ sender, System::EventArgs^ e);
     private: System::Void btnRefresh_Click(System::Object^ sender, System::EventArgs^ e);
+    private: System::Void btnViewReceipt_Click(System::Object^ sender, System::EventArgs^ e);
 
            // Helper function to populate the grid
     private: void PopulateGrid();

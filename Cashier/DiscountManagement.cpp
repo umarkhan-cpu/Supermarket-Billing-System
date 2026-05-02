@@ -1,4 +1,4 @@
-﻿#include "DiscountManagement.h"
+#include "DiscountManagement.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -74,9 +74,15 @@ int DiscountManagement::nextAvailableID()
 
 void DiscountManagement::loadFromFile()
 {
-    ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\coupons.txt)");
+    ifstream file("Data/coupons.txt");
     if (!file.is_open())
         return; // file doesn't exist yet — empty collection is fine
+
+    // Clear any previously loaded data so repeated calls don't multiply records.
+    delete[] discounts;
+    discounts = nullptr;
+    count = 0;
+    capacity = 0;
 
     string line;
     while (getline(file, line))
@@ -98,7 +104,7 @@ void DiscountManagement::loadFromFile()
 
 void DiscountManagement::saveToFile()
 {
-    ofstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\coupons.txt)");
+    ofstream file("Data/coupons.txt");
     if (!file.is_open())
         return;
 

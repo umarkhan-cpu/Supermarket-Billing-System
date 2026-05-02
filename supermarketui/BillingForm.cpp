@@ -1,7 +1,8 @@
 #include "BillingForm.h"
+#include "ReceiptForm.h"
 #include <msclr\marshal_cppstd.h>
 
-// Include your backend headers
+// Backend headers
 #include "ProductManagement.h"
 #include "ReceiptAndBilling.h"
 #include "DiscountManagement.h"
@@ -9,6 +10,7 @@
 #include "SessionManager.h"
 #include "User.h"
 #include "InventoryManagement.h"
+#include "ReceiptStore.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -19,6 +21,8 @@ System::Void BillingForm::BillingForm_Load(System::Object^ sender, System::Event
     try {
         ProductManagement::loadFromFile();
         DiscountManagement::loadFromFile();
+        TransactionManagement::loadFromFile();
+        InventoryManagement::loadFromFile();
     }
     catch (...) {
         // Just in case the files don't exist yet
@@ -101,9 +105,9 @@ System::Void BillingForm::btnCheckout_Click(System::Object^ sender, System::Even
     }
 
     try {
-        // 1. Calculate the final Grand Total (ignoring the dot in "Rs.")
+        // 1. Read the final Grand Total off the lblTotal display (parses "Rs. 84.00").
         float finalTotal = 0.0f;
-        String^ rawText = lblTotal->Text; // (Change this if your label is named lblTotal!)
+        String^ rawText = lblTotal->Text;
         String^ cleanText = "";
         bool foundDecimal = false;
 
@@ -111,60 +115,118 @@ System::Void BillingForm::btnCheckout_Click(System::Object^ sender, System::Even
             if (Char::IsDigit(rawText[i])) {
                 cleanText += rawText[i];
             }
-            // Only accept a decimal IF we already started reading a number!
             else if (rawText[i] == '.' && !foundDecimal && cleanText->Length > 0) {
                 cleanText += rawText[i];
                 foundDecimal = true;
             }
         }
-
         if (cleanText == "") cleanText = "0";
         finalTotal = (float)Convert::ToDouble(cleanText);
 
-        // 2. Generate a new Transaction ID
-        int newID = TransactionManagement::getCount() + 1;
-
-        // 3. Get today's date in "YYYY-MM-DD" format using WinForms
-        String^ sysDate = DateTime::Now.ToString("yyyy-MM-dd");
+        // 2. Generate transaction metadata
+        int newID = TransactionManagement::getNextAvailableID();
+        String^ sysDate = DateTime::Now.ToString("yyyy-MM-dd hh:mm tt");
         std::string cppDate = msclr::interop::marshal_as<std::string>(sysDate);
-
-        // 4. Get the current Cashier's ID
         int cashierID = SessionManager::getCurrentUser()->getID();
+        std::string cashierName = SessionManager::getCurrentUser()->getUsername();
 
-        // 5. Build Farda's Transaction Object!
-        Transaction newTxn;
-        newTxn.setData(newID, cppDate, cashierID, finalTotal, "Completed");
-        // 5.5 Deduct the items from the Store Inventory!
+        // 3. Compute tax for the receipt (matches what's shown in lblTax)
+        double tax = (subtotal - discount) * 0.17;
+        if (tax < 0) tax = 0;
+
+        // 4. Build the ReceiptRecord with structured line items.
+        // This is the key new step - it preserves unit price and quantity per
+        // item so refunds can later reconstruct what was actually purchased.
+        ReceiptRecord receipt;
+        receipt.transactionID = newID;
+        receipt.dateTime = msclr::interop::marshal_as<std::string>(sysDate);
+        receipt.cashierName = cashierName;
+        receipt.type = "Sale";
+        receipt.subtotal = (float)subtotal;
+        receipt.discount = (float)discount;
+        receipt.tax = (float)tax;
+        receipt.grandTotal = finalTotal;
+
+        for (int i = 0; i < gridCart->Rows->Count; i++) {
+            int prodID = Convert::ToInt32(gridCart->Rows[i]->Cells[0]->Value);
+            String^ nameStr = gridCart->Rows[i]->Cells[1]->Value->ToString();
+            float price = (float)Convert::ToDouble(gridCart->Rows[i]->Cells[2]->Value);
+            int qty = Convert::ToInt32(gridCart->Rows[i]->Cells[3]->Value);
+
+            ReceiptItem item(prodID, msclr::interop::marshal_as<std::string>(nameStr), qty, price);
+            receipt.addItem(item);
+        }
+
+        // 5. Persist receipt FIRST so even if a later step fails,
+        // we have a record of what the customer paid for.
+        ReceiptStore::saveReceipt(receipt);
+
+        // 6. Deduct stock for each item in the cart
         for (int i = 0; i < gridCart->Rows->Count; i++) {
             int prodID = Convert::ToInt32(gridCart->Rows[i]->Cells[0]->Value);
             int qtyBought = Convert::ToInt32(gridCart->Rows[i]->Cells[3]->Value);
             InventoryManagement::removeStock(prodID, qtyBought);
         }
 
-        // 6. Save it to the database!
+        // 7. Save the transaction record (existing flow)
+        Transaction newTxn;
+        newTxn.setData(newID, cppDate, cashierID, finalTotal, "Completed");
         TransactionManagement::addTransaction(newTxn);
         TransactionManagement::saveToFile();
 
-        // Show the beautiful success message
-        MessageBox::Show("Payment Processed Successfully!\nTransaction ID: " + newID.ToString() + "\nReceipt Generated.", "Checkout Complete", MessageBoxButtons::OK, MessageBoxIcon::Information);
+        // 8. Show the receipt visually using our ReceiptForm.
+        ReceiptForm^ receiptScreen = gcnew ReceiptForm(newID);
+        receiptScreen->ShowDialog();
 
-        // Clear the cart for the next customer
-        // NOTE: We keep these commented out so they don't crash the Event Handlers!
-        // gridCart->Rows->Clear();
-        // lblSubtotal->Text = "Rs. 0.00";
-        // lblDiscount->Text = "Rs. 0.00";
-        // lblTax->Text = "Rs. 0.00";
-        // lblGrandTotal->Text = "Rs. 0.00";
-        // txtProductID->Text = "";
-        // txtQuantity->Text = "";
-        // txtCoupon->Text = "";
-
+        // 9. Clear the cart and all totals for the next customer.
+        // (The original code had these commented out due to a label name typo;
+        // using the correct names - lblTotal not lblGrandTotal - it works.)
+        gridCart->Rows->Clear();
+        subtotal = 0.0;
+        discount = 0.0;
+        lblSubtotal->Text = L"Subtotal: Rs. 0.00";
+        lblDiscount->Text = L"Discount: -Rs. 0.00";
+        lblTax->Text = L"Tax (17%): Rs. 0.00";
+        lblTotal->Text = L"Total: Rs. 0.00";
+        txtProductID->Text = "";
+        txtQuantity->Text = "1";
+        txtCoupon->Text = "";
     }
     catch (Exception^ ex) {
         MessageBox::Show("Error: " + ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
     }
 }
 
+// Clears all items from the cart without checking out. Useful when a customer
+// changes their mind mid-transaction or the cashier mis-rings several items.
+// Confirms before wiping to prevent accidental clicks killing a real cart.
+//
+// Mirrors the cleanup that btnCheckout_Click does after a successful sale -
+// same labels, same default values, same input field reset.
+System::Void BillingForm::btnClearCart_Click(System::Object^ sender, System::EventArgs^ e) {
+    if (gridCart->Rows->Count == 0) {
+        // Nothing to clear - quietly do nothing rather than show a popup
+        return;
+    }
 
+    if (MessageBox::Show("Clear all items from the cart?\nThis cannot be undone.",
+        "Confirm Clear Cart", MessageBoxButtons::YesNo, MessageBoxIcon::Question)
+        != System::Windows::Forms::DialogResult::Yes) {
+        return;
+    }
 
+    // Wipe cart rows and reset all running totals back to zero
+    gridCart->Rows->Clear();
+    subtotal = 0.0;
+    discount = 0.0;
 
+    lblSubtotal->Text = L"Subtotal: Rs. 0.00";
+    lblDiscount->Text = L"Discount: -Rs. 0.00";
+    lblTax->Text = L"Tax (17%): Rs. 0.00";
+    lblTotal->Text = L"Total: Rs. 0.00";
+
+    // Reset input fields back to ready-for-next-item state
+    txtProductID->Text = "";
+    txtQuantity->Text = "1";
+    txtCoupon->Text = "";
+}

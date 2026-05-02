@@ -70,7 +70,7 @@ namespace supermarketui {
                this->lblTitle->AutoSize = true;
                this->lblTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 24, System::Drawing::FontStyle::Bold));
                this->lblTitle->Location = System::Drawing::Point(20, 20);
-               this->lblTitle->Text = L"Financial Overview & Sales Report";
+               this->lblTitle->Text = L"Financial Overview && Sales Report";
 
                // --- Revenue Card ---
                this->panelRevenue->BackColor = System::Drawing::Color::SeaGreen;
@@ -144,12 +144,13 @@ namespace supermarketui {
                this->btnRefresh->Size = System::Drawing::Size(300, 50);
                this->btnRefresh->Text = L"🔄 Generate Live Report";
                this->btnRefresh->Click += gcnew System::EventHandler(this, &SalesReportForm::btnRefresh_Click);
+               this->btnRefresh->Visible = false;  // Refresh button had to be hidden due to inactivity because of the single-modal model
 
                // Form setup
                this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
                this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
                this->BackColor = System::Drawing::Color::WhiteSmoke;
-               this->ClientSize = System::Drawing::Size(980, 370);
+               this->ClientSize = System::Drawing::Size(980, 290);
 
                this->Controls->Add(this->panelRevenue);
                this->Controls->Add(this->panelSales);

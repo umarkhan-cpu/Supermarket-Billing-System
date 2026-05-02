@@ -5,20 +5,17 @@
     <ClCompile Include="Admin\Admin.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
-    <ClCompile Include="SalesReport.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Admin\Category.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin\SalesReport.cpp">
+      <Filter>Admin</Filter>
+    </ClCompile>
+    <ClCompile Include="Cashier\ReceiptStore.cpp">
+      <Filter>Cashier</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="transactions.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SalesReport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClCompile Include="UserManagement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Admin\CategoryManagement.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
@@ -134,9 +131,6 @@
     <ClInclude Include="Cashier\Transaction.h">
       <Filter>Cashier</Filter>
     </ClInclude>
-    <ClInclude Include="ReceiptAndBilling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Cashier\Cashier.h">
       <Filter>Cashier</Filter>
     </ClInclude>
@@ -148,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Common\User.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\TransactionManagement.h">
+      <Filter>Cashier</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin\SalesReport.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Cashier\ReceiptStore.h">
+      <Filter>Cashier</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

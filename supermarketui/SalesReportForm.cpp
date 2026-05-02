@@ -1,5 +1,6 @@
 #include "SalesReportForm.h"
 #include "TransactionManagement.h"
+#include "RefundManagement.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -7,8 +8,9 @@ using namespace supermarketui;
 
 void SalesReportForm::ComputeReport() {
 
-    // Load Farda's database
+    // Load transaction and refund database
     TransactionManagement::loadFromFile();
+    RefundManagement::loadFromFile();
     int totalTransactions = TransactionManagement::getCount();
 
     // Your exact logic from SalesReport.cpp!
@@ -19,12 +21,20 @@ void SalesReportForm::ComputeReport() {
     for (int i = 0; i < totalTransactions; i++) {
         Transaction temp = TransactionManagement::getByIndex(i);
 
-        // Count valid revenue
-        if (temp.getStatus() != "Refunded") {
-            totalRevenue += temp.getTotalAmount();
+        // Modification by Umar (lead): To link 3 states of refund to sales report.
+        // Net revenue: subtract any refunds against this transaction. This way
+        // a partially-refunded transaction still contributes to revenue, but
+        // only by the unrefunded portion. Fully-refunded transactions
+        // contribute zero. Matches real retail accounting.
+        float refunded = RefundManagement::getRefundedAmountForTransaction(temp.getID());
+        totalRevenue += (temp.getTotalAmount() - refunded);
+
+        // "Valid sales" = transactions with no refunds yet
+        if (temp.getStatus() == "Completed") {
             validSales++;
         }
         else {
+            // Partially or Fully Refunded - either way it's a refunded transaction
             refundedItems++;
         }
     }

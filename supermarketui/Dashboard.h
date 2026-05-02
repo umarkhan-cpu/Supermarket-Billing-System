@@ -7,6 +7,8 @@
 #include "CategoryForm.h"
 #include "UserForm.h"
 #include "SalesReportForm.h"
+#include "CouponForm.h"
+#include "SearchForm.h"
 
 namespace supermarketui {
 
@@ -23,9 +25,9 @@ namespace supermarketui {
         Dashboard(void)
         {
             InitializeComponent();
-            SetupRoleAccess();
-            // Start the session timeout timer!
             this->sessionTimer->Start();
+            btnTheme_Click(nullptr, nullptr);
+            SetupRoleAccess();
         }
 
     protected:
@@ -41,11 +43,13 @@ namespace supermarketui {
     private: System::Windows::Forms::Label^ lblRole;
     private: System::Windows::Forms::Button^ btnBilling;
     private: System::Windows::Forms::Button^ btnRefunds;
+    private: System::Windows::Forms::Button^ btnSearch;
     private: System::Windows::Forms::Button^ btnTransactions;
     private: System::Windows::Forms::Button^ btnInventory;
     private: System::Windows::Forms::Button^ btnCategories;
     private: System::Windows::Forms::Button^ btnUsers;
     private: System::Windows::Forms::Button^ btnSalesReport;
+    private: System::Windows::Forms::Button^ btnCoupons;
     private: System::Windows::Forms::Button^ btnTheme;
     private: System::Windows::Forms::Button^ btnLogout;
     private: System::Windows::Forms::Panel^ panelSidebar;
@@ -61,11 +65,13 @@ namespace supermarketui {
                this->lblRole = (gcnew System::Windows::Forms::Label());
                this->btnBilling = (gcnew System::Windows::Forms::Button());
                this->btnRefunds = (gcnew System::Windows::Forms::Button());
+               this->btnSearch = (gcnew System::Windows::Forms::Button());
                this->btnTransactions = (gcnew System::Windows::Forms::Button());
                this->btnInventory = (gcnew System::Windows::Forms::Button());
                this->btnCategories = (gcnew System::Windows::Forms::Button());
                this->btnUsers = (gcnew System::Windows::Forms::Button());
                this->btnSalesReport = (gcnew System::Windows::Forms::Button());
+               this->btnCoupons = (gcnew System::Windows::Forms::Button());
                this->btnTheme = (gcnew System::Windows::Forms::Button());
                this->btnLogout = (gcnew System::Windows::Forms::Button());
                this->panelSidebar = (gcnew System::Windows::Forms::Panel());
@@ -79,11 +85,13 @@ namespace supermarketui {
                this->panelSidebar->Controls->Add(this->btnTheme);
                this->panelSidebar->Controls->Add(this->btnLogout);
                this->panelSidebar->Controls->Add(this->btnSalesReport);
+               this->panelSidebar->Controls->Add(this->btnCoupons);
                this->panelSidebar->Controls->Add(this->btnUsers);
                this->panelSidebar->Controls->Add(this->btnCategories);
                this->panelSidebar->Controls->Add(this->btnInventory);
-               this->panelSidebar->Controls->Add(this->btnTransactions);
                this->panelSidebar->Controls->Add(this->btnRefunds);
+               this->panelSidebar->Controls->Add(this->btnSearch);
+               this->panelSidebar->Controls->Add(this->btnTransactions);
                this->panelSidebar->Controls->Add(this->btnBilling);
                this->panelSidebar->Controls->Add(this->lblRole);
                this->panelSidebar->Controls->Add(this->lblWelcome);
@@ -113,7 +121,18 @@ namespace supermarketui {
                System::Drawing::Font^ btnFont = (gcnew System::Drawing::Font(L"Segoe UI", 11));
                System::Drawing::Color btnColor = System::Drawing::Color::FromArgb(45, 52, 60);
 
-               // btnBilling
+               // ----- LAYOUT STRATEGY -----
+               // Cashier-only and Admin-only buttons OVERLAP at shared y-coordinates.
+               // Since SetupRoleAccess hides the wrong-role buttons at runtime, only
+               // one button is visible at each y position - producing a clean
+               // contiguous stack with no gaps for both roles. No runtime
+               // repositioning needed.
+               //
+               // Cashier sees: Billing(100), Refunds(145), Transactions(190), Search(235)
+               // Admin sees:   Inventory(100), Categories(145), Transactions(190),
+               //               Users(235), Coupons(280), SalesReport(325)
+
+               // btnBilling (Cashier-only, slot 1)
                this->btnBilling->BackColor = btnColor;
                this->btnBilling->FlatAppearance->BorderSize = 0;
                this->btnBilling->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -122,12 +141,12 @@ namespace supermarketui {
                this->btnBilling->Location = System::Drawing::Point(0, 100);
                this->btnBilling->Name = L"btnBilling";
                this->btnBilling->Size = System::Drawing::Size(240, 45);
-               this->btnBilling->Text = L"🛒  POS & Billing";
+               this->btnBilling->Text = L"🛒  POS && Billing";
                this->btnBilling->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
                this->btnBilling->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
-               this->btnBilling->Click += gcnew System::EventHandler(this,&Dashboard::btnBilling_Click);
+               this->btnBilling->Click += gcnew System::EventHandler(this, &Dashboard::btnBilling_Click);
 
-               // btnRefunds
+               // btnRefunds (Cashier-only, slot 2)
                this->btnRefunds->BackColor = btnColor;
                this->btnRefunds->FlatAppearance->BorderSize = 0;
                this->btnRefunds->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -141,7 +160,22 @@ namespace supermarketui {
                this->btnRefunds->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnRefunds->Click += gcnew System::EventHandler(this, &Dashboard::btnRefunds_Click);
 
-               // btnTransactions
+               // btnSearch (Cashier-only, slot 4) - moved up from y=265 to y=235
+               this->btnSearch->BackColor = btnColor;
+               this->btnSearch->FlatAppearance->BorderSize = 0;
+               this->btnSearch->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+               this->btnSearch->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
+               this->btnSearch->ForeColor = System::Drawing::Color::White;
+               this->btnSearch->Location = System::Drawing::Point(0, 235);
+               this->btnSearch->Name = L"btnSearch";
+               this->btnSearch->Size = System::Drawing::Size(240, 45);
+               this->btnSearch->Text = L"🔍  Search Products";
+               this->btnSearch->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+               this->btnSearch->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
+               this->btnSearch->UseVisualStyleBackColor = false;
+               this->btnSearch->Click += gcnew System::EventHandler(this, &Dashboard::btnSearch_Click);
+
+               // btnTransactions (SHARED - both roles see it at y=190)
                this->btnTransactions->BackColor = btnColor;
                this->btnTransactions->FlatAppearance->BorderSize = 0;
                this->btnTransactions->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -155,13 +189,13 @@ namespace supermarketui {
                this->btnTransactions->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnTransactions->Click += gcnew System::EventHandler(this, &Dashboard::btnTransactions_Click);
 
-               // btnInventory
+               // btnInventory (Admin-only, slot 1) - was y=235, moved to y=100 to overlap btnBilling
                this->btnInventory->BackColor = btnColor;
                this->btnInventory->FlatAppearance->BorderSize = 0;
                this->btnInventory->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnInventory->Font = btnFont;
                this->btnInventory->ForeColor = System::Drawing::Color::White;
-               this->btnInventory->Location = System::Drawing::Point(0, 235);
+               this->btnInventory->Location = System::Drawing::Point(0, 100);
                this->btnInventory->Name = L"btnInventory";
                this->btnInventory->Size = System::Drawing::Size(240, 45);
                this->btnInventory->Text = L"📦  Inventory";
@@ -169,13 +203,13 @@ namespace supermarketui {
                this->btnInventory->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnInventory->Click += gcnew System::EventHandler(this, &Dashboard::btnInventory_Click);
 
-               // btnCategories
+               // btnCategories (Admin-only, slot 2) - was y=280, moved to y=145 to overlap btnRefunds
                this->btnCategories->BackColor = btnColor;
                this->btnCategories->FlatAppearance->BorderSize = 0;
                this->btnCategories->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnCategories->Font = btnFont;
                this->btnCategories->ForeColor = System::Drawing::Color::White;
-               this->btnCategories->Location = System::Drawing::Point(0, 280);
+               this->btnCategories->Location = System::Drawing::Point(0, 145);
                this->btnCategories->Name = L"btnCategories";
                this->btnCategories->Size = System::Drawing::Size(240, 45);
                this->btnCategories->Text = L"📂  Categories";
@@ -183,13 +217,13 @@ namespace supermarketui {
                this->btnCategories->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnCategories->Click += gcnew System::EventHandler(this, &Dashboard::btnCategories_Click);
 
-               // btnUsers
+               // btnUsers (Admin-only, slot 4) - was y=325, moved to y=235 to overlap btnSearch
                this->btnUsers->BackColor = btnColor;
                this->btnUsers->FlatAppearance->BorderSize = 0;
                this->btnUsers->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnUsers->Font = btnFont;
                this->btnUsers->ForeColor = System::Drawing::Color::White;
-               this->btnUsers->Location = System::Drawing::Point(0, 325);
+               this->btnUsers->Location = System::Drawing::Point(0, 235);
                this->btnUsers->Name = L"btnUsers";
                this->btnUsers->Size = System::Drawing::Size(240, 45);
                this->btnUsers->Text = L"👥  User Management";
@@ -197,13 +231,28 @@ namespace supermarketui {
                this->btnUsers->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnUsers->Click += gcnew System::EventHandler(this, &Dashboard::btnUsers_Click);
 
-               // btnSalesReport
+               // btnCoupons (Admin-only, slot 5) - was y=425, moved to y=280
+               this->btnCoupons->BackColor = btnColor;
+               this->btnCoupons->FlatAppearance->BorderSize = 0;
+               this->btnCoupons->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+               this->btnCoupons->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12));
+               this->btnCoupons->ForeColor = System::Drawing::Color::White;
+               this->btnCoupons->Location = System::Drawing::Point(0, 280);
+               this->btnCoupons->Name = L"btnCoupons";
+               this->btnCoupons->Size = System::Drawing::Size(240, 45);
+               this->btnCoupons->Text = L"💳  Coupons";
+               this->btnCoupons->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+               this->btnCoupons->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
+               this->btnCoupons->UseVisualStyleBackColor = false;
+               this->btnCoupons->Click += gcnew System::EventHandler(this, &Dashboard::btnCoupons_Click);
+
+               // btnSalesReport (Admin-only, slot 6) - was y=370, moved to y=325
                this->btnSalesReport->BackColor = btnColor;
                this->btnSalesReport->FlatAppearance->BorderSize = 0;
                this->btnSalesReport->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
                this->btnSalesReport->Font = btnFont;
                this->btnSalesReport->ForeColor = System::Drawing::Color::White;
-               this->btnSalesReport->Location = System::Drawing::Point(0, 370);
+               this->btnSalesReport->Location = System::Drawing::Point(0, 325);
                this->btnSalesReport->Name = L"btnSalesReport";
                this->btnSalesReport->Size = System::Drawing::Size(240, 45);
                this->btnSalesReport->Text = L"📊  Sales Report";
@@ -211,7 +260,7 @@ namespace supermarketui {
                this->btnSalesReport->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
                this->btnSalesReport->Click += gcnew System::EventHandler(this, &Dashboard::btnSalesReport_Click);
 
-               // btnTheme
+               // btnTheme (always visible)
                this->btnTheme->BackColor = System::Drawing::Color::SteelBlue;
                this->btnTheme->FlatAppearance->BorderSize = 0;
                this->btnTheme->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -223,7 +272,7 @@ namespace supermarketui {
                this->btnTheme->Text = L"☀️  Light Mode";
                this->btnTheme->Click += gcnew System::EventHandler(this, &Dashboard::btnTheme_Click);
 
-               // btnLogout
+               // btnLogout (always visible)
                this->btnLogout->BackColor = System::Drawing::Color::IndianRed;
                this->btnLogout->FlatAppearance->BorderSize = 0;
                this->btnLogout->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -249,7 +298,7 @@ namespace supermarketui {
                this->MaximizeBox = false;
                this->Name = L"Dashboard";
                this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-               this->Text = L"Supermarket Dashboard";
+               this->Text = L"Dashboard";
                this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &Dashboard::Dashboard_FormClosed);
                this->Click += gcnew System::EventHandler(this, &Dashboard::UpdateActivity);
                this->panelSidebar->ResumeLayout(false);
@@ -259,9 +308,12 @@ namespace supermarketui {
 #pragma endregion
 
            // ----- LOGIC STARTS HERE -----
-    private: bool isDarkMode = true; // Default theme
+    private: bool isDarkMode = false;
 
-           // Hide Admin buttons if a Cashier logs in
+           // Hide buttons not relevant to the user's role. Because Cashier and
+           // Admin buttons OVERLAP at shared y-coords (set in InitializeComponent),
+           // hiding the wrong-role buttons automatically produces a contiguous
+           // stack with no gaps. No runtime repositioning needed.
     private: void SetupRoleAccess() {
         if (SessionManager::getCurrentUser() != nullptr) {
             String^ username = gcnew String(SessionManager::getCurrentUser()->getUsername().c_str());
@@ -275,11 +327,17 @@ namespace supermarketui {
                 this->btnCategories->Visible = false;
                 this->btnUsers->Visible = false;
                 this->btnSalesReport->Visible = false;
+                this->btnCoupons->Visible = false;
+            }
+            else if (SessionManager::isAdmin()) {
+                this->btnRefunds->Visible = false;
+                this->btnSearch->Visible = false;
+                this->btnBilling->Visible = false;
             }
         }
     }
 
-           // This resets Umar's timeout clock whenever a button is clicked
+           // Reset session timeout clock on activity
     private: System::Void UpdateActivity(System::Object^ sender, System::EventArgs^ e) {
         SessionManager::updateActivity();
     }
@@ -287,24 +345,25 @@ namespace supermarketui {
            // Toggle between Dark and Light mode
     private: System::Void btnTheme_Click(System::Object^ sender, System::EventArgs^ e) {
         isDarkMode = !isDarkMode;
-        SessionManager::updateActivity(); // Reset timeout
+        SessionManager::updateActivity();
 
         if (isDarkMode) {
-            this->BackColor = System::Drawing::Color::WhiteSmoke; // Main background
+            this->BackColor = System::Drawing::Color::WhiteSmoke;
             this->panelSidebar->BackColor = System::Drawing::Color::FromArgb(45, 52, 60);
             this->lblWelcome->ForeColor = System::Drawing::Color::White;
             this->lblRole->ForeColor = System::Drawing::Color::Silver;
             this->btnTheme->Text = L"☀️  Light Mode";
             this->btnTheme->BackColor = System::Drawing::Color::SteelBlue;
 
-            // Set buttons back to Dark Mode
             System::Drawing::Color darkBtn = System::Drawing::Color::FromArgb(45, 52, 60);
             this->btnBilling->BackColor = darkBtn; this->btnBilling->ForeColor = System::Drawing::Color::White;
             this->btnRefunds->BackColor = darkBtn; this->btnRefunds->ForeColor = System::Drawing::Color::White;
+            this->btnSearch->BackColor = darkBtn; this->btnSearch->ForeColor = System::Drawing::Color::White;
             this->btnTransactions->BackColor = darkBtn; this->btnTransactions->ForeColor = System::Drawing::Color::White;
             this->btnInventory->BackColor = darkBtn; this->btnInventory->ForeColor = System::Drawing::Color::White;
             this->btnCategories->BackColor = darkBtn; this->btnCategories->ForeColor = System::Drawing::Color::White;
             this->btnUsers->BackColor = darkBtn; this->btnUsers->ForeColor = System::Drawing::Color::White;
+            this->btnCoupons->BackColor = darkBtn; this->btnCoupons->ForeColor = System::Drawing::Color::White;
             this->btnSalesReport->BackColor = darkBtn; this->btnSalesReport->ForeColor = System::Drawing::Color::White;
             this->BackColor = System::Drawing::Color::FromArgb(30, 30, 30);
         }
@@ -316,20 +375,21 @@ namespace supermarketui {
             this->btnTheme->Text = L"🌙  Dark Mode";
             this->btnTheme->BackColor = System::Drawing::Color::DimGray;
 
-            // Set buttons to Light Mode
             System::Drawing::Color lightBtn = System::Drawing::Color::LightGray;
             this->btnBilling->BackColor = lightBtn; this->btnBilling->ForeColor = System::Drawing::Color::Black;
             this->btnRefunds->BackColor = lightBtn; this->btnRefunds->ForeColor = System::Drawing::Color::Black;
+            this->btnSearch->BackColor = lightBtn; this->btnSearch->ForeColor = System::Drawing::Color::Black;
             this->btnTransactions->BackColor = lightBtn; this->btnTransactions->ForeColor = System::Drawing::Color::Black;
             this->btnInventory->BackColor = lightBtn; this->btnInventory->ForeColor = System::Drawing::Color::Black;
             this->btnCategories->BackColor = lightBtn; this->btnCategories->ForeColor = System::Drawing::Color::Black;
             this->btnUsers->BackColor = lightBtn; this->btnUsers->ForeColor = System::Drawing::Color::Black;
+            this->btnCoupons->BackColor = lightBtn; this->btnCoupons->ForeColor = System::Drawing::Color::Black;
             this->btnSalesReport->BackColor = lightBtn; this->btnSalesReport->ForeColor = System::Drawing::Color::Black;
             this->BackColor = System::Drawing::Color::WhiteSmoke;
         }
     }
 
-           // The Timer that watches for Session Timeout
+           // Session timeout watchdog
     private: System::Void sessionTimer_Tick(System::Object^ sender, System::EventArgs^ e) {
         if (SessionManager::checkTimeout()) {
             this->sessionTimer->Stop();
@@ -343,6 +403,11 @@ namespace supermarketui {
         RefundForm^ refundScreen = gcnew RefundForm();
         refundScreen->ShowDialog();
     }
+    private: System::Void btnSearch_Click(System::Object^ sender, System::EventArgs^ e) {
+        SessionManager::updateActivity();
+        SearchForm^ searchScreen = gcnew SearchForm();
+        searchScreen->ShowDialog();
+    }
     private: System::Void btnTransactions_Click(System::Object^ sender, System::EventArgs^ e) {
         SessionManager::updateActivity();
         TransactionHistoryForm^ historyScreen = gcnew TransactionHistoryForm();
@@ -353,7 +418,6 @@ namespace supermarketui {
         InventoryForm^ inventoryScreen = gcnew InventoryForm();
         inventoryScreen->ShowDialog();
     }
-
     private: System::Void btnCategories_Click(System::Object^ sender, System::EventArgs^ e) {
         SessionManager::updateActivity();
         CategoryForm^ categoryScreen = gcnew CategoryForm();
@@ -369,18 +433,23 @@ namespace supermarketui {
         SalesReportForm^ reportScreen = gcnew SalesReportForm();
         reportScreen->ShowDialog();
     }
+    private: System::Void btnCoupons_Click(System::Object^ sender, System::EventArgs^ e) {
+        SessionManager::updateActivity();
+        CouponForm^ couponScreen = gcnew CouponForm();
+        couponScreen->ShowDialog();
+    }
     private: System::Void btnLogout_Click(System::Object^ sender, System::EventArgs^ e) {
         SessionManager::endSession();
-        Application::Restart(); // Shuts down the dashboard and reopens the Login screen
+        Application::Restart();
     }
     private: System::Void btnBilling_Click(System::Object^ sender, System::EventArgs^ e) {
         SessionManager::updateActivity();
         BillingForm^ billing = gcnew BillingForm();
-        billing->ShowDialog(); // ShowDialog freezes the dashboard until billing is closed!
+        billing->ShowDialog();
     }
 
     private: System::Void Dashboard_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
-        Application::Exit(); // Completely closes the program if they hit the red X
+        Application::Exit();
     }
     };
 }

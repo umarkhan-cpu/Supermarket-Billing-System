@@ -8,7 +8,7 @@ int      ProductManagement::count = 0;
 int      ProductManagement::capacity = 0;
 
 // File location where product data is stored
-static const char* FILE_PATH = R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\products.txt)";
+static const char* FILE_PATH = "Data/products.txt";
 
 
 // This function finds the next ID by checking highest existing ID
@@ -137,7 +137,7 @@ Product ProductManagement::findByID(int id) {
 
 
 // Shows all products
-/*void ProductManagement::viewAll() {
+void ProductManagement::viewAll() {
 
     if (count == 0) {
         std::cout << "No products available\n";
@@ -147,7 +147,6 @@ Product ProductManagement::findByID(int id) {
     for (int i = 0; i < count; i++)
         products[i].display();
 }
-*/
 
 
 // Loads data from file into memory

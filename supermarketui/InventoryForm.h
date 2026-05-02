@@ -87,7 +87,7 @@ namespace supermarketui {
                this->lblTitle->AutoSize = true;
                this->lblTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 20, System::Drawing::FontStyle::Bold));
                this->lblTitle->Location = System::Drawing::Point(20, 20);
-               this->lblTitle->Text = L"Inventory & Product Management";
+               this->lblTitle->Text = L"Inventory && Product Management";
 
                // gridInventory (Left Side)
                this->gridInventory->AllowUserToAddRows = false;

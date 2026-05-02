@@ -64,7 +64,7 @@ namespace supermarketui {
                // lblTitle
                this->lblTitle->AutoSize = true;
                this->lblTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 16, System::Drawing::FontStyle::Bold));
-               this->lblTitle->Location = System::Drawing::Point(130, 20);
+               this->lblTitle->Location = System::Drawing::Point(91, 20);
                this->lblTitle->Name = L"lblTitle";
                this->lblTitle->Size = System::Drawing::Size(240, 30);
                this->lblTitle->Text = L"Process Customer Refund";
@@ -164,5 +164,6 @@ namespace supermarketui {
 
     private: System::Void RefundForm_Load(System::Object^ sender, System::EventArgs^ e);
     private: System::Void btnRefund_Click(System::Object^ sender, System::EventArgs^ e);
+    private: System::Void RecalculateAmount(System::Object^ sender, System::EventArgs^ e);
     };
 }

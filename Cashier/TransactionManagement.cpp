@@ -33,13 +33,12 @@ void TransactionManagement::addTransaction(const Transaction& t) {
 }
 
 // Show all transactions
-/*void TransactionManagement::viewHistory() {
+void TransactionManagement::viewHistory() {
     cout << "\n--- TRANSACTION HISTORY ---\n";
 
     for (int i = 0; i < count; i++)
         transactions[i].show();
 }
-*/
 
 // Search by ID
 Transaction TransactionManagement::searchByID(int id) {
@@ -51,7 +50,7 @@ Transaction TransactionManagement::searchByID(int id) {
 }
 
 // Search by date
-/*void TransactionManagement::searchByDate(const string& date) {
+void TransactionManagement::searchByDate(const string& date) {
     cout << "\n--- SEARCH RESULTS ---\n";
 
     for (int i = 0; i < count; i++) {
@@ -59,7 +58,6 @@ Transaction TransactionManagement::searchByID(int id) {
             transactions[i].show();
     }
 }
-*/
 
 // Refund support (marks transaction as refunded)
 bool TransactionManagement::markAsRefunded(int id) {
@@ -73,9 +71,33 @@ bool TransactionManagement::markAsRefunded(int id) {
     return false;
 }
 
+// Modification by Umar (lead): Added the method To allow setting 'any' status string, not just "Refunded", 
+// so we can distinguish partial vs full refunds in the Sales Report.
+bool TransactionManagement::setTransactionStatus(int id, const std::string& status) {
+    for (int i = 0; i < count; i++) {
+        if (transactions[i].getID() == id) {
+            transactions[i].setStatus(status);
+            saveToFile();
+            return true;
+        }
+    }
+    return false;
+}
+
 // For SalesReport
 int TransactionManagement::getCount() {
     return count;
+}
+
+// Modification by Umar (lead): To add a safeguard for ID generation of transactions
+int TransactionManagement::getNextAvailableID() {
+    int maxID = 0;
+    for (int i = 0; i < count; i++) {
+        if (transactions[i].getID() > maxID) {
+            maxID = transactions[i].getID();
+        }
+    }
+    return maxID + 1;
 }
 
 Transaction TransactionManagement::getByIndex(int i) {
@@ -86,7 +108,7 @@ Transaction TransactionManagement::getByIndex(int i) {
 
 // Save to Data folder (IMPORTANT FIX)
 void TransactionManagement::saveToFile() {
-    ofstream out(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\transactions.txt)");
+    ofstream out("Data/transactions.txt");
 
     for (int i = 0; i < count; i++)
         transactions[i].save(out);
@@ -94,14 +116,20 @@ void TransactionManagement::saveToFile() {
     out.close();
 }
 
-// Load from Data folder
+// Modification by Umar (lead): To handle duplication issues while processing transaction.
+// Load from Data folder. Clears any existing in-memory data first so
+// repeated calls (e.g. on Refresh button click) don't multiply the records.
 void TransactionManagement::loadFromFile() {
-    ifstream in(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\transactions.txt)");
+    // Clear any previously loaded data so this is a fresh read, not an append.
+    delete[] transactions;
+    transactions = nullptr;
+    count = 0;
+    capacity = 2;
 
+    ifstream in("Data/transactions.txt");
     if (!in) return;
 
     Transaction t;
-
     while (t.load(in))
         addTransaction(t);
 

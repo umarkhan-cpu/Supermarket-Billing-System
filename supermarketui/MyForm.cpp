@@ -49,7 +49,7 @@ System::Void MyForm::btnLogin_Click(System::Object^ sender, System::EventArgs^ e
     bool loginSuccess = false;
 
     // Open the users file directly to bypass the private userverify method
-    std::ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\users.txt)");
+    std::ifstream file("Data/users.txt");
 
     if (file.is_open()) {
         std::string line;
@@ -105,4 +105,15 @@ System::Void MyForm::btnLogin_Click(System::Object^ sender, System::EventArgs^ e
 // When you click Exit
 System::Void MyForm::btnExit_Click(System::Object^ sender, System::EventArgs^ e) {
     Application::Exit();
+}
+
+System::Void MyForm::chkShowPassword_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+    // When checked, show actual characters; when unchecked, mask with '*'.
+    // Note: MyForm uses PasswordChar (not UseSystemPasswordChar like UserForm).
+    if (chkShowPassword->Checked) {
+        txtPassword->PasswordChar = '\0';
+    }
+    else {
+        txtPassword->PasswordChar = '*';
+    }
 }

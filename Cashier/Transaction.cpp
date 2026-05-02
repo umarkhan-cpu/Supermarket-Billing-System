@@ -52,10 +52,39 @@ void Transaction::save(ofstream& out) {
         << status << "\n";
 }
 
+// Original Work by Farda
+//// Load
+//bool Transaction::load(ifstream& in) {
+//    string line;
+//    if (!getline(in, line)) return false;
+//
+//    stringstream ss(line);
+//    string id, d, cid, amt, st;
+//
+//    getline(ss, id, ',');
+//    getline(ss, d, ',');
+//    getline(ss, cid, ',');
+//    getline(ss, amt, ',');
+//    getline(ss, st);
+//
+//    TransactionID = stoi(id);
+//    date = d;
+//    CashierID = stoi(cid);
+//    TotalAmount = stof(amt);
+//    status = st;
+//
+//    return true;
+//}
+
+// Modification by Umar (lead): To handle crashes in case of empty transactions.txt file (using try-catch) 
 // Load 
 bool Transaction::load(ifstream& in) {
     string line;
-    if (!getline(in, line)) return false;
+
+    // Skip blank lines (e.g. trailing newlines in the file)
+    do {
+        if (!getline(in, line)) return false;
+    } while (line.empty());
 
     stringstream ss(line);
     string id, d, cid, amt, st;
@@ -66,10 +95,19 @@ bool Transaction::load(ifstream& in) {
     getline(ss, amt, ',');
     getline(ss, st);
 
-    TransactionID = stoi(id);
+    // Defensive parse - if the line is malformed, skip rather than crash
+    if (id.empty() || cid.empty() || amt.empty()) return false;
+
+    try {
+        TransactionID = stoi(id);
+        CashierID = stoi(cid);
+        TotalAmount = stof(amt);
+    }
+    catch (const std::exception&) {
+        return false;
+    }
+
     date = d;
-    CashierID = stoi(cid);
-    TotalAmount = stof(amt);
     status = st;
 
     return true;

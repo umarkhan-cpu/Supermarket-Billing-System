@@ -20,7 +20,7 @@ public:
     
     ProductManagement() = delete;
 
-      static bool addProduct(const std::string& name, int categoryID, float price, int stock);
+    static bool addProduct(const std::string& name, int categoryID, float price, int stock);
     static bool editProduct(int id, const std::string& name, int categoryID, float price, int stock);
     static bool deleteProduct(int id);
 

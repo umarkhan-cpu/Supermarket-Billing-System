@@ -1,6 +1,6 @@
 # 🛒 Supermarket Billing System
 
-A C++ application for managing supermarket operations including billing, inventory, product management, and sales reporting. Built with OOP principles and a GUI interface, featuring role-based access for Admin and Cashier roles. Developed as a semester project at FAST-NUCES Lahore.
+A C++ application that automates a supermarket's day-to-day operations — billing, inventory, product management, refunds, and sales reporting — through a dual-role architecture (Admin + Cashier) backed by a WinForms GUI and file-based persistence. Developed as the term project for CS1004 Object-Oriented Programming at FAST-NUCES Lahore.
 
 ---
 
@@ -22,45 +22,87 @@ A C++ application for managing supermarket operations including billing, invento
 
 | Name | Roll No. | Role | Responsibilities |
 |---|---|---|---|
-| Muhammad Umar Khan | 25L-3089 | Team Lead | Category Management, Discount & Coupon System, Return & Refund Management, Session Timeout |
+| Muhammad Umar Khan | 25L-3089 | **Team Lead** | Category Management, Discount & Coupon System, Return & Refund Management, Session Timeout, backend integration, receipt system, bootstrap utility |
 | Areesha Khurram | 25L-3007 | Member | User Management, Billing & Receipt Generation, Search & Filter Products, CAPTCHA, Password Strength |
-| Mahnoor Aslam | 25L-3008 | Member | Sales Report Generation, Full GUI + all UI/UX visual implementation |
+| Mahnoor Aslam | 25L-3008 | Member | Sales Report Generation, full GUI, all UI/UX visual implementation |
 | Farda Fatima | 25L-3009 | Member | Product Management, Inventory & Stock Management, Transaction History, Dark/Light Mode |
+
+---
+
+## ⚡ Quick Start
+
+1. **Clone the repository** to a fresh folder:
+   ```
+   git clone https://github.com/umarkhan-cpu/Supermarket-Billing-System.git
+   cd Supermarket-Billing-System
+   ```
+
+2. **Open the solution** in Visual Studio 2022 (Community edition or higher).
+
+3. **Run the bootstrap utility first** to seed default user accounts:
+   - Set `Supermarket-Billing-System` (the console project) as the startup project
+   - Press `Ctrl+F5`
+   - When prompted, choose **Option 4** — bootstraps users and runs all backend smoke tests
+   - Verify that **17/17 checks pass** before launching the GUI
+
+4. **Run the GUI:**
+   - Set `supermarketui` as the startup project
+   - Press `Ctrl+F5`
+   - Log in using one of the demo credentials below
+
+### 🔑 Demo Credentials
+
+After running the bootstrap utility (Option 1 or 4), the following accounts exist:
+
+| Username | Password | Role |
+|---|---|---|
+| `Admin` | `admin123` | Admin |
+| `Umar` | `umar123` | Cashier |
+| `Mahnoor` | `mahnoor123` | Cashier |
+| `Farda` | `farda123` | Cashier |
+| `Areesha` | `areesha123` | Cashier |
 
 ---
 
 ## 🚀 Features
 
 ### 🔐 Admin Interface
-1. **User Management** — Create, manage, and delete user accounts
-2. **Category Management** — Organize products into categories
-3. **Product Management** — Add, edit, and remove products
-4. **Inventory & Stock Management** — Track stock levels and receive low stock alerts
-5. **Return & Refund Management** — Process product returns and issue refunds
-6. **Sales Report Generation** — View revenue summaries and top-selling products
+1. **User Management** — Create, update, and delete Admin/Cashier accounts. Includes last-admin-protection, self-delete-protection, and a show-password toggle.
+2. **Category Management** — Organize products into categories with full CRUD.
+3. **Product Management** — Add, edit, and remove products with prices and category assignments.
+4. **Inventory & Stock Management** — Track stock levels across products with low-stock alerts.
+5. **Return & Refund Management** — Process partial or full refunds with proportional discount allocation. Cumulative refunds capped at the original transaction total. A customer who paid Rs 84 for a Rs 100 item (after 20% coupon) gets back exactly Rs 84.
+6. **Sales Report Generation** — Revenue summary, transaction count, and refunded-item count. Revenue subtracts cumulative refunds for accuracy.
 
 ### 🧾 Cashier Interface
-7. **Billing & Receipt Generation** — Process customer purchases and generate receipts
-8. **Discount & Coupon System** — Apply discount codes and offers at checkout
-9. **Transaction History** — View records of past transactions
-10. **Search & Filter Products** — Find products by name, category, or price
+7. **Billing & Receipt Generation** — Cart-based POS with line-item totals, coupon application, 17% FBR sales tax, branded receipt rendering, and a Clear Cart safeguard.
+8. **Discount & Coupon System** — Percentage and fixed-value coupon types with active/inactive status.
+9. **Transaction History** — Sortable list of past transactions with a "View Receipt" action.
+10. **Search & Filter Products** — Search by name, category, or price range.
 
 ### 🎨 UI/UX & Security Features
-
-1. **CAPTCHA Verification** — Randomly generated verification code at login to prevent unauthorized access
-2. **Password Strength Indicator** — Live visual indicator during account creation to encourage secure passwords
-3. **Dark / Light Mode** — Toggle between dark and light interface themes for visual comfort
-4. **Session Timeout** — Automatically logs out inactive users to prevent unauthorized access
+1. **Branded Login Screen** — FAST MART header band, gold tagline, password visibility toggle.
+2. **Dark / Light Mode** — Toggle the dashboard theme at any time.
+3. **Session Timeout** — Auto-logout after 5 minutes of inactivity.
+4. **Password Strength Indicator** — Live strength feedback during account creation.
+5. **CAPTCHA Verification** — Backend implementation included; see Known Limitations for GUI integration scope.
 
 ---
 
 ## 🧩 System Architecture
 
-The system is designed around **12 classes** following OOP principles, with `User` as the abstract base class inherited by `Admin` and `Cashier`.
+The system follows OOP principles with a **dual-perspective architecture**:
 
-![UML Class Diagram](docs/ClassDiagram_Group10.png)
+- **Abstract base class `User`** with pure-virtual `getRoleName()`, inherited by concrete `Admin` and `Cashier` classes
+- **Polymorphic role dispatch** through `SessionManager` using a `User*` base pointer — the runtime decides whether to grant Admin or Cashier permissions based on the actual derived type
+- **Manager pattern** — for each domain entity (Product, Category, Transaction, Refund, Discount, Inventory, User), a data class represents one record while a separate Manager class handles the collection, file I/O, and business operations
+- **Receipt system** — `ReceiptRecord` + `ReceiptStore` provide structured persistence of complete sale and refund receipts, enabling proportional refund calculation against the original sale price
 
-For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group10.html](docs/ClassDiagram_Group10.html).
+### Dual-Perspective Design
+- **Admin Login** → Full access to manage products, categories, inventory, users, refunds, reports, and coupons
+- **Cashier Login** → Access to billing, search, refunds, and transaction history
+
+The dashboard sidebar dynamically shows only the buttons relevant to the logged-in role, with no empty gaps.
 
 ---
 
@@ -68,28 +110,31 @@ For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group1
 
 | Field | Details |
 |---|---|
-| Language | C++ |
-| IDE | Visual Studio |
-| GUI Framework | WinForms (CLR) |
-| Data Storage | File Handling (CSV format) |
+| Language | C++17 |
+| IDE | Visual Studio 2022 |
+| GUI Framework | WinForms (C++/CLI) |
+| Data Storage | File Handling (CSV + structured pipe-delimited for receipts) |
 | Version Control | Git & GitHub |
 
 ---
 
 ## 💡 OOP Concepts Implemented
 
-- Classes & Objects
-- Constructors (Default, Parameterized, Copy)
-- Function Overloading
-- Operator Overloading
-- Pointers & Dynamic Memory Allocation
-- Inheritance
-- Polymorphism
-- Encapsulation & Abstraction
-- Exception Handling
-- Friend Functions
-- Static Members
-- Templates
+| # | Concept | Where Demonstrated |
+|---|---|---|
+| 1 | Classes & Objects | All classes |
+| 2 | Constructors (Default, Parameterized, Copy) | Every data class |
+| 3 | Function Overloading | Search and find methods (by ID/name/code) |
+| 4 | Operator Overloading | `Product::operator<` for sorting |
+| 5 | Pointers & Dynamic Memory | Dynamic arrays in every Manager class with `new`/`delete` |
+| 6 | Inheritance | `User` → `Admin`, `Cashier` |
+| 7 | Polymorphism | Pure virtual `getRoleName()`, runtime role dispatch in SessionManager |
+| 8 | Encapsulation | Private attributes with public getters/setters |
+| 9 | Abstraction | `User` is abstract; refund/billing complexity hidden behind manager interfaces |
+| 10 | Exception Handling | Try-catch around file parsing in Transaction, Product, UserManagement, etc. |
+| 11 | Friend Functions | `Bill` and `Inventory` share product data |
+| 12 | Static Members | All Manager classes use static collections + counters |
+| 13 | Templates | Generic search/sort utilities |
 
 ---
 
@@ -99,54 +144,54 @@ For the interactive version (zoomable in browser), see [docs/ClassDiagram_Group1
 Supermarket-Billing-System/
 │
 ├── Admin/
-│   ├── Admin.{h,cpp}                   ✅ Muhammad Umar Khan
-│   ├── Category.{h,cpp}                ✅ Muhammad Umar Khan
-│   ├── CategoryManagement.{h,cpp}      ✅ Muhammad Umar Khan
-│   ├── Product.{h,cpp}                 ✅ Farda Fatima
-│   ├── ProductManagement.{h,cpp}       ✅ Farda Fatima
-│   ├── Inventory.{h,cpp}               ✅ Farda Fatima
-│   ├── InventoryManagement.{h,cpp}     ✅ Farda Fatima
-│   ├── SalesReport.{h,cpp}             ✅ Mahnoor Aslam
-│   └── UserManagement.{h,cpp}          ✅ Areesha Khurram
+│   ├── Admin.{h,cpp}                    Areesha
+│   ├── Category.{h,cpp}                 Umar
+│   ├── CategoryManagement.{h,cpp}       Umar
+│   ├── Inventory.{h,cpp}                Farda
+│   ├── InventoryManagement.{h,cpp}      Farda
+│   ├── Product.{h,cpp}                  Farda
+│   ├── ProductManagement.{h,cpp}        Farda
+│   ├── SalesReport.{h,cpp}              Mahnoor
+│   └── UserManagement.{h,cpp}           Areesha
 │
 ├── Cashier/
-│   ├── Billing.{h,cpp}                 🔄 Areesha Khurram
-│   ├── Cashier.{h,cpp}                 ✅ Muhammad Umar Khan
-│   ├── Billing.{h,cpp}                 ✅ Areesha Khurram
-│   ├── Cashier.{h,cpp}                 ✅ Muhammad Umar Khan
-│   ├── Discount.{h,cpp}                ✅ Muhammad Umar Khan
-│   ├── DiscountManagement.{h,cpp}      ✅ Muhammad Umar Khan
-│   ├── Refund.{h,cpp}                  ✅ Muhammad Umar Khan
-│   ├── RefundManagement.{h,cpp}        ✅ Muhammad Umar Khan
-│   ├── SearchFilter.{h,cpp}            ✅ Areesha Khurram
-│   ├── Transaction.{h,cpp}             ✅ Farda Fatima
-│   └── TransactionManagement.{h,cpp}   ✅ Farda Fatima
+│   ├── Cashier.{h,cpp}                  Areesha
+│   ├── Discount.{h,cpp}                 Umar
+│   ├── DiscountManagement.{h,cpp}       Umar
+│   ├── ReceiptAndBilling.{h,cpp}        Areesha
+│   ├── ReceiptStore.{h,cpp}             Umar
+│   ├── Refund.{h,cpp}                   Umar
+│   ├── RefundManagement.{h,cpp}         Umar
+│   ├── Transaction.{h,cpp}              Farda
+│   └── TransactionManagement.{h,cpp}    Farda
 │
 ├── Common/
-│   ├── SessionManager.{h,cpp}          ✅ Muhammad Umar Khan
-│   ├── Settings.{h,cpp}                ✅ Farda Fatima
-│   └── User.{h,cpp}                    ✅ Muhammad Umar Khan
+│   ├── User.{h,cpp}                     Areesha
+│   └── SessionManager.{h,cpp}           Umar
+│
+├── supermarketui/                       Mahnoor (WinForms GUI)
+│   ├── MyForm.{h,cpp}                   (Login screen)
+│   ├── Dashboard.{h,cpp}
+│   ├── BillingForm.{h,cpp}
+│   ├── ReceiptForm.{h,cpp}
+│   ├── RefundForm.{h,cpp}
+│   ├── UserForm.{h,cpp}
+│   ├── CategoryForm.{h,cpp}
+│   └── ...
 │
 ├── Data/
+│   ├── users.txt
 │   ├── categories.txt
-│   ├── coupons.txt
 │   ├── products.txt
-│   ├── refunds.txt
-│   ├── settings.txt
 │   ├── transactions.txt
-│   └── users.txt
+│   ├── receipts.txt
+│   ├── coupons.txt
+│   ├── refunds.txt
+│   └── settings.txt
 │
-├── GUI/                                🔄 Mahnoor Aslam (WinForms files)
-│
-├── docs/
-│   ├── ClassDiagram_Group10.png
-│   ├── ClassDiagram_Group10.html
-│
-├── main.cpp
+├── main.cpp                             (Bootstrap + smoke test utility)
 └── README.md
 ```
-
-**Legend:** ✅ Done  •  🔄 In Progress  •  ⏳ Pending
 
 ---
 
@@ -155,20 +200,17 @@ Supermarket-Billing-System/
 | # | Feature | Owner | Status |
 |---|---|---|---|
 | 1 | User Management | Areesha | ✅ Done |
-| 2 | Category Management | Umar |  ✅ Done |
-| 3 | Product Management | Farda |  ✅ Done |
+| 2 | Category Management | Umar | ✅ Done |
+| 3 | Product Management | Farda | ✅ Done |
 | 4 | Inventory & Stock Management | Farda | ✅ Done |
-| 5 | Return & Refund Management | Umar |  ✅ Done |
+| 5 | Return & Refund Management | Umar | ✅ Done |
 | 6 | Sales Report Generation | Mahnoor | ✅ Done |
-| 7 | Billing & Receipt Generation | Areesha |  ✅ Done |
-| 8 | Discount & Coupon System | Umar |  ✅ Done |
-| 9 | Transaction History | Farda |  ✅ Done |
-| 10 | Search & Filter Products | Areesha |  🔄 In Progress |
-| — | GUI (WinForms) | Mahnoor | 🔄 In Progress |
-| 9 | Transaction History | Farda |  ✅ Done |
-| 10 | Search & Filter Products | Areesha |  ✅ Done |
-| — | GUI (WinForms) | Mahnoor | 🔄 In Progress |
-| — | CAPTCHA Verification | Areesha | ✅ Done |
+| 7 | Billing & Receipt Generation | Areesha | ✅ Done |
+| 8 | Discount & Coupon System | Umar | ✅ Done |
+| 9 | Transaction History | Farda | ✅ Done |
+| 10 | Search & Filter Products | Areesha | ✅ Done |
+| — | GUI (WinForms) | Mahnoor | ✅ Done |
+| — | CAPTCHA Verification | Areesha | ⚠️ Backend only (see Known Limitations) |
 | — | Password Strength Indicator | Areesha | ✅ Done |
 | — | Dark / Light Mode | Farda | ✅ Done |
 | — | Session Timeout | Umar | ✅ Done |
@@ -177,73 +219,74 @@ Supermarket-Billing-System/
 
 ## 📂 Data File Formats
 
-All data files use comma-separated (CSV) format:
+All persistent data lives under `Data/` and uses CSV (or pipe-delimited for the structured receipt records).
 
 | File | Format |
 |---|---|
-| users.txt | UserID, Username, Password, Role |
-| categories.txt | CategoryID, CategoryName |
-| products.txt | ProductID, Name, CategoryID, Price, Stock |
-| transactions.txt | TransactionID, Date, CashierID, TotalAmount, Status |
-| coupons.txt | CouponID, Code, DiscountType, DiscountValue, IsActive |
-| refunds.txt | RefundID, TransactionID, Reason, Amount, Date |
-| settings.txt | theme=dark \| theme=light |
+| users.txt | `UserID, Username, PasswordHash, Role` |
+| categories.txt | `CategoryID, Name, Description` |
+| products.txt | `ProductID, Name, CategoryID, Price, Stock` |
+| transactions.txt | `TransactionID, Date, CashierID, TotalAmount, Status` |
+| receipts.txt | Pipe-delimited multi-line: `=RECEIPT=` markers, `HEADER`/`ITEM`/`TOTALS`/`END` rows |
+| coupons.txt | `CouponID, Code, DiscountType, DiscountValue, Status` |
+| refunds.txt | `RefundID, TransactionID, Reason, Amount, Date, ProductID, Quantity` |
+| settings.txt | `theme=dark` or `theme=light` |
 
 ---
 
-## 🖥️ Dual-Perspective Architecture
+## 🧪 Backend Smoke Test
 
-The system follows a dual-perspective architecture:
+The console binary (`main.cpp`) is not just a placeholder — it's a working bootstrap and health-check utility. It offers:
 
-- **Admin Login** → Full access to manage products, categories, inventory, users, refunds and reports
-- **Cashier Login** → Access to billing, search, discounts and transaction history
+1. **Bootstrap default user accounts** — idempotent, safe to run multiple times.
+2. **Run full backend smoke test** — non-destructive load → count → cleanup cycle for every Manager class. Reports `[PASS]`/`[FAIL]` per check, ending with a summary like `17 / 17 checks passed`.
+3. **Show data summary** — record counts across all data files.
+4. **Bootstrap + smoke test** — combined; recommended before any demo run.
+
+This utility was the foundation that let us catch crash bugs and parser issues before they reached the GUI.
 
 ---
 
-## ⚙️ How to Run
+## ⚠️ Known Limitations
 
-1. Clone the repository:
-```
-git clone https://github.com/umarkhan17006-cpu/Supermarket-Billing-System.git
-```
-2. Open the project in **Visual Studio**
-3. Build and run the solution
-4. Login as **Admin** or **Cashier** from the main menu
+We documented these honestly rather than hiding them:
+
+1. **CAPTCHA UI not integrated.** The backend logic (`generatecaptcha`, `validatecaptcha` in `UserManagement.cpp`) is fully implemented and tested in the console flow. GUI integration was scoped out for this iteration to keep the login flow simple for the demo.
+2. **No signup on the login screen.** This is intentional. Account creation is restricted to Admin via the User Management form, which mirrors how real retail POS systems handle staff accounts.
+3. **Child forms use a fixed light theme.** The dashboard's dark/light toggle applies to the dashboard itself; child windows (Inventory, Categories, Refunds, etc.) were left light-themed for legibility consistency.
+4. **Settings: English / PKR / Light-Dark only.** Multi-language and multi-currency support are not part of this scope.
+
+---
+
+## 🛡️ Recovery Procedure
+
+**If all admin accounts are lost** (e.g. accidentally deleted via User Management):
+
+1. Open `Data/users.txt` and delete or empty the file.
+2. Run the console binary (`main.cpp`).
+3. Choose **Option 1: Bootstrap default user accounts**.
+4. The default `Admin / admin123` account will be restored.
+
+This is the documented disaster-recovery flow, and it's been tested.
 
 ---
 
 ## 🌿 Branching & Contribution Workflow
 
-The repository uses a **feature-branch workflow**:
+The repository used a feature-branch workflow. Each team member developed on their own branch, with `feature/Umar` serving as the integration branch.
 
 | Branch | Purpose |
 |---|---|
-| `main` | Stable, working code only (protected) |
-| `feature/Umar` | Umar's assigned features |
-| `feature/Areesha` | Areesha's assigned features |
-| `feature/Farda` | Farda's assigned features |
-| `feature/Mahnoor` | Mahnoor's assigned features |
+| `main` | Stable, submission-ready code (protected) |
+| `feature/Umar` | Integration branch — all features merged here for testing before promotion to `main` |
+| `feature/Areesha` | Areesha's individual feature work |
+| `feature/Farda` | Farda's individual feature work |
+| `feature/Mahnoor` | Mahnoor's individual feature work |
 
-**Rules:**
-- All development happens on individual `feature/<name>` branches
-- Direct commits to `main` are restricted to documentation and project configuration
-- Completed features are merged into `main` via Pull Requests reviewed by the Team Lead
-
----
-
-## 📌 Development Approach
-
-The project follows a **console-first** approach, with GUI integration planned after core logic is complete.
-
-| Phase | Description | Status |
-|---|---|---|
-| Phase 1 | Foundation — file formats, base classes, main menu | ✅ Done |
-| Phase 2 | Test all 10 features working | 🔄 In Progress |
-| Phase 3 | GUI integration | ⏳ Pending |
-| Phase 4 | Final testing, GitHub cleanup, LinkedIn posts | ⏳ Pending |
+Final integration to `main` was done via a single Pull Request from `feature/Umar`, reviewed and merged by the Team Lead.
 
 ---
 
 ## 📄 License
 
-This project is developed for academic purposes at FAST-NUCES Lahore under the MIT License.
+This project is developed for academic purposes at FAST-NUCES Lahore under the MIT License. See [LICENSE](LICENSE) for details.

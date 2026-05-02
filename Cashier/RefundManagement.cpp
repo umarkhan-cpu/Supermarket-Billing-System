@@ -1,6 +1,7 @@
-﻿#include "RefundManagement.h"
+#include "RefundManagement.h"
 #include "Transaction.h"
 #include "TransactionManagement.h"
+#include "ReceiptStore.h"
 #include "../Admin/Product.h"
 #include "../Admin/ProductManagement.h"
 #include "../Admin/InventoryManagement.h"
@@ -106,9 +107,15 @@ int RefundManagement::daysBetween(const string& tr_Date, const string& today)
 
 void RefundManagement::loadFromFile()
 {
-    ifstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\refunds.txt)");
+    ifstream file("Data/refunds.txt");
     if (!file.is_open())
         return; // file doesn't exist yet — empty collection is fine
+
+    // Clear any previously loaded data so repeated calls don't multiply records.
+    delete[] refunds;
+    refunds = nullptr;
+    count = 0;
+    capacity = 0;
 
     string line;
     while (getline(file, line))
@@ -130,7 +137,7 @@ void RefundManagement::loadFromFile()
 
 void RefundManagement::saveToFile()
 {
-    ofstream file(R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\refunds.txt)");
+    ofstream file("Data/refunds.txt");
     if (!file.is_open())
         return;
 
@@ -154,15 +161,15 @@ void RefundManagement::cleanup()
 // ============================================================================
 // The main creation method
 // ============================================================================
-bool RefundManagement::createRefund(int transactionID, const string& reason, float amount,
-    int productID, int quantity)
+bool RefundManagement::createRefund(int transactionID, const string &reason, float amount,
+                                    int productID, int quantity)
 {
     // Input validation
     if (transactionID <= 0) return false;
-    if (reason == "")       return false;
-    if (amount <= 0)        return false;
-    if (productID <= 0)     return false;
-    if (quantity <= 0)      return false;
+    if (reason == "") return false;
+    if (amount <= 0) return false;
+    if (productID <= 0) return false;
+    if (quantity <= 0) return false;
 
     // Validate transaction exists
     Transaction t = TransactionManagement::searchByID(transactionID);
@@ -171,19 +178,46 @@ bool RefundManagement::createRefund(int transactionID, const string& reason, flo
     // 30-day refund window check
     string today = todayAsString();
     int daysDiff = daysBetween(t.getDate(), today);
-    if (daysDiff > 30) return false;     // too old
-    if (daysDiff < 0)  return false;     // corrupt data
+    if (daysDiff > 30) return false; // too old
+    if (daysDiff < 0) return false; // corrupt data
 
-    // Refund amount cannot exceed original transaction total
-    if (amount > t.getTotalAmount()) return false;
+    // Cumulative refund check: the new refund plus all prior refunds for
+    // this transaction must not exceed the original transaction total.
+    float alreadyRefunded = getRefundedAmountForTransaction(transactionID);
+    if (alreadyRefunded + amount > t.getTotalAmount() + 0.001f)
+    { // epsilon for float
+        return false;
+    }
 
     // Validate that the product being returned actually exists
     Product p = ProductManagement::findByID(productID);
-    if (p.getID() == 0) return false;    // product doesn't exist
+    if (p.getID() == 0) return false;
+
+    // Per-product refund check: look up how many of this product were on the
+    // original receipt, and how many have already been refunded. The new qty
+    // can't push the cumulative refunded qty above what was purchased.
+    ReceiptRecord receipt = ReceiptStore::findSaleByTransactionID(transactionID);
+    if (receipt.transactionID != 0)
+    {
+        // Receipt exists for this transaction. Find the line item.
+        int lineIdx = receipt.findItemByProductID(productID);
+        if (lineIdx == -1)
+        {
+            return false; // product wasn't on this transaction's receipt
+        }
+        int purchasedQty = receipt.items[lineIdx].quantity;
+        int alreadyRefundedQty = getRefundedQtyForProduct(transactionID, productID);
+        if (alreadyRefundedQty + quantity > purchasedQty)
+        {
+            return false; // would exceed what was bought
+        }
+    }
+    // If no receipt is found (e.g. legacy transactions made before receipts
+    // were saved), we fall back to just the amount-cumulative check above.
 
     // All validations passed — create and store the refund
     int newID = nextAvailableID();
-    Refund newRef(newID, transactionID, reason, amount, today);
+    Refund newRef(newID, transactionID, reason, amount, today, productID, quantity);
 
     if (count >= capacity) grow();
     refunds[count] = newRef;
@@ -194,17 +228,57 @@ bool RefundManagement::createRefund(int transactionID, const string& reason, flo
     // Restock the returned product back into inventory
     InventoryManagement::addStock(productID, quantity);
 
-    // Mark the original transaction as refunded
-    TransactionManagement::markAsRefunded(transactionID);
+    // Decide the new transaction status based on cumulative refund total.
+    // Using a small epsilon to handle floating-point comparison around equality.
+    float newTotalRefunded = alreadyRefunded + amount;
+    if (newTotalRefunded + 0.001f >= t.getTotalAmount())
+    {
+        TransactionManagement::setTransactionStatus(transactionID, "Fully Refunded");
+    }
+    else
+    {
+        TransactionManagement::setTransactionStatus(transactionID, "Partially Refunded");
+    }
 
     return true;
+}
+
+// ============================================================================
+// Aggregation queries (used by createRefund and external callers)
+// ============================================================================
+
+float RefundManagement::getRefundedAmountForTransaction(int txnID)
+{
+    float total = 0.0f;
+    for (int i = 0; i < count; i++)
+    {
+        if (refunds[i].getTransactionID() == txnID)
+        {
+            total += refunds[i].getAmount();
+        }
+    }
+    return total;
+}
+
+int RefundManagement::getRefundedQtyForProduct(int txnID, int productID)
+{
+    int total = 0;
+    for (int i = 0; i < count; i++)
+    {
+        if (refunds[i].getTransactionID() == txnID &&
+            refunds[i].getProductID() == productID)
+        {
+            total += refunds[i].getQuantity();
+        }
+    }
+    return total;
 }
 
 // ============================================================================
 // Read operations
 // ============================================================================
 
-/*void RefundManagement::viewAll()
+void RefundManagement::viewAll()
 {
     if (count == 0) 
     {
@@ -228,7 +302,6 @@ bool RefundManagement::createRefund(int transactionID, const string& reason, flo
 
     cout << "+------+----------+--------------------------+----------+------------+\n";
 }
-*/
 
 void RefundManagement::viewByTransactionID(int txnID)
 {
@@ -277,7 +350,7 @@ int RefundManagement::getCount()
 // Console driver (kept as a backup in case GUI fails)
 // ============================================================================
 
-/*void RefundManagement::showMenu()
+void RefundManagement::showMenu()
 {
     int choice;
 
@@ -364,4 +437,3 @@ int RefundManagement::getCount()
         }
     } while (choice != 5);
 }
-*/

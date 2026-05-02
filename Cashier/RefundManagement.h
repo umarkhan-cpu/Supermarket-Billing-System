@@ -21,7 +21,6 @@ private:
 
 public:
     // Returns today's date as "YYYY-MM-DD" using <ctime>.
-    // Used as the date stamp when a refund is created.
     static string todayAsString();
 
     // ----- File lifecycle -----
@@ -32,22 +31,32 @@ public:
 
     // ----- The main creation method -----
 
-    // Creates a new refund record for a given transaction.
-    // The cashier calls this after verifying receipt + return window verbally.
-    // The refund ID and date are auto-assigned. Returns false if any input
-    // fails validation; in that case no record is created.
-    // Returns true on successful creation, false otherwise.
+    // Creates a new refund. Validates: txnID exists, within 30-day window,
+    // amount within remaining (un-refunded) transaction balance, and now also
+    // that the per-product refunded quantity wouldn't exceed what was purchased
+    // on the original receipt. After creating the refund, sets the original
+    // transaction's status to "Partially Refunded" or "Fully Refunded" based
+    // on cumulative refund amount.
     static bool createRefund(int transactionID, const string& reason, float amount,
-                             int productID, int quantity);
+        int productID, int quantity);
+
+    // ----- Aggregation queries -----
+
+    // Returns the sum of all refund amounts already processed for a given
+    // transaction. Used to determine partial vs full status, and to validate
+    // that a new refund won't push the cumulative refund over the original total.
+    static float getRefundedAmountForTransaction(int txnID);
+
+    // Returns the total quantity of a specific product already refunded
+    // against a specific transaction. Used to enforce that you can't refund
+    // more units than were purchased. Legacy refund records (without product
+    // info) contribute 0 to this count - they're not blocked by this check.
+    static int getRefundedQtyForProduct(int txnID, int productID);
 
     // ----- Read operations -----
 
     static void viewAll();
-
-    // Lists all refunds linked to a specific transaction ID.
-    // Useful for admins auditing "has this transaction been refunded?"
     static void viewByTransactionID(int txnID);
-
     static Refund findByID(int id);
     static int getCount();
 

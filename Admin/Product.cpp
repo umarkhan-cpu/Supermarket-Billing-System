@@ -82,65 +82,115 @@ void Product::saveToStream(std::ofstream& out) const {
         << stock << "\n";
 }
 
+// Original Work By Farda
+////             load
+//bool Product::loadFromStream(std::ifstream& in) {
+//
+//    std::string line;
+//    if (!std::getline(in, line))
+//        return false;
+//
+//    if (line.empty())
+//        return false;
+//
+//    int pos;
+//    std::string field;
+//
+//    // ---- ID ----
+//    pos = line.find(',');
+//    if (pos == std::string::npos) return false;
+//
+//    field = line.substr(0, pos);
+//    id = std::stoi(field);
+//    line = line.substr(pos + 1);
+//
+//    // ---- Name ----
+//    pos = line.find(',');
+//    if (pos == std::string::npos) return false;
+//
+//    name = line.substr(0, pos);
+//    line = line.substr(pos + 1);
+//
+//    // ---- Category ID ----
+//    pos = line.find(',');
+//    if (pos == std::string::npos) return false;
+//
+//    field = line.substr(0, pos);
+//    categoryID = std::stoi(field);
+//    line = line.substr(pos + 1);
+//
+//    // ---- Price ----
+//    pos = line.find(',');
+//    if (pos == std::string::npos) return false;
+//
+//    field = line.substr(0, pos);
+//    price = std::stof(field);
+//    line = line.substr(pos + 1);
+//
+//    // ---- Stock ----
+//    stock = std::stoi(line);
+//
+//    return true;
+//}
 
-//             load
+// Modification by Umar (lead): To handle edge cases / crashes in case of manual editing to products.txt (using try-catch)
 bool Product::loadFromStream(std::ifstream& in) {
 
     std::string line;
-    if (!std::getline(in, line))
-        return false;
 
-    if (line.empty())
-        return false;
+    // Skip blank lines (e.g. trailing newlines or accidental gaps in the file)
+    do {
+        if (!std::getline(in, line)) return false;
+    } while (line.empty());
 
     int pos;
     std::string field;
 
-    // ---- ID ----
-    pos = line.find(',');
-    if (pos == std::string::npos) return false;
+    try {
+        // ---- ID ----
+        pos = line.find(',');
+        if (pos == std::string::npos) return false;
+        field = line.substr(0, pos);
+        id = std::stoi(field);
+        line = line.substr(pos + 1);
 
-    field = line.substr(0, pos);
-    id = std::stoi(field);
-    line = line.substr(pos + 1);
+        // ---- Name ----
+        pos = line.find(',');
+        if (pos == std::string::npos) return false;
+        name = line.substr(0, pos);
+        line = line.substr(pos + 1);
 
-    // ---- Name ----
-    pos = line.find(',');
-    if (pos == std::string::npos) return false;
+        // ---- Category ID ----
+        pos = line.find(',');
+        if (pos == std::string::npos) return false;
+        field = line.substr(0, pos);
+        categoryID = std::stoi(field);
+        line = line.substr(pos + 1);
 
-    name = line.substr(0, pos);
-    line = line.substr(pos + 1);
+        // ---- Price ----
+        pos = line.find(',');
+        if (pos == std::string::npos) return false;
+        field = line.substr(0, pos);
+        price = std::stof(field);
+        line = line.substr(pos + 1);
 
-    // ---- Category ID ----
-    pos = line.find(',');
-    if (pos == std::string::npos) return false;
-
-    field = line.substr(0, pos);
-    categoryID = std::stoi(field);
-    line = line.substr(pos + 1);
-
-    // ---- Price ----
-    pos = line.find(',');
-    if (pos == std::string::npos) return false;
-
-    field = line.substr(0, pos);
-    price = std::stof(field);
-    line = line.substr(pos + 1);
-
-    // ---- Stock ----
-    stock = std::stoi(line);
+        // ---- Stock ----
+        stock = std::stoi(line);
+    }
+    catch (const std::exception&) {
+        // Malformed numeric field - skip this record rather than crash
+        return false;
+    }
 
     return true;
 }
 
-
 //         Display 
 
-/*void Product::display() const {
+void Product::display() const {
     std::cout << "ID: " << id
         << " | Name: " << name
         << " | Category: " << categoryID
         << " | Price: " << price
         << " | Stock: " << stock << "\n";
 }
-*/

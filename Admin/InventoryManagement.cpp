@@ -9,7 +9,7 @@ int        InventoryManagement::count = 0;
 int        InventoryManagement::capacity = 0;
 
 // file path for inventory data
-static const char* INV_FILE_PATH = R"(C:\Users\mahno\OneDrive\Documents\GitHub\Supermarket-Billing-System\Data\inventory.txt)";
+static const char* INV_FILE_PATH = "Data/inventory.txt";
 
 
 //  Resize array when it gets full 
@@ -152,7 +152,7 @@ bool InventoryManagement::removeStock(int productID, int amount) {
 
 
 //           Show low stock products
-/*void InventoryManagement::checkLowStock(int threshold) {
+void InventoryManagement::checkLowStock(int threshold) {
 
     std::cout << "\n--- Low Stock Report (threshold: "
         << threshold << ") ---\n";
@@ -183,11 +183,11 @@ bool InventoryManagement::removeStock(int productID, int amount) {
 
     std::cout << "---------------------------------------------------\n";
 }
-*/
+
 
 
 //          View all inventory records 
-/*void InventoryManagement::viewAll() {
+void InventoryManagement::viewAll() {
 
     if (count == 0) {
         std::cout << "No inventory records found.\n";
@@ -201,7 +201,6 @@ bool InventoryManagement::removeStock(int productID, int amount) {
 
     std::cout << "-------------------------\n";
 }
-*/
 
 
 //             Load from file 

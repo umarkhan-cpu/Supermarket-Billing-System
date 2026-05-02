@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Supermarket-Billing-System", "Supermarket-Billing-System.vcxproj", "{C6B9D1BF-086F-4663-BA1E-8643CA9BE0DB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "supermarketui", "..\supermarketui\supermarketui.vcxproj", "{A632ED59-D44C-4A3B-944F-79CF873A97DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "supermarketui", "supermarketui\supermarketui.vcxproj", "{A632ED59-D44C-4A3B-944F-79CF873A97DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

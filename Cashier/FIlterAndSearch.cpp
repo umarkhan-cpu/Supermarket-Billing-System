@@ -5,7 +5,7 @@ using namespace std;
 
 // Prints a single product row using the category name resolved from CategoryManagement.  
 static void printProduct(const Product& p) {
-    string cName = CategoryManagement::findByID(p.getCategoryID()).getName();// Get cname using cID of the product
+   // string cName = CategoryManagement::findByID(p.getCategoryID()).getName();// Get cname using cID of the product
     p.display(/*cName*/);
 }
 

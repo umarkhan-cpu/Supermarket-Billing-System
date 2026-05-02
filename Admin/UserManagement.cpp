@@ -1,4 +1,5 @@
 #include "UserManagement.h"
+#include <sstream>
 
 string UserManagement::passtrength(string password) {
     int score = 0;
@@ -91,19 +92,53 @@ bool UserManagement::validatecaptcha() {
     }
 }
 
+// Original Work By Areesha
+//int UserManagement::nextAvailableID() {
+//    int id, maxID = 0;
+//    string user, pass, role;
+//
+//    ifstream file("Data/users.txt");
+//
+//    while (getline(file, user, ',')) {
+//        getline(file, pass, ',');
+//        getline(file, role);
+//
+//        id = stoi(user); // assuming first column is ID
+//        if (id > maxID) {
+//            maxID = id;
+//        }
+//    }
+//
+//    return maxID + 1;
+//}
+
+// Modification by Umar (lead): To handle edge cases and crashes in case of empty users.txt (using try-catch)
 int UserManagement::nextAvailableID() {
     int id, maxID = 0;
-    string user, pass, role;
+    string user, pass, hash, role;
 
     ifstream file("Data/users.txt");
 
-    while (getline(file, user, ',')) {
-        getline(file, pass, ',');
-        getline(file, role);
+    // Read line-by-line so we can skip blanks and handle malformed rows
+    // without crashing (e.g. if the file has a trailing newline).
+    string line;
+    while (getline(file, line)) {
+        if (line.empty()) continue;
 
-        id = stoi(user); // assuming first column is ID
-        if (id > maxID) {
-            maxID = id;
+        stringstream ss(line);
+        if (!getline(ss, user, ',')) continue;
+        if (!getline(ss, pass, ',')) continue;
+        if (!getline(ss, hash, ',')) continue;
+        getline(ss, role);
+
+        if (user.empty()) continue;
+
+        try {
+            id = stoi(user);
+            if (id > maxID) maxID = id;
+        }
+        catch (const std::exception&) {
+            continue;
         }
     }
 

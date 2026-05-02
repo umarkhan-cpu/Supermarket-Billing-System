@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -18,61 +18,70 @@
     <ClCompile Include="MyForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\UserManagement.cpp">
+    <ClCompile Include="..\Admin\UserManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\Admin.cpp">
+    <ClCompile Include="..\Admin\Admin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\Cashier.cpp">
+    <ClCompile Include="..\Admin\SalesReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Common\SessionManager.cpp">
+    <ClCompile Include="..\Cashier\Cashier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Common\User.cpp">
+    <ClCompile Include="..\Common\SessionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dashboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\ReceiptAndBilling.cpp">
+    <ClCompile Include="..\Cashier\ReceiptAndBilling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\Product.cpp">
+    <ClCompile Include="..\Cashier\FIlterAndSearch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\ProductManagement.cpp">
+    <ClCompile Include="..\Admin\Product.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\Discount.cpp">
+    <ClCompile Include="..\Admin\ProductManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\DiscountManagement.cpp">
+    <ClCompile Include="..\Cashier\Discount.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Cashier\DiscountManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BillingForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\Refund.cpp">
+    <ClCompile Include="..\Cashier\Refund.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\RefundManagement.cpp">
+    <ClCompile Include="..\Cashier\RefundManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\Transaction.cpp">
+    <ClCompile Include="..\Cashier\Transaction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Cashier\TransactionManagement.cpp">
+    <ClCompile Include="..\Cashier\TransactionManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\InventoryManagement.cpp">
+    <ClCompile Include="..\Admin\InventoryManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RefundForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\Inventory.cpp">
+    <ClCompile Include="..\Admin\Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TransactionHistoryForm.cpp">
@@ -81,10 +90,10 @@
     <ClCompile Include="InventoryForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\Category.cpp">
+    <ClCompile Include="..\Admin\Category.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Supermarket-Billing-System\Admin\CategoryManagement.cpp">
+    <ClCompile Include="..\Admin\CategoryManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CategoryForm.cpp">
@@ -94,6 +103,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SalesReportForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CouponForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Cashier\ReceiptStore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReceiptForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,6 +144,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SalesReportForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CouponForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReceiptForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
