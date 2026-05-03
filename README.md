@@ -31,7 +31,7 @@ A C++ application that automates a supermarket's day-to-day operations — billi
 
 ## ⚡ Quick Start
 
-1. **Clone the repository** to a fresh folder:
+1. **Clone the repository:**
    ```
    git clone https://github.com/umarkhan-cpu/Supermarket-Billing-System.git
    cd Supermarket-Billing-System
@@ -39,22 +39,22 @@ A C++ application that automates a supermarket's day-to-day operations — billi
 
 2. **Open the solution** in Visual Studio 2022 (Community edition or higher).
 
-3. **Run the bootstrap utility first** to seed default user accounts:
-   - Set `Supermarket-Billing-System` (the console project) as the startup project
-   - Press `Ctrl+F5`
-   - When prompted, choose **Option 4** — bootstraps users and runs all backend smoke tests
-   - Verify that **17/17 checks pass** before launching the GUI
-
-4. **Run the GUI:**
+3. **Run the GUI:**
    - Set `supermarketui` as the startup project
    - Press `Ctrl+F5`
    - Log in using one of the demo credentials below
 
-   💡 If login fails with a "can't open Data/users.txt" error: right-click supermarketui project → Properties → Configuration Properties → Debugging → set Working Directory to $(SolutionDir) → Apply.
+   The repository ships with a pre-populated `Data/` folder, so the GUI works out of the box with default accounts already seeded.
+
+   > 💡 **If login fails with a "can't open Data/users.txt" error:** right-click `supermarketui` project → Properties → Configuration Properties → Debugging → set Working Directory to `$(SolutionDir)` → Apply.
+
+4. **(Optional) Run the backend bootstrap utility** if you want to verify backend health or restore default accounts after an accidental reset:
+   - Set `Supermarket-Billing-System` (the console project) as the startup project
+   - Press `Ctrl+F5`
+   - Choose **Option 4** — bootstraps users and runs all backend smoke tests
+   - Verify that **17/17 checks pass**
 
 ### 🔑 Demo Credentials
-
-After running the bootstrap utility (Option 1 or 4), the following accounts exist:
 
 | Username | Password | Role |
 |---|---|---|
@@ -64,7 +64,8 @@ After running the bootstrap utility (Option 1 or 4), the following accounts exis
 | `Farda` | `farda123` | Cashier |
 | `Areesha` | `areesha123` | Cashier |
 
-> 💡 Use Admin / admin123 for admin controls, others for the cashier role.
+> 💡 Use `Admin` / `admin123` for full admin access; the others log in as cashiers.
+
 ---
 
 ## 🚀 Features
@@ -141,45 +142,6 @@ The dashboard sidebar dynamically shows only the buttons relevant to the logged-
 
 ---
 
-## 📊 Progress Tracker
-
-| # | Feature | Owner | Status |
-|---|---|---|---|
-| 1 | User Management | Areesha | ✅ Done |
-| 2 | Category Management | Umar | ✅ Done |
-| 3 | Product Management | Farda | ✅ Done |
-| 4 | Inventory & Stock Management | Farda | ✅ Done |
-| 5 | Return & Refund Management | Umar | ✅ Done |
-| 6 | Sales Report Generation | Mahnoor | ✅ Done |
-| 7 | Billing & Receipt Generation | Areesha | ✅ Done |
-| 8 | Discount & Coupon System | Umar | ✅ Done |
-| 9 | Transaction History | Farda | ✅ Done |
-| 10 | Search & Filter Products | Areesha | ✅ Done |
-| — | GUI (WinForms) | Mahnoor | ✅ Done |
-| — | CAPTCHA Verification | Areesha | ⚠️ Backend only (see Known Limitations) |
-| — | Password Strength Indicator | Areesha | ✅ Done |
-| — | Dark / Light Mode | Farda | ✅ Done |
-| — | Session Timeout | Umar | ✅ Done |
-
----
-
-## 📂 Data File Formats
-
-All persistent data lives under `Data/` and uses CSV (or pipe-delimited for the structured receipt records).
-
-| File | Format |
-|---|---|
-| users.txt | `UserID, Username, PasswordHash, Role` |
-| categories.txt | `CategoryID, Name, Description` |
-| products.txt | `ProductID, Name, CategoryID, Price, Stock` |
-| transactions.txt | `TransactionID, Date, CashierID, TotalAmount, Status` |
-| receipts.txt | Pipe-delimited multi-line: `=RECEIPT=` markers, `HEADER`/`ITEM`/`TOTALS`/`END` rows |
-| coupons.txt | `CouponID, Code, DiscountType, DiscountValue, Status` |
-| refunds.txt | `RefundID, TransactionID, Reason, Amount, Date, ProductID, Quantity` |
-| settings.txt | `theme=dark` or `theme=light` |
-
----
-
 ## 🧪 Backend Smoke Test
 
 The console binary (`main.cpp`) is not just a placeholder — it's a working bootstrap and health-check utility. It offers:
@@ -201,14 +163,8 @@ We documented these honestly rather than hiding them:
 2. **No signup on the login screen.** This is intentional. Account creation is restricted to Admin via the User Management form, which mirrors how real retail POS systems handle staff accounts.
 3. **Child forms use a fixed light theme.** The dashboard's dark/light toggle applies to the dashboard itself; child windows (Inventory, Categories, Refunds, etc.) were left light-themed for legibility consistency.
 4. **Settings: English / PKR / Light-Dark only.** Multi-language and multi-currency support are not part of this scope.
-5. **Product creation does not auto-seed inventory.** When an Admin adds a 
-   product via the Inventory form's "Add" button, a Product record is created 
-   with the specified initial stock, but no corresponding Inventory record. 
-   This creates an asymmetry where the first stock-removal (via sale) silently 
-   fails, but a subsequent refund correctly creates the Inventory record — 
-   resulting in the product's stock count being off by the amount sold + refunded. 
-   Workaround: after adding a product, use the "Restock" button to explicitly 
-   seed inventory matching the initial stock count.
+5. **Product creation does not auto-seed inventory.** When an Admin adds a product via the Inventory form's "Add" button, a Product record is created with the specified initial stock, but no corresponding Inventory record. This creates an asymmetry where the first stock-removal (via sale) silently fails, but a subsequent refund correctly creates the Inventory record — resulting in the product's stock count being off by the amount sold + refunded. Workaround: after adding a product, use the "Restock" button to explicitly seed inventory matching the initial stock count.
+6. **Comma-containing names break CSV persistence.** Product names, category names, and similar text fields cannot contain commas because all data is stored in plain CSV format without quoting or escape sequences. A name like `"Lays, Salted"` would be split into two fields by the parser, corrupting the record. Use alternative separators (e.g. `Lays - Salted`) or rephrase the name. Future iterations would adopt a quoted-field CSV parser or switch to JSON for richer text support.
 
 ---
 
